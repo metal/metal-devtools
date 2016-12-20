@@ -1,0 +1,27 @@
+{
+  "name": "Metal.js Developer Tools",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "background": {
+    "scripts": [ "build/background.js" ],
+    "persistent": false
+  },
+  "description": "Inspect State for Metal.js Components",
+  "icons": {
+    "128": "static/metal.png"
+  },
+  "devtools_page": "build/devtools.html",
+  "permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "build/content.js"
+      ]
+    }
+  ]
+}
