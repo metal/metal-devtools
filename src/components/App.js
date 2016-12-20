@@ -30,10 +30,18 @@ class App extends Component {
 	render() {
 		const {rootComponents} = this.state;
 
+		const rootComponentKeys = Object.keys(rootComponents);
+
 		return (
 			<div>
-				{
-					Object.keys(rootComponents).map(
+				{rootComponentKeys && !rootComponentKeys.length &&
+					<div>
+						{`If you do not see your components here, try refreshing the page while keeping the devtools open.`}
+					</div>
+				}
+
+				{rootComponentKeys && !!rootComponentKeys.length &&
+					rootComponentKeys.map(
 						(key, i) => <TreeNode componentNode={rootComponents[key]} key={i} />
 					)
 				}
