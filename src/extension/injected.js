@@ -41,7 +41,7 @@ const hook = window => {
 			// props: component.props || {},
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.name || component.constructor.name,
-			childComponents: component.renderer_.childComponents_.map(
+			childComponents: component.__METAL_IC_RENDERER_DATA__.childComponents && component.__METAL_IC_RENDERER_DATA__.childComponents.map(
 				childComponent => climbTree(childComponent, rootComponent)
 			)
 		}
