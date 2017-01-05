@@ -1,19 +1,28 @@
-const hook = window => {
-	const __METAL_DEV_TOOLS_COMPONENT_KEY__ = '__METAL_DEV_TOOLS_COMPONENT_KEY__';
+export default window => {
+	function processConfig(config, keyBlackList = [], instanceBlackList = []) {
+		const retVal = {};
 
-	function removeComponent(component) {
-		return () => {
-			window.postMessage(
-				{
-					id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
-					remove: true
-				},
-				'*'
+		if (config) {
+			const keys = Object.keys(config);
+
+			keys.forEach(
+				key => {
+					const value = config[key];
+
+					if (keyBlackList.indexOf(key) === -1 && !instanceBlackList.some(type => value instanceof type)) {
+						retVal[key] = value;
+					}
+				}
 			);
-		};
+		}
+
+		return retVal;
 	}
 
+	const __METAL_DEV_TOOLS_COMPONENT_KEY__ = '__METAL_DEV_TOOLS_COMPONENT_KEY__';
+
 	let componentId = 0;
+	let updateScheduled = {};
 
 	function climbTree(component, rootComponent) {
 		if (!component) {
@@ -21,27 +30,65 @@ const hook = window => {
 		}
 
 		if (!component[__METAL_DEV_TOOLS_COMPONENT_KEY__]) {
-			component[__METAL_DEV_TOOLS_COMPONENT_KEY__] = `__METAL_DEV_TOOLS_COMPONENT_KEY__${componentId++}`;
+			component[__METAL_DEV_TOOLS_COMPONENT_KEY__] = `${__METAL_DEV_TOOLS_COMPONENT_KEY__}${componentId++}`;
+
+			const rootId = rootComponent[__METAL_DEV_TOOLS_COMPONENT_KEY__];
 
 			component.on(
 				'rendered',
 				() => {
+					if (!updateScheduled[rootId]) {
+						updateScheduled[rootId] = true;
+
+						setTimeout(
+							() => {
+								window.postMessage(
+									climbTree(rootComponent, rootComponent),
+									'*'
+								);
+
+								updateScheduled[rootId] = false
+							},
+							0
+						);
+					}
+				}
+			);
+
+			component.on(
+				'detached',
+				() => {
 					window.postMessage(
-						climbTree(rootComponent, rootComponent),
+						{
+							id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
+							remove: true
+						},
 						'*'
 					);
 				}
 			);
-
-			component.on('detached', removeComponent(component));
 		}
 
+		const renderer = component.__METAL_IC_RENDERER_DATA__;
+
 		return {
-			// state: component.getState && component.getState() || {},
-			// props: component.props || {},
+			state: JSON.stringify(
+				processConfig(
+					component.state,
+					['children', 'childrenMap_', 'events', 'storeState'],
+					[HTMLElement]
+				)
+			),
+			props: JSON.stringify(
+				processConfig(
+					component.props,
+					['children', 'events'],
+					[HTMLElement]
+				)
+			),
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.name || component.constructor.name,
-			childComponents: component.__METAL_IC_RENDERER_DATA__.childComponents && component.__METAL_IC_RENDERER_DATA__.childComponents.map(
+			childComponents: renderer.childComponents && renderer.childComponents.map(
 				childComponent => climbTree(childComponent, rootComponent)
 			)
 		}
@@ -51,5 +98,3 @@ const hook = window => {
 		climbTree(component, component);
 	}
 }
-
-export default hook;

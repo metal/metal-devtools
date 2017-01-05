@@ -13,15 +13,20 @@ class TreeNode extends Component {
 
 		this.state.expanded_ = newVal;
 
+		this.props.onNodeClick(this.props.componentNode);
+
 		this.props.componentNode._expanded = newVal;
 	}
 
 	render() {
+		const {componentNode, onNodeClick, selectedComponent} = this.props;
+
 		const {
 			childComponents,
 			_expanded,
+			id,
 			name
-		} = this.props.componentNode;
+		} = componentNode;
 
 		const expanded = _expanded || this.state.expanded_;
 
@@ -31,9 +36,11 @@ class TreeNode extends Component {
 
 		const empty = hasChildren ? '' : 'empty';
 
+		const selected = id === selectedComponent ? 'selected' : '';
+
 		return(
 			<div class="tree">
-				<div class="tree-node" onClick={this.toggleExpanded}>
+				<div class={`tree-node ${selected}`} onClick={this.toggleExpanded}>
 					{hasChildren &&
 						<div class="toggle">
 							{arrow}
@@ -51,8 +58,25 @@ class TreeNode extends Component {
 
 				{hasChildren && expanded &&
 					childComponents.map(
-						(child, i) => <TreeNode componentNode={child} key={`${name}-${i}`} />
+						(child, i) => (
+							<TreeNode
+								componentNode={child}
+								key={`${name}-${i}`}
+								onNodeClick={onNodeClick}
+								selectedComponent={selectedComponent}
+							/>
+						)
 					)
+				}
+
+				{hasChildren && expanded &&
+					<div class={`component-info ${selected}`}>
+						<span>{'  </'}</span>
+
+						{name}
+
+						<span>{'>'}</span>
+					</div>
 				}
 			</div>
 		)
@@ -61,7 +85,9 @@ class TreeNode extends Component {
 
 TreeNode.PROPS = {
 	componentNode: Config.value({}),
-	expanded: Config.value(false)
+	expanded: Config.value(false),
+	onNodeClick: Config.func(),
+	selectedComponent: Config.any()
 };
 
 TreeNode.STATE = {
