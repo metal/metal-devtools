@@ -57,29 +57,24 @@ class App extends Component {
 	}
 
 	selectedChange(node) {
-		this.setState({
-			componentInfo: {
-				props: JSON.parse(node.props) || {},
-				state: JSON.parse(node.state) || {},
-			},
-			selectedComponent: node.id
-		});
+		this.state.selectedComponent = node;
 	}
 
 	render() {
-		const {componentInfo, rootComponents, selectedComponent} = this.state;
+		const {rootComponents, selectedComponent} = this.state;
 
 		const rootComponentKeys = Object.keys(rootComponents);
 
-		const propKeys = Object.keys(componentInfo.props);
-		const stateKeys = Object.keys(componentInfo.state);
+		const props = JSON.parse(selectedComponent.props) || {};
+		const state = JSON.parse(selectedComponent.state) || {};
+
+		const propKeys = Object.keys(props);
+		const stateKeys = Object.keys(state);
 
 		return (
 			<div class="container">
 				{rootComponentKeys && !rootComponentKeys.length &&
-					<div>
-						{`If you do not see your components here, try refreshing the page while keeping the devtools open.`}
-					</div>
+						`If you do not see your components here, try refreshing the page while keeping this panel open.`
 				}
 
 				<div class="nodes">
@@ -98,9 +93,10 @@ class App extends Component {
 				</div>
 
 				<div class="config">
+					<h1>Component Data:</h1>
 					{!!stateKeys.length &&
 						<div>
-							<h3>State:</h3>
+							<h2>State:</h2>
 
 							<ul>
 								{
@@ -108,7 +104,7 @@ class App extends Component {
 										key => (
 											<li>
 												<b>{`${key}: `}</b>
-												{this.processValue(componentInfo.state[key])}
+												<span>{this.processValue(state[key])}</span>
 											</li>
 										)
 									)
@@ -119,7 +115,7 @@ class App extends Component {
 
 					{!!propKeys.length &&
 						<div>
-							<h3>Props:</h3>
+							<h2>Props:</h2>
 
 							<ul>
 								{
@@ -127,7 +123,7 @@ class App extends Component {
 										key => (
 											<li>
 												<b>{`${key}: `}</b>
-												{this.processValue(componentInfo.props[key])}
+												<span>{this.processValue(props[key])}</span>
 											</li>
 										)
 									)
@@ -142,9 +138,13 @@ class App extends Component {
 }
 
 App.STATE = {
-	componentInfo: Config.value({state: {}, props: {}}),
 	rootComponents: Config.value({}),
-	selectedComponent: Config.any()
+	selectedComponent: Config.value(
+		{
+			props: 'null',
+			state: 'null'
+		}
+	)
 }
 
 export default App;

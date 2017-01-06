@@ -5,7 +5,12 @@ const expandedArrow = '-';
 
 class TreeNode extends Component {
 	created() {
+		this.handleNodeClick = this.handleNodeClick.bind(this);
 		this.toggleExpanded = this.toggleExpanded.bind(this);
+	}
+
+	handleNodeClick() {
+		this.props.onNodeClick(this.props.componentNode);
 	}
 
 	toggleExpanded() {
@@ -14,36 +19,35 @@ class TreeNode extends Component {
 		this.state.expanded_ = newVal;
 
 		this.props.onNodeClick(this.props.componentNode);
+	}
 
-		this.props.componentNode._expanded = newVal;
+	rendered() {
+		const {componentNode, selectedComponent} = this.props;
+
+		if (componentNode.id === selectedComponent.id) {
+			this.props.onNodeClick(this.props.componentNode);
+		}
 	}
 
 	render() {
 		const {componentNode, onNodeClick, selectedComponent} = this.props;
 
-		const {
-			childComponents,
-			_expanded,
-			id,
-			name
-		} = componentNode;
+		const {childComponents, id, name} = componentNode;
 
-		const expanded = _expanded || this.state.expanded_;
-
-		const arrow = (expanded) ? expandedArrow : collapsedArrow;
+		const {expanded_} = this.state;
 
 		const hasChildren = childComponents && childComponents.length > 0;
 
 		const empty = hasChildren ? '' : 'empty';
 
-		const selected = id === selectedComponent ? 'selected' : '';
+		const selected = id === selectedComponent.id ? 'selected' : '';
 
 		return(
 			<div class="tree">
 				<div class={`tree-node ${selected}`} onClick={this.toggleExpanded}>
 					{hasChildren &&
 						<div class="toggle">
-							{arrow}
+							{expanded_ ? expandedArrow : collapsedArrow}
 						</div>
 					}
 
@@ -56,7 +60,7 @@ class TreeNode extends Component {
 					</div>
 				</div>
 
-				{hasChildren && expanded &&
+				{hasChildren && expanded_ &&
 					childComponents.map(
 						(child, i) => (
 							<TreeNode
@@ -69,8 +73,8 @@ class TreeNode extends Component {
 					)
 				}
 
-				{hasChildren && expanded &&
-					<div class={`component-info ${selected}`}>
+				{hasChildren && expanded_ &&
+					<div class={`component-info`} onClick={this.handleNodeClick}>
 						<span>{'  </'}</span>
 
 						{name}
@@ -87,7 +91,7 @@ TreeNode.PROPS = {
 	componentNode: Config.value({}),
 	expanded: Config.value(false),
 	onNodeClick: Config.func(),
-	selectedComponent: Config.any()
+	selectedComponent: Config.object()
 };
 
 TreeNode.STATE = {

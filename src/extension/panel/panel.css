@@ -1,0 +1,96 @@
+body {
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+html, .container {
+	height: 100%;
+}
+
+.component-info, .toggle {
+	display: inline-block;
+	cursor: pointer;
+	padding: 2px;
+}
+
+.component-info {
+	font-size: 14px;
+}
+
+.component-info span {
+	color: red;
+}
+
+.component-info.empty, .tree {
+	padding-left: 20px;
+}
+
+.tree-node {
+	padding: 4px 0;
+}
+
+.tree-node:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.toggle {
+	color: #777;
+	font-size: 10px;
+}
+
+.selected {
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.container {
+	display: flex;
+}
+
+.nodes {
+	border-right: 1px solid black;
+	flex: 0 0 70%;
+}
+
+.nodes, .config {
+		overflow: auto;
+}
+
+
+
+
+.config {
+	flex: 1 0 30%;
+	font-size: 14px;
+}
+
+.config > div > h2 {
+	margin: 0;
+}
+
+.config ul li {
+	font-size: 14px;
+}
+
+.config ul li span {
+	color: grey;
+}
+
+.config ul li pre {
+	margin: 0;
+}
+
+.config > div {
+	padding-left: 12px;
+}
+
+.config ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 12px;
+}
+
+.config h1 {
+	border-bottom: 2px solid black;
+	padding-left: 12px;
+}
