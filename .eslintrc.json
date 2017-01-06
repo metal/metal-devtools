@@ -16,7 +16,7 @@
 	},
 	"plugins": ["react"],
 	"rules": {
-		"semi": 0,
+		"semi": 1,
 		"no-bitwise": 0,
 		"curly": 2,
 		"eqeqeq": 2,

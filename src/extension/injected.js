@@ -47,7 +47,7 @@ export default window => {
 									'*'
 								);
 
-								updateScheduled[rootId] = false
+								updateScheduled[rootId] = false;
 							},
 							0
 						);
@@ -91,10 +91,10 @@ export default window => {
 			childComponents: renderer.childComponents && renderer.childComponents.map(
 				childComponent => climbTree(childComponent, rootComponent)
 			)
-		}
+		};
 	}
 
 	window.__METAL_DEV_TOOLS_HOOK__ = function(component) {
 		climbTree(component, component);
-	}
-}
+	};
+};

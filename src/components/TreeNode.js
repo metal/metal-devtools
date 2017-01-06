@@ -83,7 +83,7 @@ class TreeNode extends Component {
 					</div>
 				}
 			</div>
-		)
+		);
 	}
 }
 
