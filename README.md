@@ -5,6 +5,8 @@
 ### Installation
 
 * Clone Repo
+* run `npm install`
+* run `npm run build` or `npm run watch` for developing
 * Go to Chrome and open extensions pane
 * Click on "Load unpacked extension" and select this project
 
