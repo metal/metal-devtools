@@ -74,29 +74,43 @@ class App extends Component {
 		return (
 			<div class="container">
 				{rootComponentKeys && !rootComponentKeys.length &&
-						`If you do not see your components here, try refreshing the page while keeping this panel open.`
+					<div class="warn">
+						<div>
+							{'If you do not see your components here, try refreshing the page while keeping this panel open.'}
+							<br />
+							<i>{'Or there may be no Metal.js components on the page.'}</i>
+						</div>
+					</div>
 				}
 
-				<div class="nodes">
-					{rootComponentKeys && !!rootComponentKeys.length &&
-						rootComponentKeys.map(
-							(key, i) => (
-								<TreeNode
-									componentNode={rootComponents[key]}
-									key={i}
-									selectedComponent={selectedComponent}
-									onNodeClick={this.selectedChange}
-								/>
+				{rootComponentKeys && !!rootComponentKeys.length &&
+					<div class="nodes">
+						{
+							rootComponentKeys.map(
+								(key, i) => (
+									<TreeNode
+										componentNode={rootComponents[key]}
+										key={i}
+										selectedComponent={selectedComponent}
+										onNodeClick={this.selectedChange}
+									/>
+								)
 							)
-						)
-					}
-				</div>
+						}
+					</div>
+				}
 
 				<div class="config">
 					<h1>Component Data:</h1>
+					{!stateKeys.length && !propKeys.length &&
+						<div>
+							<i>{'No Component Data'}</i>
+						</div>
+					}
+
 					{!!stateKeys.length &&
 						<div>
-							<h2>State:</h2>
+							<h2>{'State:'}</h2>
 
 							<ul>
 								{
@@ -115,7 +129,7 @@ class App extends Component {
 
 					{!!propKeys.length &&
 						<div>
-							<h2>Props:</h2>
+							<h2>{'Props:'}</h2>
 
 							<ul>
 								{
@@ -133,7 +147,7 @@ class App extends Component {
 					}
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
@@ -145,6 +159,6 @@ App.STATE = {
 			state: 'null'
 		}
 	)
-}
+};
 
 export default App;

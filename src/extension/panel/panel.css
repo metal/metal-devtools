@@ -8,6 +8,23 @@ html, .container {
 	height: 100%;
 }
 
+.container .warn {
+	align-items: center;
+	border-right: 1px solid black;
+	display: flex;
+	flex: 0 0 70%;
+	font-size: 16px;
+	justify-content: center;
+}
+
+.container .warn div {
+	text-align: center;
+}
+
+.container .warn i {
+	opacity: 0.5;
+}
+
 .component-info, .toggle {
 	display: inline-block;
 	cursor: pointer;
