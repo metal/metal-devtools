@@ -1,6 +1,6 @@
 export default window => {
 	function processConfig(config, keyBlackList = [], instanceBlackList = []) {
-		const retVal = {};
+		let retVal = {};
 
 		if (config) {
 			const keys = Object.keys(config);
@@ -14,6 +14,12 @@ export default window => {
 					}
 				}
 			);
+		}
+
+		try {
+			retVal = JSON.stringify(retVal);
+		} catch (e) {
+			retVal = {};
 		}
 
 		return retVal;
@@ -72,19 +78,15 @@ export default window => {
 		const renderer = component.__METAL_IC_RENDERER_DATA__;
 
 		return {
-			state: JSON.stringify(
-				processConfig(
-					component.state,
-					['children', 'childrenMap_', 'events', 'storeState'],
-					[HTMLElement]
-				)
+			state: processConfig(
+				component.state,
+				['children', 'childrenMap_', 'events', 'storeState'],
+				[HTMLElement]
 			),
-			props: JSON.stringify(
-				processConfig(
-					component.props,
-					['children', 'events'],
-					[HTMLElement]
-				)
+			props: processConfig(
+				component.props,
+				['children', 'events'],
+				[HTMLElement]
 			),
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.name || component.constructor.name,
