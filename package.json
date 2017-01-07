@@ -1,6 +1,6 @@
 {
   "name": "metal-devtools",
-  "version": "0.0.1-alpha",
+  "version": "0.0.2-alpha",
   "description": "Metal Developer Tools",
   "scripts": {
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build",
