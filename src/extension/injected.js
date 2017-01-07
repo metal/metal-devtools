@@ -1,13 +1,13 @@
 export default window => {
-	function processConfig(config, keyBlackList = [], instanceBlackList = []) {
+	function processConfig(stateInfo, keyBlackList = [], instanceBlackList = []) {
 		let retVal = {};
 
-		if (config) {
-			const keys = Object.keys(config);
+		if (stateInfo) {
+			const keys = Object.keys(stateInfo);
 
 			keys.forEach(
 				key => {
-					const value = config[key];
+					const {value} = stateInfo[key];
 
 					if (keyBlackList.indexOf(key) === -1 && !instanceBlackList.some(type => value instanceof type)) {
 						retVal[key] = value;
@@ -19,7 +19,7 @@ export default window => {
 		try {
 			retVal = JSON.stringify(retVal);
 		} catch (e) {
-			retVal = {};
+			retVal = 'null';
 		}
 
 		return retVal;
@@ -75,19 +75,28 @@ export default window => {
 			);
 		}
 
+		const dataManagerData = component.__DATA_MANAGER_DATA__;
+
+		const dataManagerKeys = Object.keys(dataManagerData);
+
+		let data = {};
+
+		dataManagerKeys.forEach(
+			key => {
+				const dataManager = dataManagerData[key];
+
+				data[key.replace('_', '')] = processConfig(
+					dataManager.stateInfo_,
+					['children', 'childrenMap_', 'events', 'storeState'],
+					[HTMLElement]
+				);
+			}
+		);
+
 		const renderer = component.__METAL_IC_RENDERER_DATA__;
 
 		return {
-			state: processConfig(
-				component.state,
-				['children', 'childrenMap_', 'events', 'storeState'],
-				[HTMLElement]
-			),
-			props: processConfig(
-				component.props,
-				['children', 'events'],
-				[HTMLElement]
-			),
+			data,
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.name || component.constructor.name,
 			childComponents: renderer.childComponents && renderer.childComponents.map(

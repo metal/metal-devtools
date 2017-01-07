@@ -65,11 +65,7 @@ class App extends Component {
 
 		const rootComponentKeys = Object.keys(rootComponents);
 
-		const props = JSON.parse(selectedComponent.props) || {};
-		const state = JSON.parse(selectedComponent.state) || {};
-
-		const propKeys = Object.keys(props);
-		const stateKeys = Object.keys(state);
+		const dataKeys = Object.keys(selectedComponent.data || {});
 
 		return (
 			<div class="container">
@@ -102,47 +98,38 @@ class App extends Component {
 
 				<div class="config">
 					<h1>Component Data:</h1>
-					{!stateKeys.length && !propKeys.length &&
+
+					{!!dataKeys.length &&
+						dataKeys.map(
+							dataKey => {
+								const state = JSON.parse(selectedComponent.data[dataKey]);
+								const stateKeys = Object.keys(state || {});
+
+								return (
+									<div>
+										<h2>{`${dataKey}:`}</h2>
+
+										<ul>
+											{
+												stateKeys.map(
+													key => (
+														<li>
+															<b>{`${key}: `}</b>
+															<span>{this.processValue(state[key])}</span>
+														</li>
+													)
+												)
+											}
+										</ul>
+									</div>
+								);
+							}
+						)
+					}
+
+					{!dataKeys.length &&
 						<div>
 							<i>{'No Component Data'}</i>
-						</div>
-					}
-
-					{!!stateKeys.length &&
-						<div>
-							<h2>{'State:'}</h2>
-
-							<ul>
-								{
-									stateKeys.map(
-										key => (
-											<li>
-												<b>{`${key}: `}</b>
-												<span>{this.processValue(state[key])}</span>
-											</li>
-										)
-									)
-								}
-							</ul>
-						</div>
-					}
-
-					{!!propKeys.length &&
-						<div>
-							<h2>{'Props:'}</h2>
-
-							<ul>
-								{
-									propKeys.map(
-										key => (
-											<li>
-												<b>{`${key}: `}</b>
-												<span>{this.processValue(props[key])}</span>
-											</li>
-										)
-									)
-								}
-							</ul>
 						</div>
 					}
 				</div>
@@ -153,12 +140,7 @@ class App extends Component {
 
 App.STATE = {
 	rootComponents: Config.value({}),
-	selectedComponent: Config.value(
-		{
-			props: 'null',
-			state: 'null'
-		}
-	)
+	selectedComponent: Config.value({})
 };
 
 export default App;
