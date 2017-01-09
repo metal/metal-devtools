@@ -1,8 +1,8 @@
 import Component, {Config} from 'metal-jsx';
-import {Iterable, fromJS} from 'immutable';
-import {isBoolean, isNull, isObject} from 'lodash';
 
 import TreeNode from './TreeNode';
+import StatePane from './StatePane';
+import InitialWarning from './InitialWarning';
 
 class App extends Component {
 	created() {
@@ -31,29 +31,6 @@ class App extends Component {
 		);
 	}
 
-	processValue(value) {
-		let retVal = value;
-
-		if (isObject(value)) {
-			if (Iterable.isIterable(value)) {
-				value = fromJS(value);
-			}
-
-			retVal = [<pre>{JSON.stringify(value, null, 2)}</pre>];
-		}
-		else if (isBoolean(value)) {
-			retVal = value.toString();
-		}
-		else if (value === '') {
-			retVal = '\'\'';
-		}
-		else if (isNull(value)) {
-			retVal = 'null';
-		}
-
-		return retVal;
-	}
-
 	selectedChange(node) {
 		this.state.selectedComponent = node;
 	}
@@ -63,27 +40,20 @@ class App extends Component {
 
 		const rootComponentKeys = Object.keys(rootComponents);
 
-		const dataKeys = Object.keys(selectedComponent.data || {});
-
 		return (
-			<div class="container">
-				{rootComponentKeys && !rootComponentKeys.length &&
-					<div class="warn">
-						<div>
-							{'If you do not see your components here, try refreshing the page while keeping this panel open.'}
-							<br />
-							<i>{'Or there may be no Metal.js components on the page.'}</i>
-						</div>
-					</div>
+			<div class="app-container">
+				{!rootComponentKeys || (rootComponentKeys && !rootComponentKeys.length) &&
+					<InitialWarning />
 				}
 
 				{rootComponentKeys && !!rootComponentKeys.length &&
-					<div class="nodes">
+					<div class="roots-wrapper">
 						{
 							rootComponentKeys.map(
 								(key, i) => (
 									<TreeNode
 										componentNode={rootComponents[key]}
+										depth={0}
 										key={i}
 										selectedComponent={selectedComponent}
 										onNodeClick={this.selectedChange}
@@ -94,43 +64,7 @@ class App extends Component {
 					</div>
 				}
 
-				<div class="config">
-					<h1>Component Data:</h1>
-
-					{!!dataKeys.length &&
-						dataKeys.map(
-							dataKey => {
-								const state = JSON.parse(selectedComponent.data[dataKey]);
-								const stateKeys = Object.keys(state || {});
-
-								return (
-									<div>
-										<h2>{`${dataKey}:`}</h2>
-
-										<ul>
-											{
-												stateKeys.map(
-													key => (
-														<li>
-															<b>{`${key}: `}</b>
-															<span>{this.processValue(state[key])}</span>
-														</li>
-													)
-												)
-											}
-										</ul>
-									</div>
-								);
-							}
-						)
-					}
-
-					{!dataKeys.length &&
-						<div>
-							<i>{'No Component Data'}</i>
-						</div>
-					}
-				</div>
+				<StatePane dataManagers={selectedComponent.data} />
 			</div>
 		);
 	}

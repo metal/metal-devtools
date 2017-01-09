@@ -2,13 +2,24 @@ body {
 	height: 100%;
 	margin: 0;
 	overflow: hidden;
+	color: rgba(35, 50, 64, 0.8);
 }
 
-html, .container {
+html, .app-container {
 	height: 100%;
 }
 
-.container .warn {
+.app-container {
+	display: flex;
+}
+
+.app-container > .roots-wrapper {
+	padding-left: 20px;
+}
+
+/* ---- Initial Warning Component ---- */
+
+.initial-warning-container {
 	align-items: center;
 	border-right: 1px solid black;
 	display: flex;
@@ -17,97 +28,122 @@ html, .container {
 	justify-content: center;
 }
 
-.container .warn div {
+.initial-warning-container div {
 	text-align: center;
 }
 
-.container .warn i {
+.initial-warning-container i {
 	opacity: 0.5;
 }
 
-.component-info, .toggle {
+/* ---- Node Name Component ---- */
+
+.node-name-container {
 	display: inline-block;
 	cursor: pointer;
-	padding: 2px;
-}
-
-.component-info {
 	font-size: 14px;
 }
 
-.component-info span {
-	color: red;
+/* ---- Node Wrapper ---- */
+
+.node-wrapper {
+	padding-bottom: 4px;
+	position: relative;
+	left: -20px;
+	width: 100%;
 }
 
-.component-info.empty, .tree {
-	padding-left: 20px;
+.node-wrapper.expandable {
+	left: -32px;
 }
 
-.tree-node {
-	padding: 4px 0;
-}
-
-.tree-node:hover {
+.node-wrapper.selected {
 	background: rgba(0, 0, 0, 0.1);
 }
 
-.toggle {
-	color: #777;
-	font-size: 10px;
-}
-
-.selected {
+.node-wrapper.highlight {
 	background: rgba(0, 0, 0, 0.2);
 }
 
-.container {
-	display: flex;
-}
+/* ---- Roots Wrapper ---- */
 
-.nodes {
+.roots-wrapper {
 	border-right: 1px solid black;
 	flex: 0 0 70%;
 }
 
-.nodes, .config {
+.roots-wrapper, .state-pane-container {
 		overflow: auto;
 }
 
 
+/* ---- State Pane Component ---- */
 
-
-.config {
+.state-pane-container {
 	flex: 1 0 30%;
 	font-size: 14px;
 }
 
-.config > div > h2 {
+.state-pane-container > div > h2 {
 	margin: 0;
 }
 
-.config ul li {
+.state-pane-container ul li {
 	font-size: 14px;
 }
 
-.config ul li span {
-	color: grey;
+.state-pane-container ul li span {
+	opacity: 0.8;
 }
 
-.config ul li pre {
+.state-pane-container ul li pre {
 	margin: 0;
 }
 
-.config > div {
+.state-pane-container > div {
 	padding-left: 12px;
 }
 
-.config ul {
+.state-pane-container ul {
 	list-style: none;
 	margin: 0;
 	padding-left: 12px;
 }
 
-.config h1 {
+.state-pane-container h1 {
 	border-bottom: 2px solid black;
 	padding-left: 12px;
+}
+
+/* ---- Arrow Styles ---- */
+
+.arrow {
+	display: inline-block;
+	height: 8px;
+	width: 8px;
+	padding-right: 4px;
+}
+
+.arrow:before {
+	border-color: black;
+	content: '';
+	cursor: pointer;
+	display: inline-block;
+	height: 0;
+	margin-right: -8px;
+	width: 0;
+}
+
+.arrow.down:before {
+	width: 0;
+	height: 0;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 8px solid;
+}
+
+.arrow.right:before {
+	border-bottom: 4px solid transparent;
+	border-left: 8px solid;
+	border-top: 4px solid transparent;
 }

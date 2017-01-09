@@ -1,63 +1,70 @@
 import Component, {Config} from 'metal-jsx';
+import {bindAll} from 'lodash';
 
-const collapsedArrow = '+';
-const expandedArrow = '-';
+import NodeName, {OPENING, NORMAL_CLOSING, SELF_CLOSING} from './NodeName';
 
 class TreeNode extends Component {
 	created() {
-		this.handleNodeClick = this.handleNodeClick.bind(this);
-		this.toggleExpanded = this.toggleExpanded.bind(this);
+		bindAll(
+			this,
+			'focusNode',
+			'toggleExpanded'
+		);
 	}
 
-	handleNodeClick() {
-		this.props.onNodeClick(this.props.componentNode);
+	focusNode() {
+		const {componentNode, onNodeClick} = this.props;
+
+		onNodeClick(componentNode);
 	}
 
-	toggleExpanded() {
+	toggleExpanded(event) {
+		event.stopPropagation();
+
+		const {componentNode, onNodeClick} = this.props;
+
 		const newVal = !this.state.expanded_;
 
 		this.state.expanded_ = newVal;
 
-		this.props.onNodeClick(this.props.componentNode);
+		onNodeClick(componentNode);
 	}
 
-	rendered() {
-		const {componentNode, selectedComponent} = this.props;
-
-		if (componentNode.id === selectedComponent.id) {
-			this.props.onNodeClick(this.props.componentNode);
-		}
+	toggleHighlight(value) {
+		return () => {
+			this.state.highlight_ = value;
+		};
 	}
 
 	render() {
-		const {componentNode, onNodeClick, selectedComponent} = this.props;
+		const {componentNode, depth, onNodeClick, selectedComponent} = this.props;
 
 		const {childComponents, id, name} = componentNode;
 
-		const {expanded_} = this.state;
+		const {expanded_, highlight_} = this.state;
 
 		const hasChildren = childComponents && childComponents.length > 0;
 
-		const empty = hasChildren ? '' : 'empty';
-
 		const selected = id === selectedComponent.id ? 'selected' : '';
 
+		const highlight = highlight_ ? 'highlight' : '';
+
+		const style = `padding-left: ${depth * 24 + 20}px`;
+
 		return(
-			<div class="tree">
-				<div class={`tree-node ${selected}`} onClick={this.toggleExpanded}>
+			<div class="tree-container">
+				<div
+					class={`node-wrapper ${selected} ${highlight} ${hasChildren ? 'expandable' : ''}`}
+					onClick={expanded_ ? this.focusNode : this.toggleExpanded}
+					onMouseEnter={this.toggleHighlight(true)}
+					onMouseLeave={this.toggleHighlight(false)}
+					style={style}
+				>
 					{hasChildren &&
-						<div class="toggle">
-							{expanded_ ? expandedArrow : collapsedArrow}
-						</div>
+						<div class={expanded_ ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
 					}
 
-					<div class={`component-info ${empty}`}>
-						<span>{'<'}</span>
-
-						{name}
-
-						<span>{'>'}</span>
-					</div>
+					<NodeName name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
 				</div>
 
 				{hasChildren && expanded_ &&
@@ -65,6 +72,7 @@ class TreeNode extends Component {
 						(child, i) => (
 							<TreeNode
 								componentNode={child}
+								depth={this.props.depth + 1}
 								key={`${name}-${i}`}
 								onNodeClick={onNodeClick}
 								selectedComponent={selectedComponent}
@@ -74,12 +82,14 @@ class TreeNode extends Component {
 				}
 
 				{hasChildren && expanded_ &&
-					<div class={`component-info`} onClick={this.handleNodeClick}>
-						<span>{'  </'}</span>
-
-						{name}
-
-						<span>{'>'}</span>
+					<div
+						class={`node-wrapper ${selected} ${highlight}`}
+						onClick={this.focusNode}
+						onMouseEnter={this.toggleHighlight(true)}
+						onMouseLeave={this.toggleHighlight(false)}
+						style={style}
+					>
+						<NodeName name={name} type={NORMAL_CLOSING} />
 					</div>
 				}
 			</div>
@@ -89,13 +99,15 @@ class TreeNode extends Component {
 
 TreeNode.PROPS = {
 	componentNode: Config.value({}),
+	depth: Config.number().value(0),
 	expanded: Config.value(false),
 	onNodeClick: Config.func(),
 	selectedComponent: Config.object()
 };
 
 TreeNode.STATE = {
-	expanded_: Config.value(false)
+	expanded_: Config.value(false),
+	highlight_: Config.value(false)
 };
 
 export default TreeNode;
