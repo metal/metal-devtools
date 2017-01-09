@@ -7,13 +7,13 @@
     "persistent": false
   },
   "browser_action": {
-    "default_icon": "static/metal.png",
-    "default_popup": "static/popup.html",
+    "default_icon": "build/metal.png",
+    "default_popup": "build/popup.html",
     "default_title": "Metal.js Devtools"
   },
   "description": "Inspect State for Metal.js Components",
   "icons": {
-    "128": "static/metal.png"
+    "128": "build/metal.png"
   },
   "devtools_page": "build/devtools.html",
   "permissions": [
@@ -25,7 +25,7 @@
         "<all_urls>"
       ],
       "js": [
-        "build/content.js"
+        "build/content-script.js"
       ],
       "run_at": "document_start"
     }

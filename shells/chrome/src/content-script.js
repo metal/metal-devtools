@@ -1,12 +1,8 @@
-// Listen for messages to the window, and then send them to the background script
+const metalHook =  require('../../../backend/installGlobalHook').default;
 
 window.addEventListener('message', function(event) {
 	chrome.extension.sendMessage(event.data);
 });
-
-// Create hook method and attach to window
-
-const metalHook =  require('./injected').default;
 
 const script = document.createElement('script');
 

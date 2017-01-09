@@ -4,15 +4,13 @@ import {isBoolean, isNull, isObject} from 'lodash';
 
 import TreeNode from './TreeNode';
 
-const port = chrome.extension.connect({name: 'metal-devtools'});
-
 class App extends Component {
 	created() {
 		this.selectedChange = this.selectedChange.bind(this);
 	}
 
 	attached() {
-		port.onMessage.addListener(
+		this.props.port.onMessage.addListener(
 			(component) => {
 				const {id, remove} = component;
 
@@ -137,6 +135,10 @@ class App extends Component {
 		);
 	}
 }
+
+App.PROPS = {
+	port: Config.any()
+};
 
 App.STATE = {
 	rootComponents: Config.value({}),

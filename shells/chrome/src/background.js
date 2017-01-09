@@ -1,5 +1,4 @@
-// Listens for connection from App.js
-// Then listens for message from content-script and posts message to App.js
+import './popup.html';
 
 chrome.extension.onConnect.addListener(function(port) {
 	chrome.extension.onMessage.addListener(function (message) {
