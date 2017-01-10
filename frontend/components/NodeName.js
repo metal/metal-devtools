@@ -1,13 +1,28 @@
+import Component, {Config} from 'metal-jsx';
+
 export const OPENING = 0;
 export const NORMAL_CLOSING = 1;
 export const SELF_CLOSING = 2;
 
-export default ({name, type = OPENING}) => (
-	<span class="node-name-container">
-		{type === NORMAL_CLOSING ? '</' : '<'}
+class NodeName extends Component {
+	render() {
+		const {name, type} = this.props;
 
-		<span class="name">{name}</span>
+		return (
+			<span class="node-name-container">
+				{type === NORMAL_CLOSING ? '</' : '<'}
 
-		{type === SELF_CLOSING ? ' />' : '>'}
-	</span>
-);
+				<span class="name">{name}</span>
+
+				{type === SELF_CLOSING ? ' />' : '>'}
+			</span>
+		);
+	}
+}
+
+NodeName.PROPS = {
+	name: Config.string(),
+	type: Config.oneOf([OPENING, NORMAL_CLOSING, SELF_CLOSING]).value(OPENING)
+};
+
+export default NodeName;

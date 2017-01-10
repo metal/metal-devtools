@@ -1,3 +1,4 @@
+import Component from 'metal-jsx'; // eslint-disable-line
 import {Iterable, fromJS} from 'immutable';
 import {isBoolean, isNull, isObject} from 'lodash';
 

@@ -1,6 +1,7 @@
 {
 	"env": {
 		"browser": true,
+		"jest": true,
 		"node": true
 	},
 	"globals": {
@@ -25,7 +26,6 @@
 		"wrap-iife": [2, "any"],
 		"max-depth": 0,
 		"no-multi-str": 0,
-		"new-cap": 2,
 		"no-caller": 2,
 		"quotes": [
 			1,
