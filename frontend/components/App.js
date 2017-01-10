@@ -1,4 +1,5 @@
 import Component, {Config} from 'metal-jsx';
+import {values} from 'lodash';
 
 import TreeNode from './TreeNode';
 import StatePane from './StatePane';
@@ -31,12 +32,12 @@ class App extends Component {
 		);
 	}
 
-	selectedChange(node) {
-		this.state.selectedComponent = node;
+	selectedChange(id) {
+		this.state.selectedId = id;
 	}
 
 	render() {
-		const {rootComponents, selectedComponent} = this.state;
+		const {rootComponents, selectedId} = this.state;
 
 		const rootComponentKeys = Object.keys(rootComponents);
 
@@ -55,7 +56,7 @@ class App extends Component {
 										componentNode={rootComponents[key]}
 										depth={0}
 										key={i}
-										selectedComponent={selectedComponent}
+										selectedId={selectedId}
 										onNodeClick={this.selectedChange}
 									/>
 								)
@@ -64,7 +65,7 @@ class App extends Component {
 					</div>
 				}
 
-				<StatePane dataManagers={selectedComponent.data} />
+				<StatePane components={values(rootComponents)} id={selectedId} />
 			</div>
 		);
 	}
@@ -76,7 +77,7 @@ App.PROPS = {
 
 App.STATE = {
 	rootComponents: Config.value({}),
-	selectedComponent: Config.value({})
+	selectedId: Config.value('')
 };
 
 export default App;

@@ -1,18 +1,27 @@
 import Component, {Config} from 'metal-jsx';
 
 import processStateValue from '../lib/processStateValues';
+import getComponentById from '../lib/getComponentById';
 
 class StatePane extends Component {
-	render() {
-		const {dataManagers} = this.props;
+	getSelectedComponent() {
+		const {components, id} = this.props;
 
-		const dataManagerKeys = Object.keys(dataManagers || {});
+		return id ? getComponentById(components, id) : {};
+	}
+
+	render() {
+		const dataManagers = this.getSelectedComponent().data || {};
+
+		const dataManagerKeys = Object.keys(dataManagers);
+
+		const dataManagersLength = dataManagerKeys.length;
 
 		return (
 			<div class="state-pane-container">
 				<h1>Component Data:</h1>
 
-				{!!dataManagerKeys.length &&
+				{!!dataManagersLength &&
 					dataManagerKeys.map(
 						dataManagerKey => {
 							const data = JSON.parse(dataManagers[dataManagerKey]);
@@ -40,7 +49,7 @@ class StatePane extends Component {
 					)
 				}
 
-				{!dataManagerKeys.length &&
+				{!dataManagersLength &&
 					<div>
 						<i>{'No Component Data'}</i>
 					</div>
@@ -51,7 +60,8 @@ class StatePane extends Component {
 }
 
 StatePane.PROPS = {
-	dataManagers: Config.object().value({})
+	components: Config.array().value([]),
+	id: Config.string()
 };
 
 export default StatePane;

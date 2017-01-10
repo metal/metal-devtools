@@ -15,7 +15,7 @@ class TreeNode extends Component {
 	focusNode() {
 		const {componentNode, onNodeClick} = this.props;
 
-		onNodeClick(componentNode);
+		onNodeClick(componentNode.id);
 	}
 
 	toggleExpanded(event) {
@@ -27,7 +27,7 @@ class TreeNode extends Component {
 
 		this.state.expanded_ = newVal;
 
-		onNodeClick(componentNode);
+		onNodeClick(componentNode.id);
 	}
 
 	toggleHighlight(value) {
@@ -37,7 +37,7 @@ class TreeNode extends Component {
 	}
 
 	render() {
-		const {componentNode, depth, onNodeClick, selectedComponent} = this.props;
+		const {componentNode, depth, onNodeClick, selectedId} = this.props;
 
 		const {childComponents, id, name} = componentNode;
 
@@ -45,7 +45,7 @@ class TreeNode extends Component {
 
 		const hasChildren = childComponents && childComponents.length > 0;
 
-		const selected = id === selectedComponent.id ? 'selected' : '';
+		const selected = id === selectedId ? 'selected' : '';
 
 		const highlight = highlight_ ? 'highlight' : '';
 
@@ -75,7 +75,7 @@ class TreeNode extends Component {
 								depth={this.props.depth + 1}
 								key={`${name}-${i}`}
 								onNodeClick={onNodeClick}
-								selectedComponent={selectedComponent}
+								selectedId={selectedId}
 							/>
 						)
 					)
@@ -102,7 +102,7 @@ TreeNode.PROPS = {
 	depth: Config.number().value(0),
 	expanded: Config.value(false),
 	onNodeClick: Config.func(),
-	selectedComponent: Config.object()
+	selectedId: Config.string()
 };
 
 TreeNode.STATE = {
