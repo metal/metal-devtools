@@ -1,6 +1,10 @@
 const getComponentById = (components = [], id) => {
 	let selectedComponent;
 
+	if (!components) {
+		return {};
+	}
+
 	components.some(
 		component => {
 			if (component.id === id) {

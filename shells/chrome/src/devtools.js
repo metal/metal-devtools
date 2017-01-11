@@ -8,7 +8,9 @@ function createPanelIfMetalLoaded() {
 	}
 
 	chrome.devtools.inspectedWindow.eval(
-		`!!(Object.keys(window.__METAL_DEV_TOOLS_HOOK__.rootComponents).length)`,
+		`window.__METAL_DEV_TOOLS_HOOK__ &&
+		window.__METAL_DEV_TOOLS_HOOK__._roots &&
+		!!window.__METAL_DEV_TOOLS_HOOK__._roots.length`,
 		function(pageHasMetal) {
 			if (!pageHasMetal || panelCreated) {
 				return;

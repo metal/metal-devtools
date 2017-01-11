@@ -1,7 +1,7 @@
 export default window => {
 	const {__METAL_DEV_TOOLS_HOOK__} = window;
 
-	if (__METAL_DEV_TOOLS_HOOK__ && __METAL_DEV_TOOLS_HOOK__.rootComponents && __METAL_DEV_TOOLS_HOOK__.rootComponents.length) {
+	if (__METAL_DEV_TOOLS_HOOK__) {
 		function processConfig(stateInfo, keyBlackList = [], instanceBlackList = []) {
 			let retVal = {};
 
@@ -39,7 +39,9 @@ export default window => {
 			}
 
 			if (!component[__METAL_DEV_TOOLS_COMPONENT_KEY__]) {
-				component[__METAL_DEV_TOOLS_COMPONENT_KEY__] = `${__METAL_DEV_TOOLS_COMPONENT_KEY__}${componentId++}`;
+				const currentId = `${__METAL_DEV_TOOLS_COMPONENT_KEY__}${componentId++}`;
+
+				component[__METAL_DEV_TOOLS_COMPONENT_KEY__] = currentId;
 
 				const rootId = rootComponent[__METAL_DEV_TOOLS_COMPONENT_KEY__];
 
@@ -69,16 +71,20 @@ export default window => {
 					() => {
 						window.postMessage(
 							{
-								id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
+								id: currentId,
 								remove: true
 							},
 							'*'
 						);
+
+						if (rootId === currentId) {
+							__METAL_DEV_TOOLS_HOOK__.removeRoot(rootComponent);
+						}
 					}
 				);
 			}
 
-			const dataManagerData = component.__DATA_MANAGER_DATA__;
+			const dataManagerData = component.__DATA_MANAGER_DATA__ || {};
 
 			const dataManagerKeys = Object.keys(dataManagerData);
 
@@ -90,7 +96,7 @@ export default window => {
 
 					data[key.replace('_', '')] = processConfig(
 						dataManager.stateInfo_,
-						['children', 'childrenMap_', 'events', 'storeState'],
+						['children', 'events', 'storeState'],
 						[HTMLElement]
 					);
 				}
@@ -102,19 +108,25 @@ export default window => {
 				data,
 				id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 				name: component.name || component.constructor.name,
-				childComponents: renderer.childComponents && renderer.childComponents.map(
+				childComponents: renderer && renderer.childComponents && renderer.childComponents.map(
 					childComponent => climbTree(childComponent, rootComponent)
 				)
 			};
 		}
 
-		__METAL_DEV_TOOLS_HOOK__.rootComponents.forEach(
-			component => {
-				window.postMessage(
-					climbTree(component, component),
-					'*'
-				);
-			}
-		);
+		const sendComponent = component => {
+			window.postMessage(
+				climbTree(component, component),
+				'*'
+			);
+		};
+
+		const roots = __METAL_DEV_TOOLS_HOOK__._roots;
+
+		if (roots && roots.length) {
+			roots.forEach(sendComponent);
+		}
+
+		__METAL_DEV_TOOLS_HOOK__.on('addRoot', sendComponent);
 	}
 };

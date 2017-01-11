@@ -3,10 +3,9 @@
   "version": "0.0.2-alpha",
   "description": "Metal Developer Tools",
   "scripts": {
-    "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build",
     "format": "eslint . --ignore-pattern node_modules --ignore-pattern build --fix",
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,7 +21,6 @@
     "babel-preset-metal-jsx": "0.0.3",
     "babel-preset-stage-3": "^6.17.0",
     "eslint-plugin-react": "^6.8.0",
-    "file-loader": "^0.9.0",
     "immutable": "^3.8.1",
     "lodash": "^4.17.4",
     "metal-jsx": "^2.5.13",
