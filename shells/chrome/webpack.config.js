@@ -1,10 +1,12 @@
+var srcDir = __dirname + '/src';
+
 module.exports = {
 	entry: {
-		background: './src/background.js',
-		contentScript: './src/contentScript.js',
-		devtools: './src/devtools.js',
-		initializer: './src/initializer.js',
-		panel: './src/panel.js'
+		background: srcDir + '/background.js',
+		contentScript: srcDir + '/contentScript.js',
+		devtools: srcDir + '/devtools.js',
+		initializer: srcDir + '/initializer.js',
+		panel: srcDir + '/panel.js'
 	},
 	module: {
 		loaders: [
@@ -22,6 +24,6 @@ module.exports = {
 	},
 	output: {
 		filename: '[name].js',
-		path: './build'
+		path: __dirname + '/build'
 	}
 };
