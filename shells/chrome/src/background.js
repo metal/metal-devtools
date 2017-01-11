@@ -6,4 +6,15 @@ chrome.extension.onConnect.addListener(function(port) {
 			port.postMessage(message);
 		}
 	});
+
+	port.onMessage.addListener(
+		message => {
+			if (message === 'initialize') {
+				chrome.tabs.executeScript(
+					Number(port.name),
+					{file: './build/contentScript.js'}
+				);
+			}
+		}
+	);
 });

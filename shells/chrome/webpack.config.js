@@ -1,8 +1,9 @@
 module.exports = {
 	entry: {
-		['content-script']: './src/content-script.js',
 		background: './src/background.js',
+		contentScript: './src/contentScript.js',
 		devtools: './src/devtools.js',
+		initializer: './src/initializer.js',
 		panel: './src/panel.js'
 	},
 	module: {

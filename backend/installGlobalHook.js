@@ -1,111 +1,120 @@
 export default window => {
-	function processConfig(stateInfo, keyBlackList = [], instanceBlackList = []) {
-		let retVal = {};
+	const {__METAL_DEV_TOOLS_HOOK__} = window;
 
-		if (stateInfo) {
-			const keys = Object.keys(stateInfo);
+	if (__METAL_DEV_TOOLS_HOOK__ && __METAL_DEV_TOOLS_HOOK__.rootComponents && __METAL_DEV_TOOLS_HOOK__.rootComponents.length) {
+		function processConfig(stateInfo, keyBlackList = [], instanceBlackList = []) {
+			let retVal = {};
 
-			keys.forEach(
-				key => {
-					const {value} = stateInfo[key];
+			if (stateInfo) {
+				const keys = Object.keys(stateInfo);
 
-					if (keyBlackList.indexOf(key) === -1 && !instanceBlackList.some(type => value instanceof type)) {
-						retVal[key] = value;
+				keys.forEach(
+					key => {
+						const {value} = stateInfo[key];
+
+						if (keyBlackList.indexOf(key) === -1 && !instanceBlackList.some(type => value instanceof type)) {
+							retVal[key] = value;
+						}
 					}
-				}
-			);
+				);
+			}
+
+			try {
+				retVal = JSON.stringify(retVal);
+			} catch (e) {
+				retVal = 'null';
+			}
+
+			return retVal;
 		}
 
-		try {
-			retVal = JSON.stringify(retVal);
-		} catch (e) {
-			retVal = 'null';
-		}
+		const __METAL_DEV_TOOLS_COMPONENT_KEY__ = '__METAL_DEV_TOOLS_COMPONENT_KEY__';
 
-		return retVal;
-	}
+		let componentId = 0;
+		let updateScheduled = {};
 
-	const __METAL_DEV_TOOLS_COMPONENT_KEY__ = '__METAL_DEV_TOOLS_COMPONENT_KEY__';
+		function climbTree(component, rootComponent) {
+			if (!component) {
+				return {};
+			}
 
-	let componentId = 0;
-	let updateScheduled = {};
+			if (!component[__METAL_DEV_TOOLS_COMPONENT_KEY__]) {
+				component[__METAL_DEV_TOOLS_COMPONENT_KEY__] = `${__METAL_DEV_TOOLS_COMPONENT_KEY__}${componentId++}`;
 
-	function climbTree(component, rootComponent) {
-		if (!component) {
-			return {};
-		}
+				const rootId = rootComponent[__METAL_DEV_TOOLS_COMPONENT_KEY__];
 
-		if (!component[__METAL_DEV_TOOLS_COMPONENT_KEY__]) {
-			component[__METAL_DEV_TOOLS_COMPONENT_KEY__] = `${__METAL_DEV_TOOLS_COMPONENT_KEY__}${componentId++}`;
+				component.on(
+					'rendered',
+					() => {
+						if (!updateScheduled[rootId]) {
+							updateScheduled[rootId] = true;
 
-			const rootId = rootComponent[__METAL_DEV_TOOLS_COMPONENT_KEY__];
+							setTimeout(
+								() => {
+									window.postMessage(
+										climbTree(rootComponent, rootComponent),
+										'*'
+									);
 
-			component.on(
-				'rendered',
-				() => {
-					if (!updateScheduled[rootId]) {
-						updateScheduled[rootId] = true;
+									updateScheduled[rootId] = false;
+								},
+								0
+							);
+						}
+					}
+				);
 
-						setTimeout(
-							() => {
-								window.postMessage(
-									climbTree(rootComponent, rootComponent),
-									'*'
-								);
-
-								updateScheduled[rootId] = false;
+				component.on(
+					'detached',
+					() => {
+						window.postMessage(
+							{
+								id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
+								remove: true
 							},
-							0
+							'*'
 						);
 					}
-				}
-			);
+				);
+			}
 
-			component.on(
-				'detached',
-				() => {
-					window.postMessage(
-						{
-							id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
-							remove: true
-						},
-						'*'
+			const dataManagerData = component.__DATA_MANAGER_DATA__;
+
+			const dataManagerKeys = Object.keys(dataManagerData);
+
+			let data = {};
+
+			dataManagerKeys.forEach(
+				key => {
+					const dataManager = dataManagerData[key];
+
+					data[key.replace('_', '')] = processConfig(
+						dataManager.stateInfo_,
+						['children', 'childrenMap_', 'events', 'storeState'],
+						[HTMLElement]
 					);
 				}
 			);
+
+			const renderer = component.__METAL_IC_RENDERER_DATA__;
+
+			return {
+				data,
+				id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
+				name: component.name || component.constructor.name,
+				childComponents: renderer.childComponents && renderer.childComponents.map(
+					childComponent => climbTree(childComponent, rootComponent)
+				)
+			};
 		}
 
-		const dataManagerData = component.__DATA_MANAGER_DATA__;
-
-		const dataManagerKeys = Object.keys(dataManagerData);
-
-		let data = {};
-
-		dataManagerKeys.forEach(
-			key => {
-				const dataManager = dataManagerData[key];
-
-				data[key.replace('_', '')] = processConfig(
-					dataManager.stateInfo_,
-					['children', 'childrenMap_', 'events', 'storeState'],
-					[HTMLElement]
+		__METAL_DEV_TOOLS_HOOK__.rootComponents.forEach(
+			component => {
+				window.postMessage(
+					climbTree(component, component),
+					'*'
 				);
 			}
 		);
-
-		const renderer = component.__METAL_IC_RENDERER_DATA__;
-
-		return {
-			data,
-			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
-			name: component.name || component.constructor.name,
-			childComponents: renderer.childComponents && renderer.childComponents.map(
-				childComponent => climbTree(childComponent, rootComponent)
-			)
-		};
 	}
-
-	window.__METAL_DEV_TOOLS_HOOK__ = function(component) {
-		climbTree(component, component);
-	};
 };

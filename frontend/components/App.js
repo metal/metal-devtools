@@ -8,9 +8,7 @@ import InitialWarning from './InitialWarning';
 class App extends Component {
 	created() {
 		this.selectedChange = this.selectedChange.bind(this);
-	}
 
-	attached() {
 		this.props.port.onMessage.addListener(
 			(component) => {
 				const {id, remove} = component;

@@ -3,9 +3,13 @@ import '../../../frontend/static';
 
 import App from '../../../frontend/components/App';
 
+const port = chrome.extension.connect({name: '' + chrome.devtools.inspectedWindow.tabId});
+
 new App(
 	{
 		element: document.getElementById('container'),
-		port: chrome.extension.connect({name: chrome.devtools.inspectedWindow.tabId.toString()})
+		port
 	}
 );
+
+port.postMessage('initialize');
