@@ -1,6 +1,6 @@
 {
   "name": "metal-devtools",
-  "version": "0.0.2-alpha",
+  "version": "1.0.0-alpha",
   "description": "Metal Developer Tools",
   "scripts": {
     "build:chrome": "webpack --config shells/chrome/webpack.config.js",
