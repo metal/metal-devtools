@@ -30,6 +30,10 @@ class App extends Component {
 		);
 	}
 
+	resetRoots() {
+		this.state.rootComponents = {};
+	}
+
 	selectedChange(id) {
 		this.state.selectedId = id;
 	}
