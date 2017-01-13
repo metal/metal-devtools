@@ -57,6 +57,7 @@
     "babel-preset-stage-3": "^6.17.0",
     "eslint": "^3.13.1",
     "eslint-plugin-react": "^6.8.0",
+    "file-loader": "^0.9.0",
     "jest": "^18.1.0",
     "js-beautify": "^1.6.8",
     "webpack": "^1.13.3"
