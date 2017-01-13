@@ -8,6 +8,6 @@ describe('StatePane', () => {
 	it('should render', () => {
 		const component = new StatePane();
 
-		expect(component.element).toBeTruthy();
+		expect(snap(component)).toMatchSnapshot();
 	});
 });

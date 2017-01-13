@@ -6,6 +6,6 @@ describe('InitialWarning', () => {
 	it('should render', () => {
 		const component = new InitialWarning();
 
-		expect(component.element).toBeTruthy();
+		expect(snap(component)).toMatchSnapshot();
 	});
 });

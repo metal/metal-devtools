@@ -6,18 +6,18 @@ describe('NodeName', () => {
 	it('should render with OPENING', () => {
 		const component = new NodeName({type: OPENING});
 
-		expect(component.element).toBeTruthy();
+		expect(snap(component)).toMatchSnapshot();
 	});
 
 	it('should render with NORMAL_CLOSING', () => {
 		const component = new NodeName({type: NORMAL_CLOSING});
 
-		expect(component.element).toBeTruthy();
+		expect(snap(component)).toMatchSnapshot();
 	});
 
 	it('should render with SELF_CLOSING', () => {
 		const component = new NodeName({type: SELF_CLOSING});
 
-		expect(component.element).toBeTruthy();
+		expect(snap(component)).toMatchSnapshot();
 	});
 });

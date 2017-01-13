@@ -7,6 +7,6 @@ describe('TreeNode', () => {
 	it('should render', () => {
 		const component = new TreeNode();
 
-		expect(component.element).toBeTruthy();
+		expect(snap(component)).toMatchSnapshot();
 	});
 });

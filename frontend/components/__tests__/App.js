@@ -12,6 +12,6 @@ describe('App', () => {
 			}
 		});
 
-		expect(component.element).toBeTruthy();
+		expect(snap(component)).toMatchSnapshot();
 	});
 });
