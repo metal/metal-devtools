@@ -1,4 +1,4 @@
-const metalHook =  require('../../../backend/installGlobalHook').default;
+const processComponents =  require('raw-loader!../../../injected/build/processComponents');
 
 window.addEventListener('message', function(event) {
 	chrome.extension.sendMessage(event.data);
@@ -6,7 +6,7 @@ window.addEventListener('message', function(event) {
 
 const script = document.createElement('script');
 
-script.textContent = ';(' + metalHook.toString() + '(window))';
+script.textContent = processComponents;
 
 document.documentElement.appendChild(script);
 
