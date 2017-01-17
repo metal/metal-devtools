@@ -7,6 +7,7 @@
 * Download latest `metal-devtools.crx` from [releases](/releases)
 * Open Chrome and navigate to `chrome://extensions/`
 * Drag `metal-devtools.crx` into extensions
+* See how it works by using it [here](https://bryceosterhaus.github.io/metal-devtools/)
 
 ### Developing
 * Clone Repo
@@ -18,12 +19,5 @@
 * Open Chrome and navigate to `chrome://extensions/`
 * Click on "Load unpacked extension" and select this project directory
 
-### For Metal.js < v2.6.1
-Unfortunately if you are not using metal@v2.6.1 or greater, you need to manually add hook to the static render method in `metal-component`.
-
-Hook:
-```js
-if (window.__METAL_DEV_TOOLS_HOOK__) {
-	window.__METAL_DEV_TOOLS_HOOK__(ROOT_COMPONENT_INSTANCE);
-}
-```
+### For Metal.js < v2.6.2
+Unfortunately if you are not using metal@v2.6.2 or greater, you need to manually add hook. See example [here](https://github.com/metal/metal.js/commit/06b837b9e2e6b072e66064308476d2f7661fa09c)
