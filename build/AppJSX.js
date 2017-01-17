@@ -9748,6 +9748,34 @@ var App = function (_Component) {
 	}
 
 	_createClass(App, [{
+		key: 'render',
+		value: function render() {
+			IncrementalDOM.elementOpen('div');
+			IncrementalDOM.text('Go to:');
+			IncrementalDOM.elementOpen('a', null, null, 'href', '/metal-devtools/soy.html');
+			IncrementalDOM.text('Soy example');
+			IncrementalDOM.elementClose('a');
+			IncrementalDOM.elementOpen('h1');
+			IncrementalDOM.text('JSX example');
+			IncrementalDOM.elementClose('h1');
+			IncrementalDOM.elementVoid(Parent);
+			return IncrementalDOM.elementClose('div');
+		}
+	}]);
+
+	return App;
+}(_metalJsx2.default);
+
+var Parent = function (_Component2) {
+	_inherits(Parent, _Component2);
+
+	function Parent() {
+		_classCallCheck(this, Parent);
+
+		return _possibleConstructorReturn(this, (Parent.__proto__ || Object.getPrototypeOf(Parent)).apply(this, arguments));
+	}
+
+	_createClass(Parent, [{
 		key: 'addChild',
 		value: function addChild() {
 			this.state.numOfChildren += 1;
@@ -9757,15 +9785,9 @@ var App = function (_Component) {
 		value: function render() {
 			var children = Array(this.state.numOfChildren).fill();
 
-			IncrementalDOM.elementOpen('div');
-			IncrementalDOM.text('Go to:');
-			IncrementalDOM.elementOpen('a', null, null, 'href', '/metal-devtools/soy.html');
-			IncrementalDOM.text('Soy example');
-			IncrementalDOM.elementClose('a');
-			IncrementalDOM.elementOpen('h1');
-			IncrementalDOM.text('JSX example');
-			IncrementalDOM.elementClose('h1');
-			IncrementalDOM.elementOpen('button', null, null, 'onClick', 'addChild');
+			IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 16px;');
+			IncrementalDOM.text('Parent:');
+			IncrementalDOM.elementOpen('button', null, null, 'onClick', this.addChild.bind(this));
 			IncrementalDOM.text('Add a child!');
 			IncrementalDOM.elementClose('button');
 			iDOMHelpers.renderArbitrary(children.map(function (child, i) {
@@ -9777,15 +9799,15 @@ var App = function (_Component) {
 		}
 	}]);
 
-	return App;
+	return Parent;
 }(_metalJsx2.default);
 
-App.STATE = {
+Parent.STATE = {
 	numOfChildren: _metalJsx.Config.value(1)
 };
 
-var Child = function (_Component2) {
-	_inherits(Child, _Component2);
+var Child = function (_Component3) {
+	_inherits(Child, _Component3);
 
 	function Child() {
 		_classCallCheck(this, Child);
@@ -9794,10 +9816,19 @@ var Child = function (_Component2) {
 	}
 
 	_createClass(Child, [{
+		key: 'handleClick',
+		value: function handleClick() {
+			this.state.subTree = true;
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			IncrementalDOM.elementOpen('div');
-			iDOMHelpers.renderArbitrary('I\'m child #' + this.props.index + '.');
+			IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left:32px');
+			iDOMHelpers.renderArbitrary('Child #' + this.props.index + ':');
+			IncrementalDOM.elementOpen('button', null, null, 'onClick', this.handleClick.bind(this));
+			IncrementalDOM.text('+');
+			IncrementalDOM.elementClose('button');
+			iDOMHelpers.renderArbitrary(this.state.subTree && (IncrementalDOM.elementOpen('div'), (IncrementalDOM.elementVoid(Parent)), IncrementalDOM.elementClose('div')));
 			return IncrementalDOM.elementClose('div');
 		}
 	}]);
@@ -9807,6 +9838,10 @@ var Child = function (_Component2) {
 
 Child.PROPS = {
 	index: _metalJsx.Config.number()
+};
+
+Child.STATE = {
+	subTree: _metalJsx.Config.bool().value(false)
 };
 
 window.jsxApp = App;

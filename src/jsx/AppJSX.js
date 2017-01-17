@@ -1,6 +1,19 @@
 import Component, {Config} from 'metal-jsx';
 
 class App extends Component {
+	render() {
+		return (
+			<div>
+				{'Go to:'}<a href="/metal-devtools/soy.html">{'Soy example'}</a>
+
+				<h1>{'JSX example'}</h1>
+				<Parent />
+			</div>
+		);
+	}
+}
+
+class Parent extends Component {
 	addChild() {
 		this.state.numOfChildren += 1;
 	}
@@ -9,11 +22,8 @@ class App extends Component {
 		const children = Array(this.state.numOfChildren).fill();
 
 		return (
-			<div>
-				{'Go to:'}<a href="/metal-devtools/soy.html">{'Soy example'}</a>
-
-				<h1>{'JSX example'}</h1>
-				<button onClick="addChild">{'Add a child!'}</button>
+			<div style="padding-left: 16px;">
+				{'Parent:'}<button onClick={this.addChild.bind(this)}>{'Add a child!'}</button>
 
 				{
 					children.map(
@@ -27,15 +37,27 @@ class App extends Component {
 	}
 }
 
-App.STATE = {
+Parent.STATE = {
 	numOfChildren: Config.value(1)
 };
 
 class Child extends Component {
+	handleClick() {
+		this.state.subTree = true;
+	}
+
 	render() {
 		return (
-			<div>
-				{`I'm child #${this.props.index}.`}
+			<div style="padding-left:32px">
+				{`Child #${this.props.index}:`}
+
+				<button onClick={this.handleClick.bind(this)}>{'+'}</button>
+
+				{this.state.subTree &&
+					<div>
+						<Parent />
+					</div>
+				}
 			</div>
 		);
 	}
@@ -43,6 +65,10 @@ class Child extends Component {
 
 Child.PROPS = {
 	index: Config.number()
+};
+
+Child.STATE = {
+	subTree: Config.bool().value(false)
 };
 
 window.jsxApp = App;

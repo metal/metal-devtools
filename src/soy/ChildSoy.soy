@@ -1,10 +1,21 @@
-{namespace ChildSOY}
+{namespace ChildSoy}
 
 /**
  * @param index
+ * @param subTree
  */
 {template .render}
-	<div>
-		I'm child #{$index}.
+	<div style="padding-left:32px">
+		Child #{$index}:
+
+		<button onClick="handleClick">+</button>
+
+		{if $subTree}
+			<div>
+				{call ParentSoy.render}
+					{param childrenArr: [] /}
+				{/call}
+			</div>
+		{/if}
 	</div>
 {/template}

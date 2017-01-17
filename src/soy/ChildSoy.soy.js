@@ -8,11 +8,11 @@ goog.loadModule(function(exports) {
 // Please don't edit this file by hand.
 
 /**
- * @fileoverview Templates in namespace ChildSOY.
+ * @fileoverview Templates in namespace ChildSoy.
  * @public
  */
 
-goog.module('ChildSOY.incrementaldom');
+goog.module('ChildSoy.incrementaldom');
 
 /** @suppress {extraRequire} */
 var soy = goog.require('soy');
@@ -33,6 +33,8 @@ var ie_open_end = IncrementalDom.elementOpenEnd;
 var itext = IncrementalDom.text;
 var iattr = IncrementalDom.attr;
 
+var $templateAlias1 = Soy.getTemplate('ParentSoy.incrementaldom', 'render');
+
 
 /**
  * @param {Object<string, *>=} opt_data
@@ -42,27 +44,37 @@ var iattr = IncrementalDom.attr;
  * @suppress {checkTypes}
  */
 function $render(opt_data, opt_ignored, opt_ijData) {
-  ie_open('div');
-    itext('I\'m child #');
+  ie_open('div', null, null,
+      'style', 'padding-left:32px');
+    itext('Child #');
     var dyn0 = opt_data.index;
     if (typeof dyn0 == 'function') dyn0(); else if (dyn0 != null) itext(dyn0);
-    itext('.');
+    itext(':');
+    ie_open('button', null, null,
+        'onClick', 'handleClick');
+      itext('+');
+    ie_close('button');
+    if (opt_data.subTree) {
+      ie_open('div');
+        $templateAlias1({childrenArr: []}, null, opt_ijData);
+      ie_close('div');
+    }
   ie_close('div');
 }
 exports.render = $render;
 if (goog.DEBUG) {
-  $render.soyTemplateName = 'ChildSOY.render';
+  $render.soyTemplateName = 'ChildSoy.render';
 }
 
-exports.render.params = ["index"];
-exports.render.types = {"index":"any"};
+exports.render.params = ["index","subTree"];
+exports.render.types = {"index":"any","subTree":"any"};
 templates = exports;
 return exports;
 
 });
 
-class ChildSOY extends Component {}
-Soy.register(ChildSOY, templates);
-export { ChildSOY, templates };
+class ChildSoy extends Component {}
+Soy.register(ChildSoy, templates);
+export { ChildSoy, templates };
 export default templates;
 /* jshint ignore:end */

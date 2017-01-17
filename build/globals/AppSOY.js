@@ -9339,6 +9339,32 @@ babelHelpers;
 		}
 
 		babelHelpers.createClass(App, [{
+			key: 'render',
+			value: function render() {
+				IncrementalDOM.elementOpen('div');
+				IncrementalDOM.text('Go to:');
+				IncrementalDOM.elementOpen('a', null, null, 'href', '/metal-devtools/soy.html');
+				IncrementalDOM.text('Soy example');
+				IncrementalDOM.elementClose('a');
+				IncrementalDOM.elementOpen('h1');
+				IncrementalDOM.text('JSX example');
+				IncrementalDOM.elementClose('h1');
+				IncrementalDOM.elementVoid(Parent);
+				return IncrementalDOM.elementClose('div');
+			}
+		}]);
+		return App;
+	}(Component);
+
+	var Parent = function (_Component2) {
+		babelHelpers.inherits(Parent, _Component2);
+
+		function Parent() {
+			babelHelpers.classCallCheck(this, Parent);
+			return babelHelpers.possibleConstructorReturn(this, (Parent.__proto__ || Object.getPrototypeOf(Parent)).apply(this, arguments));
+		}
+
+		babelHelpers.createClass(Parent, [{
 			key: 'addChild',
 			value: function addChild() {
 				this.state.numOfChildren += 1;
@@ -9348,15 +9374,9 @@ babelHelpers;
 			value: function render() {
 				var children = Array(this.state.numOfChildren).fill();
 
-				IncrementalDOM.elementOpen('div');
-				IncrementalDOM.text('Go to:');
-				IncrementalDOM.elementOpen('a', null, null, 'href', '/metal-devtools/soy.html');
-				IncrementalDOM.text('Soy example');
-				IncrementalDOM.elementClose('a');
-				IncrementalDOM.elementOpen('h1');
-				IncrementalDOM.text('JSX example');
-				IncrementalDOM.elementClose('h1');
-				IncrementalDOM.elementOpen('button', null, null, 'onClick', 'addChild');
+				IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 16px;');
+				IncrementalDOM.text('Parent:');
+				IncrementalDOM.elementOpen('button', null, null, 'onClick', this.addChild.bind(this));
 				IncrementalDOM.text('Add a child!');
 				IncrementalDOM.elementClose('button');
 				iDOMHelpers.renderArbitrary(children.map(function (child, i) {
@@ -9367,15 +9387,15 @@ babelHelpers;
 				return IncrementalDOM.elementClose('div');
 			}
 		}]);
-		return App;
+		return Parent;
 	}(Component);
 
-	App.STATE = {
+	Parent.STATE = {
 		numOfChildren: Config.value(1)
 	};
 
-	var Child = function (_Component2) {
-		babelHelpers.inherits(Child, _Component2);
+	var Child = function (_Component3) {
+		babelHelpers.inherits(Child, _Component3);
 
 		function Child() {
 			babelHelpers.classCallCheck(this, Child);
@@ -9383,10 +9403,19 @@ babelHelpers;
 		}
 
 		babelHelpers.createClass(Child, [{
+			key: 'handleClick',
+			value: function handleClick() {
+				this.state.subTree = true;
+			}
+		}, {
 			key: 'render',
 			value: function render() {
-				IncrementalDOM.elementOpen('div');
-				iDOMHelpers.renderArbitrary('I\'m child #' + this.props.index + '.');
+				IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left:32px');
+				iDOMHelpers.renderArbitrary('Child #' + this.props.index + ':');
+				IncrementalDOM.elementOpen('button', null, null, 'onClick', this.handleClick.bind(this));
+				IncrementalDOM.text('+');
+				IncrementalDOM.elementClose('button');
+				iDOMHelpers.renderArbitrary(this.state.subTree && (IncrementalDOM.elementOpen('div'), (IncrementalDOM.elementVoid(Parent)), IncrementalDOM.elementClose('div')));
 				return IncrementalDOM.elementClose('div');
 			}
 		}]);
@@ -9395,6 +9424,10 @@ babelHelpers;
 
 	Child.PROPS = {
 		index: Config.number()
+	};
+
+	Child.STATE = {
+		subTree: Config.bool().value(false)
 	};
 
 	window.jsxApp = App;
@@ -14701,15 +14734,15 @@ babelHelpers;
   var templates;
   goog.loadModule(function (exports) {
 
-    // This file was automatically generated from ChildSoy.soy.
+    // This file was automatically generated from AppSoy.soy.
     // Please don't edit this file by hand.
 
     /**
-     * @fileoverview Templates in namespace ChildSOY.
+     * @fileoverview Templates in namespace AppSoy.
      * @public
      */
 
-    goog.module('ChildSOY.incrementaldom');
+    goog.module('AppSoy.incrementaldom');
 
     /** @suppress {extraRequire} */
     var soy = goog.require('soy');
@@ -14730,112 +14763,7 @@ babelHelpers;
     var itext = IncrementalDom.text;
     var iattr = IncrementalDom.attr;
 
-    /**
-     * @param {Object<string, *>=} opt_data
-     * @param {(null|undefined)=} opt_ignored
-     * @param {Object<string, *>=} opt_ijData
-     * @return {void}
-     * @suppress {checkTypes}
-     */
-    function $render(opt_data, opt_ignored, opt_ijData) {
-      ie_open('div');
-      itext('I\'m child #');
-      var dyn0 = opt_data.index;
-      if (typeof dyn0 == 'function') dyn0();else if (dyn0 != null) itext(dyn0);
-      itext('.');
-      ie_close('div');
-    }
-    exports.render = $render;
-    if (goog.DEBUG) {
-      $render.soyTemplateName = 'ChildSOY.render';
-    }
-
-    exports.render.params = ["index"];
-    exports.render.types = { "index": "any" };
-    templates = exports;
-    return exports;
-  });
-
-  var ChildSOY = function (_Component) {
-    babelHelpers.inherits(ChildSOY, _Component);
-
-    function ChildSOY() {
-      babelHelpers.classCallCheck(this, ChildSOY);
-      return babelHelpers.possibleConstructorReturn(this, (ChildSOY.__proto__ || Object.getPrototypeOf(ChildSOY)).apply(this, arguments));
-    }
-
-    return ChildSOY;
-  }(Component);
-
-  Soy.register(ChildSOY, templates);
-  this['metalNamed']['ChildSoy'] = this['metalNamed']['ChildSoy'] || {};
-  this['metalNamed']['ChildSoy']['ChildSOY'] = ChildSOY;
-  this['metalNamed']['ChildSoy']['templates'] = templates;
-  this['metal']['ChildSoy'] = templates;
-  /* jshint ignore:end */
-}).call(this);
-'use strict';
-
-(function () {
-  var Component = this['metal']['component'];
-  var Soy = this['metal']['Soy'];
-  var templates = this['metal']['ChildSoy'];
-
-  var ChildSOY = function (_Component) {
-    babelHelpers.inherits(ChildSOY, _Component);
-
-    function ChildSOY() {
-      babelHelpers.classCallCheck(this, ChildSOY);
-      return babelHelpers.possibleConstructorReturn(this, (ChildSOY.__proto__ || Object.getPrototypeOf(ChildSOY)).apply(this, arguments));
-    }
-
-    return ChildSOY;
-  }(Component);
-
-  ;
-
-  Soy.register(ChildSOY, templates);
-}).call(this);
-'use strict';
-
-(function () {
-  /* jshint ignore:start */
-  var Component = this['metal']['component'];
-  var Soy = this['metal']['Soy'];
-
-  var templates;
-  goog.loadModule(function (exports) {
-
-    // This file was automatically generated from ParentSoy.soy.
-    // Please don't edit this file by hand.
-
-    /**
-     * @fileoverview Templates in namespace ParentSOY.
-     * @public
-     */
-
-    goog.module('ParentSOY.incrementaldom');
-
-    /** @suppress {extraRequire} */
-    var soy = goog.require('soy');
-    /** @suppress {extraRequire} */
-    var soydata = goog.require('soydata');
-    /** @suppress {extraRequire} */
-    goog.require('goog.i18n.bidi');
-    /** @suppress {extraRequire} */
-    goog.require('goog.asserts');
-    /** @suppress {extraRequire} */
-    goog.require('goog.string');
-    var IncrementalDom = goog.require('incrementaldom');
-    var ie_open = IncrementalDom.elementOpen;
-    var ie_close = IncrementalDom.elementClose;
-    var ie_void = IncrementalDom.elementVoid;
-    var ie_open_start = IncrementalDom.elementOpenStart;
-    var ie_open_end = IncrementalDom.elementOpenEnd;
-    var itext = IncrementalDom.text;
-    var iattr = IncrementalDom.attr;
-
-    var $templateAlias1 = Soy.getTemplate('ChildSOY.incrementaldom', 'render');
+    var $templateAlias1 = Soy.getTemplate('ParentSoy.incrementaldom', 'render');
 
     /**
      * @param {Object<string, *>=} opt_data
@@ -14851,22 +14779,258 @@ babelHelpers;
       itext('JSX example');
       ie_close('a');
       ie_open('h1');
-      itext('JSX example');
+      itext('Soy example');
       ie_close('h1');
-      ie_open('button', null, null, 'onClick', 'addChild');
-      itext('Add a Child!');
+      $templateAlias1({ childrenArr: [] }, null, opt_ijData);
+      ie_close('div');
+    }
+    exports.render = $render;
+    if (goog.DEBUG) {
+      $render.soyTemplateName = 'AppSoy.render';
+    }
+
+    exports.render.params = [];
+    exports.render.types = {};
+    templates = exports;
+    return exports;
+  });
+
+  var AppSoy = function (_Component) {
+    babelHelpers.inherits(AppSoy, _Component);
+
+    function AppSoy() {
+      babelHelpers.classCallCheck(this, AppSoy);
+      return babelHelpers.possibleConstructorReturn(this, (AppSoy.__proto__ || Object.getPrototypeOf(AppSoy)).apply(this, arguments));
+    }
+
+    return AppSoy;
+  }(Component);
+
+  Soy.register(AppSoy, templates);
+  this['metalNamed']['AppSoy'] = this['metalNamed']['AppSoy'] || {};
+  this['metalNamed']['AppSoy']['AppSoy'] = AppSoy;
+  this['metalNamed']['AppSoy']['templates'] = templates;
+  this['metal']['AppSoy'] = templates;
+  /* jshint ignore:end */
+}).call(this);
+'use strict';
+
+(function () {
+  var Component = this['metal']['component'];
+  var Soy = this['metal']['Soy'];
+  var templates = this['metal']['AppSoy'];
+
+  var AppSoy = function (_Component) {
+    babelHelpers.inherits(AppSoy, _Component);
+
+    function AppSoy() {
+      babelHelpers.classCallCheck(this, AppSoy);
+      return babelHelpers.possibleConstructorReturn(this, (AppSoy.__proto__ || Object.getPrototypeOf(AppSoy)).apply(this, arguments));
+    }
+
+    return AppSoy;
+  }(Component);
+
+  ;
+
+  Soy.register(AppSoy, templates);
+
+  this['metal']['AppSoy'] = AppSoy;
+}).call(this);
+'use strict';
+
+(function () {
+  /* jshint ignore:start */
+  var Component = this['metal']['component'];
+  var Soy = this['metal']['Soy'];
+
+  var templates;
+  goog.loadModule(function (exports) {
+
+    // This file was automatically generated from ChildSoy.soy.
+    // Please don't edit this file by hand.
+
+    /**
+     * @fileoverview Templates in namespace ChildSoy.
+     * @public
+     */
+
+    goog.module('ChildSoy.incrementaldom');
+
+    /** @suppress {extraRequire} */
+    var soy = goog.require('soy');
+    /** @suppress {extraRequire} */
+    var soydata = goog.require('soydata');
+    /** @suppress {extraRequire} */
+    goog.require('goog.i18n.bidi');
+    /** @suppress {extraRequire} */
+    goog.require('goog.asserts');
+    /** @suppress {extraRequire} */
+    goog.require('goog.string');
+    var IncrementalDom = goog.require('incrementaldom');
+    var ie_open = IncrementalDom.elementOpen;
+    var ie_close = IncrementalDom.elementClose;
+    var ie_void = IncrementalDom.elementVoid;
+    var ie_open_start = IncrementalDom.elementOpenStart;
+    var ie_open_end = IncrementalDom.elementOpenEnd;
+    var itext = IncrementalDom.text;
+    var iattr = IncrementalDom.attr;
+
+    var $templateAlias1 = Soy.getTemplate('ParentSoy.incrementaldom', 'render');
+
+    /**
+     * @param {Object<string, *>=} opt_data
+     * @param {(null|undefined)=} opt_ignored
+     * @param {Object<string, *>=} opt_ijData
+     * @return {void}
+     * @suppress {checkTypes}
+     */
+    function $render(opt_data, opt_ignored, opt_ijData) {
+      ie_open('div', null, null, 'style', 'padding-left:32px');
+      itext('Child #');
+      var dyn0 = opt_data.index;
+      if (typeof dyn0 == 'function') dyn0();else if (dyn0 != null) itext(dyn0);
+      itext(':');
+      ie_open('button', null, null, 'onClick', 'handleClick');
+      itext('+');
       ie_close('button');
-      var childList11 = opt_data.childrenArr;
-      var childListLen11 = childList11.length;
-      for (var childIndex11 = 0; childIndex11 < childListLen11; childIndex11++) {
-        var childData11 = childList11[childIndex11];
-        $templateAlias1({ index: childIndex11 }, null, opt_ijData);
+      if (opt_data.subTree) {
+        ie_open('div');
+        $templateAlias1({ childrenArr: [] }, null, opt_ijData);
+        ie_close('div');
       }
       ie_close('div');
     }
     exports.render = $render;
     if (goog.DEBUG) {
-      $render.soyTemplateName = 'ParentSOY.render';
+      $render.soyTemplateName = 'ChildSoy.render';
+    }
+
+    exports.render.params = ["index", "subTree"];
+    exports.render.types = { "index": "any", "subTree": "any" };
+    templates = exports;
+    return exports;
+  });
+
+  var ChildSoy = function (_Component) {
+    babelHelpers.inherits(ChildSoy, _Component);
+
+    function ChildSoy() {
+      babelHelpers.classCallCheck(this, ChildSoy);
+      return babelHelpers.possibleConstructorReturn(this, (ChildSoy.__proto__ || Object.getPrototypeOf(ChildSoy)).apply(this, arguments));
+    }
+
+    return ChildSoy;
+  }(Component);
+
+  Soy.register(ChildSoy, templates);
+  this['metalNamed']['ChildSoy'] = this['metalNamed']['ChildSoy'] || {};
+  this['metalNamed']['ChildSoy']['ChildSoy'] = ChildSoy;
+  this['metalNamed']['ChildSoy']['templates'] = templates;
+  this['metal']['ChildSoy'] = templates;
+  /* jshint ignore:end */
+}).call(this);
+'use strict';
+
+(function () {
+	var Component = this['metal']['component'];
+	var Soy = this['metal']['Soy'];
+	var templates = this['metal']['ChildSoy'];
+
+	var ChildSoy = function (_Component) {
+		babelHelpers.inherits(ChildSoy, _Component);
+
+		function ChildSoy() {
+			babelHelpers.classCallCheck(this, ChildSoy);
+			return babelHelpers.possibleConstructorReturn(this, (ChildSoy.__proto__ || Object.getPrototypeOf(ChildSoy)).apply(this, arguments));
+		}
+
+		babelHelpers.createClass(ChildSoy, [{
+			key: 'handleClick',
+			value: function handleClick() {
+				this.subTree = true;
+			}
+		}]);
+		return ChildSoy;
+	}(Component);
+
+	;
+
+	ChildSoy.STATE = {
+		subTree: {
+			value: false
+		}
+	};
+
+	Soy.register(ChildSoy, templates);
+
+	this['metal']['ChildSoy'] = ChildSoy;
+}).call(this);
+'use strict';
+
+(function () {
+  /* jshint ignore:start */
+  var Component = this['metal']['component'];
+  var Soy = this['metal']['Soy'];
+
+  var templates;
+  goog.loadModule(function (exports) {
+
+    // This file was automatically generated from ParentSoy.soy.
+    // Please don't edit this file by hand.
+
+    /**
+     * @fileoverview Templates in namespace ParentSoy.
+     * @public
+     */
+
+    goog.module('ParentSoy.incrementaldom');
+
+    /** @suppress {extraRequire} */
+    var soy = goog.require('soy');
+    /** @suppress {extraRequire} */
+    var soydata = goog.require('soydata');
+    /** @suppress {extraRequire} */
+    goog.require('goog.i18n.bidi');
+    /** @suppress {extraRequire} */
+    goog.require('goog.asserts');
+    /** @suppress {extraRequire} */
+    goog.require('goog.string');
+    var IncrementalDom = goog.require('incrementaldom');
+    var ie_open = IncrementalDom.elementOpen;
+    var ie_close = IncrementalDom.elementClose;
+    var ie_void = IncrementalDom.elementVoid;
+    var ie_open_start = IncrementalDom.elementOpenStart;
+    var ie_open_end = IncrementalDom.elementOpenEnd;
+    var itext = IncrementalDom.text;
+    var iattr = IncrementalDom.attr;
+
+    var $templateAlias1 = Soy.getTemplate('ChildSoy.incrementaldom', 'render');
+
+    /**
+     * @param {Object<string, *>=} opt_data
+     * @param {(null|undefined)=} opt_ignored
+     * @param {Object<string, *>=} opt_ijData
+     * @return {void}
+     * @suppress {checkTypes}
+     */
+    function $render(opt_data, opt_ignored, opt_ijData) {
+      ie_open('div', null, null, 'style', 'padding-left: 16px;');
+      itext('Parent:');
+      ie_open('button', null, null, 'onClick', 'addChild');
+      itext('Add a Child!');
+      ie_close('button');
+      var childList25 = opt_data.childrenArr;
+      var childListLen25 = childList25.length;
+      for (var childIndex25 = 0; childIndex25 < childListLen25; childIndex25++) {
+        var childData25 = childList25[childIndex25];
+        $templateAlias1({ index: childIndex25, subTree: false }, null, opt_ijData);
+      }
+      ie_close('div');
+    }
+    exports.render = $render;
+    if (goog.DEBUG) {
+      $render.soyTemplateName = 'ParentSoy.render';
     }
 
     exports.render.params = ["childrenArr"];
@@ -14875,20 +15039,20 @@ babelHelpers;
     return exports;
   });
 
-  var ParentSOY = function (_Component) {
-    babelHelpers.inherits(ParentSOY, _Component);
+  var ParentSoy = function (_Component) {
+    babelHelpers.inherits(ParentSoy, _Component);
 
-    function ParentSOY() {
-      babelHelpers.classCallCheck(this, ParentSOY);
-      return babelHelpers.possibleConstructorReturn(this, (ParentSOY.__proto__ || Object.getPrototypeOf(ParentSOY)).apply(this, arguments));
+    function ParentSoy() {
+      babelHelpers.classCallCheck(this, ParentSoy);
+      return babelHelpers.possibleConstructorReturn(this, (ParentSoy.__proto__ || Object.getPrototypeOf(ParentSoy)).apply(this, arguments));
     }
 
-    return ParentSOY;
+    return ParentSoy;
   }(Component);
 
-  Soy.register(ParentSOY, templates);
+  Soy.register(ParentSoy, templates);
   this['metalNamed']['ParentSoy'] = this['metalNamed']['ParentSoy'] || {};
-  this['metalNamed']['ParentSoy']['ParentSOY'] = ParentSOY;
+  this['metalNamed']['ParentSoy']['ParentSoy'] = ParentSoy;
   this['metalNamed']['ParentSoy']['templates'] = templates;
   this['metal']['ParentSoy'] = templates;
   /* jshint ignore:end */
@@ -14900,32 +15064,32 @@ babelHelpers;
 	var Soy = this['metal']['Soy'];
 	var templates = this['metal']['ParentSoy'];
 
-	var ParentSOY = function (_Component) {
-		babelHelpers.inherits(ParentSOY, _Component);
+	var ParentSoy = function (_Component) {
+		babelHelpers.inherits(ParentSoy, _Component);
 
-		function ParentSOY() {
-			babelHelpers.classCallCheck(this, ParentSOY);
-			return babelHelpers.possibleConstructorReturn(this, (ParentSOY.__proto__ || Object.getPrototypeOf(ParentSOY)).apply(this, arguments));
+		function ParentSoy() {
+			babelHelpers.classCallCheck(this, ParentSoy);
+			return babelHelpers.possibleConstructorReturn(this, (ParentSoy.__proto__ || Object.getPrototypeOf(ParentSoy)).apply(this, arguments));
 		}
 
-		babelHelpers.createClass(ParentSOY, [{
+		babelHelpers.createClass(ParentSoy, [{
 			key: 'addChild',
 			value: function addChild() {
 				this.childrenArr = [].concat(babelHelpers.toConsumableArray(this.childrenArr), [0]);
 			}
 		}]);
-		return ParentSOY;
+		return ParentSoy;
 	}(Component);
 
-	ParentSOY.STATE = {
+	ParentSoy.STATE = {
 		childrenArr: {
 			value: [0]
 		}
 	};
 
-	Soy.register(ParentSOY, templates);
+	Soy.register(ParentSoy, templates);
 
-	this['metal']['ParentSoy'] = ParentSOY;
+	this['metal']['ParentSoy'] = ParentSoy;
 }).call(this);
 }).call(this);
 //# sourceMappingURL=AppSOY.js.map

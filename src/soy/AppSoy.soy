@@ -1,0 +1,15 @@
+{namespace AppSoy}
+
+/**
+ */
+{template .render}
+	<div>
+		Go to:<a href="/metal-devtools/jsx.html">JSX example</a>
+
+		<h1>Soy example</h1>
+
+		{call ParentSoy.render}
+			{param childrenArr: [] /}
+		{/call}
+	</div>
+{/template}

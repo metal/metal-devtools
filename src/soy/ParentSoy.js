@@ -2,19 +2,19 @@ import Component from 'metal-component';
 import Soy from 'metal-soy';
 import templates from './ParentSoy.soy';
 
-class ParentSOY extends Component {
+class ParentSoy extends Component {
 	addChild() {
 		this.childrenArr = [...this.childrenArr, 0];
 
 	}
 }
 
-ParentSOY.STATE = {
+ParentSoy.STATE = {
 	childrenArr: {
 		value: [0]
 	}
 };
 
-Soy.register(ParentSOY, templates);
+Soy.register(ParentSoy, templates);
 
-export default ParentSOY;
+export default ParentSoy;
