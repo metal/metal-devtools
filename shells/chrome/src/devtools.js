@@ -22,7 +22,13 @@ function createPanelIfMetalLoaded() {
 				'Metal.js',
 				'',
 				'build/panel.html',
-				function() {}
+				function(panel) {
+					panel.onShown.addListener(function() {
+						chrome.devtools.inspectedWindow.eval(
+							'window.__METAL_DEV_TOOLS_HOOK__.$0 = $0; __METAL_DEV_TOOLS_HOOK__.reloadRoots()'
+						);
+					});
+				}
 			);
 		}
 	);

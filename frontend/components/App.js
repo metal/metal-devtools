@@ -8,26 +8,18 @@ import InitialWarning from './InitialWarning';
 class App extends Component {
 	created() {
 		this.selectedChange = this.selectedChange.bind(this);
+		this.processMessage = this.processMessage.bind(this);
 
-		this.props.port.onMessage.addListener(
-			(component) => {
-				const {id, remove} = component;
+		this.props.port.onMessage.addListener(this.processMessage);
+	}
 
-				let retVal = this.state.rootComponents;
-
-				if (remove) {
-					delete retVal[id];
-				}
-				else if (id) {
-					retVal = {
-						...retVal,
-						[id]: component
-					};
-				}
-
-				this.state.rootComponents = retVal;
-			}
-		);
+	processMessage(message) {
+		if (message.id) {
+			this.setRootComponents(message);
+		}
+		else if (message.selectedId) {
+			this.selectedChange(message.selectedId);
+		}
 	}
 
 	resetRoots() {
@@ -36,6 +28,24 @@ class App extends Component {
 
 	selectedChange(id) {
 		this.state.selectedId = id;
+	}
+
+	setRootComponents(component) {
+		const {id, remove} = component;
+
+		let retVal = this.state.rootComponents;
+
+		if (remove) {
+			delete retVal[id];
+		}
+		else if (id) {
+			retVal = {
+				...retVal,
+				[id]: component
+			};
+		}
+
+		this.state.rootComponents = retVal;
 	}
 
 	render() {

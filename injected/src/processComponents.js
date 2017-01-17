@@ -10,9 +10,14 @@ if (__METAL_DEV_TOOLS_HOOK__) {
 		);
 	};
 
-	if (__METAL_DEV_TOOLS_HOOK__.hasRoots()) {
-		__METAL_DEV_TOOLS_HOOK__.getRoots().forEach(sendComponent);
-	}
+	const processRoots = () => {
+		if (__METAL_DEV_TOOLS_HOOK__.hasRoots()) {
+			__METAL_DEV_TOOLS_HOOK__.getRoots().forEach(sendComponent);
+		}
+	};
+
+	processRoots();
 
 	__METAL_DEV_TOOLS_HOOK__.on('addRoot', sendComponent);
+	__METAL_DEV_TOOLS_HOOK__.on('reloadRoots', processRoots);
 }

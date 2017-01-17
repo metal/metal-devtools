@@ -18,6 +18,10 @@ class RootManager {
 		return this._roots && !!this._roots.length;
 	};
 
+	reloadRoots() {
+		this.emit('reloadRoots');
+	};
+
 	removeAllRoots() {
 		this._roots = [];
 
