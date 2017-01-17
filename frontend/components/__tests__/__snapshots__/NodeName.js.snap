@@ -1,5 +1,0 @@
-exports[`NodeName should render with NORMAL_CLOSING 1`] = `undefined`;
-
-exports[`NodeName should render with OPENING 1`] = `undefined`;
-
-exports[`NodeName should render with SELF_CLOSING 1`] = `undefined`;

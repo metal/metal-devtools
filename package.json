@@ -1,65 +1,28 @@
 {
-  "name": "metal-devtools",
-  "version": "1.0.0-alpha",
-  "description": "Metal Developer Tools",
+  "repository": "bryceosterhaus/metal-devtools",
   "scripts": {
-    "build:chrome": "webpack --config shells/chrome/webpack.config.js",
-    "format": "eslint . --ignore-pattern node_modules --ignore-pattern build --fix",
-    "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build",
-    "test": "jest",
-    "watch:chrome": "webpack --config shells/chrome/webpack.config.js --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bryceosterhaus/metal-devtools"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/bryceosterhaus/metal-devtools",
-  "dependencies": {
-    "immutable": "^3.8.1",
-    "lodash": "^4.17.4",
-    "metal-jsx": "^2.5.13"
+    "build": "npm run build:soy && npm run build:jsx",
+    "build:soy": "gulp build",
+    "build:jsx": "browserify ./src/jsx/AppJSX.js -o ./build/AppJSX.js -t [ babelify --presets [ metal-jsx es2015 ] ]"
   },
   "babel": {
-    "plugins": [
-      "lodash"
-    ],
     "presets": [
       "metal-jsx",
-      "es2015",
-      "stage-3"
+      "es2015"
     ]
   },
-  "jest": {
-    "automock": true,
-    "modulePathIgnorePatterns": [
-      "node_modules"
-    ],
-    "snapshotSerializers": [
-      "<rootDir>/tests/metal-serializer"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/tests/setup.js",
-    "unmockedModulePathPatterns": [
-      "immutable",
-      "lodash",
-      "metal-dom",
-      "metal-jsx"
-    ]
+  "dependencies": {
+    "metal-component": "^2.6.1",
+    "metal-jsx": "^2.5.9",
+    "metal-soy": "^2.6.1"
   },
   "devDependencies": {
-    "babel-core": "^6.18.2",
-    "babel-jest": "^18.0.0",
-    "babel-loader": "^6.2.8",
-    "babel-plugin-lodash": "^3.2.11",
+    "babel-cli": "^6.11.4",
     "babel-preset-es2015": "^6.18.0",
-    "babel-preset-jest": "^18.0.0",
     "babel-preset-metal-jsx": "0.0.3",
-    "babel-preset-stage-3": "^6.17.0",
-    "eslint": "^3.13.1",
-    "eslint-plugin-react": "^6.8.0",
-    "file-loader": "^0.9.0",
-    "jest": "^18.1.0",
-    "js-beautify": "^1.6.8",
-    "webpack": "^1.13.3"
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.1",
+    "eslint-plugin-react": "^6.9.0",
+    "gulp-metal": "^1.10.0"
   }
 }
