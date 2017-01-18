@@ -2,7 +2,8 @@ import Component, {Config} from 'metal-jsx';
 import {isPlainObject, keys} from 'lodash';
 
 import NodeName from './NodeName';
-import processStateValue from '../lib/processStateValues';
+import FlashItem from './FlashItem';
+
 import getComponentById from '../lib/getComponentById';
 
 class StatePane extends Component {
@@ -42,7 +43,7 @@ class StatePane extends Component {
 												stateObjKey => (
 													<li>
 														<b class="key">{`${stateObjKey}: `}</b>
-														<span class="value">{processStateValue(stateObj[stateObjKey])}</span>
+														<FlashItem elementClasses="value" value={stateObj[stateObjKey]} />
 													</li>
 												)
 											)

@@ -118,8 +118,18 @@ html, .app-container {
 				color: $sand;
 			}
 
-			.value pre {
-				margin: 0;
+			.value {
+				background: white;
+				transition: background 200ms;
+
+				&.flash {
+					background: rgba($purple, 0.5);
+				}
+
+				pre {
+					background: inherit;
+					margin: 0;
+				}
 			}
 		}
 
