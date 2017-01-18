@@ -60,10 +60,22 @@ class TreeNode extends Component {
 	}
 
 	rendered() {
-		if (this.props.componentNode.containsInspected) {
+		const {
+			componentNode: {
+				containsInspected,
+				id
+			},
+			selectedId
+		} = this.props;
+
+		if (containsInspected) {
 			this.state.expanded_ = true;
 
 			delete this.props.componentNode.containsInspected;
+
+			if (id === selectedId) {
+				this.element.scrollIntoView();
+			}
 		}
 	}
 

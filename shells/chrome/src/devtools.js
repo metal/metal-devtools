@@ -23,9 +23,15 @@ function createPanelIfMetalLoaded() {
 				'',
 				'build/panel.html',
 				function(panel) {
+					chrome.devtools.panels.elements.onSelectionChanged.addListener(function() {
+						chrome.devtools.inspectedWindow.eval(
+							'window.__METAL_DEV_TOOLS_HOOK__.$0 = $0;'
+						);
+					});
+
 					panel.onShown.addListener(function() {
 						chrome.devtools.inspectedWindow.eval(
-							'window.__METAL_DEV_TOOLS_HOOK__.$0 = $0; __METAL_DEV_TOOLS_HOOK__.reloadRoots()'
+							'__METAL_DEV_TOOLS_HOOK__.reloadRoots(); window.__METAL_DEV_TOOLS_HOOK__.$0 = undefined;'
 						);
 					});
 				}
