@@ -1,3 +1,7 @@
+$purple: rgb(136, 18, 128);
+$sand: rgb(153, 69, 0);
+$slate: rgba(35, 50, 64, 0.8);
+
 body {
 	height: 100%;
 	margin: 0;
@@ -15,10 +19,14 @@ html, .app-container {
 
 .app-container {
 	display: flex;
+}
 
-	> .roots-wrapper {
-		padding-left: 20px;
-	}
+.resize-container {
+	border-right: 2px solid black;
+	cursor: col-resize;
+	flex: 0 0 0;
+	height: 100%;
+	padding-left: 1px;
 }
 
 /* ---- Initial Warning Component ---- */
@@ -47,7 +55,7 @@ html, .app-container {
 	font-size: 14px;
 
 	.name {
-		color: rgb(136, 18, 128);
+		color: $purple;
 	}
 }
 
@@ -55,9 +63,6 @@ html, .app-container {
 
 .node-wrapper {
 	padding-bottom: 4px;
-	position: relative;
-	left: -20px;
-	width: 100%;
 
 	&.expandable {
 		left: -32px;
@@ -79,8 +84,8 @@ html, .app-container {
 /* ---- Roots Wrapper ---- */
 
 .roots-wrapper {
-	border-right: 1px solid black;
 	flex: 0 0 70%;
+	padding-top: 12px;
 }
 
 /* ---- State Pane Component ---- */
@@ -110,7 +115,7 @@ html, .app-container {
 			padding-left: 12px;
 
 			.key {
-				color: rgb(153, 69, 0);
+				color: $sand;
 			}
 
 			.value pre {

@@ -49,7 +49,7 @@ class TreeNode extends Component {
 
 		const highlight = highlight_ ? 'highlight' : '';
 
-		const style = `padding-left: ${depth * 24 + 20}px`;
+		const style = `padding-left: ${depth * 24 + 12}px`;
 
 		const expanded = containsInspected || expanded_;
 

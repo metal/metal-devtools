@@ -1,16 +1,22 @@
 import Component, {Config} from 'metal-jsx';
 import {values} from 'lodash';
 
-import TreeNode from './TreeNode';
-import StatePane from './StatePane';
 import InitialWarning from './InitialWarning';
+import Resize from './Resize';
+import StatePane from './StatePane';
+import TreeNode from './TreeNode';
 
 class App extends Component {
 	created() {
-		this.selectedChange = this.selectedChange.bind(this);
+		this.handleResize = this.handleResize.bind(this);
 		this.processMessage = this.processMessage.bind(this);
+		this.selectedChange = this.selectedChange.bind(this);
 
 		this.props.port.onMessage.addListener(this.processMessage);
+	}
+
+	handleResize({clientX}) {
+		this.state.firstColumnWidth = clientX;
 	}
 
 	processMessage(message) {
@@ -49,7 +55,7 @@ class App extends Component {
 	}
 
 	render() {
-		const {rootComponents, selectedId} = this.state;
+		const {firstColumnWidth, rootComponents, selectedId} = this.state;
 
 		const rootComponentKeys = Object.keys(rootComponents);
 
@@ -60,7 +66,7 @@ class App extends Component {
 				}
 
 				{rootComponentKeys && !!rootComponentKeys.length &&
-					<div class="roots-wrapper">
+					<div class="roots-wrapper" style={firstColumnWidth && `flex-basis:${firstColumnWidth}px`}>
 						{
 							rootComponentKeys.map(
 								(key, i) => (
@@ -77,6 +83,8 @@ class App extends Component {
 					</div>
 				}
 
+				<Resize onResize={this.handleResize}/>
+
 				<StatePane components={values(rootComponents)} id={selectedId} />
 			</div>
 		);
@@ -88,6 +96,7 @@ App.PROPS = {
 };
 
 App.STATE = {
+	firstColumnWidth: Config.number(),
 	rootComponents: Config.value({}),
 	selectedId: Config.value('')
 };
