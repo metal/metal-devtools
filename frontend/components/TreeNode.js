@@ -57,6 +57,14 @@ class TreeNode extends Component {
 		}
 	}
 
+	rendered() {
+		if (this.props.componentNode.containsInspected) {
+			this.state.expanded_ = true;
+
+			delete this.props.componentNode.containsInspected;
+		}
+	}
+
 	render() {
 		const {componentNode, depth, onNodeClick, selectedId} = this.props;
 
@@ -123,7 +131,6 @@ class TreeNode extends Component {
 TreeNode.PROPS = {
 	componentNode: Config.value({}),
 	depth: Config.number().value(0),
-	expanded: Config.value(false),
 	onNodeClick: Config.func(),
 	selectedId: Config.string()
 };
