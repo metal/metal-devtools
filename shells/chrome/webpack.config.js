@@ -16,9 +16,13 @@ module.exports = {
 				loader: 'babel'
 			},
 			{
-				test: /(\.html|\.css|\.png)$/,
+				test: /(\.html|\.png)$/,
 				exclude: /node_modules/,
 				loader: 'file?name=[name].[ext]'
+			},
+			{
+					test: /\.scss$/,
+					loaders: ['style', 'css', 'sass']
 			}
 		]
 	},

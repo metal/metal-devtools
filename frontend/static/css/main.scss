@@ -1,0 +1,159 @@
+body {
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	color: rgba(35, 50, 64, 0.8);
+}
+
+html, .app-container {
+	height: 100%;
+}
+
+.roots-wrapper, .state-pane-container {
+		overflow: auto;
+}
+
+.app-container {
+	display: flex;
+
+	> .roots-wrapper {
+		padding-left: 20px;
+	}
+}
+
+/* ---- Initial Warning Component ---- */
+
+.initial-warning-container {
+	align-items: center;
+	border-right: 1px solid black;
+	display: flex;
+	flex: 0 0 70%;
+	font-size: 16px;
+	justify-content: center;
+
+	> div {
+		text-align: center;
+	}
+
+	i {
+		opacity: 0.5;
+	}
+}
+
+/* ---- Node Name Component ---- */
+
+.node-name-container {
+	display: inline-block;
+	font-size: 14px;
+
+	.name {
+		color: rgb(136, 18, 128);
+	}
+}
+
+/* ---- Node Wrapper ---- */
+
+.node-wrapper {
+	padding-bottom: 4px;
+	position: relative;
+	left: -20px;
+	width: 100%;
+
+	&.expandable {
+		left: -32px;
+	}
+
+	&.highlight {
+		background: rgba(0, 0, 0, 0.2);
+	}
+
+	&.selected {
+		background: rgba(0, 0, 0, 0.1);
+	}
+
+	.node-name-container {
+		cursor: pointer;
+	}
+}
+
+/* ---- Roots Wrapper ---- */
+
+.roots-wrapper {
+	border-right: 1px solid black;
+	flex: 0 0 70%;
+}
+
+/* ---- State Pane Component ---- */
+
+.state-pane-container {
+	flex: 1 0 30%;
+	font-size: 14px;
+
+	> div {
+		padding-left: 12px;
+	}
+
+	.header {
+		border-bottom: 2px solid black;
+		font-weight: bold;
+		padding: 8px 0 8px 12px;
+
+		.node-name-container {
+			font-weight: normal;
+		}
+	}
+
+	.category {
+		.data {
+			list-style: none;
+			margin: 0;
+			padding-left: 12px;
+
+			.key {
+				color: rgb(153, 69, 0);
+			}
+
+			.value pre {
+				margin: 0;
+			}
+		}
+
+		.name {
+			font-size: 16px;
+			font-weight: bold;
+		}
+	}
+}
+
+/* ---- Arrow Styles ---- */
+
+.arrow {
+	display: inline-block;
+	height: 8px;
+	width: 8px;
+	padding-right: 4px;
+
+	&:before {
+		border-color: black;
+		content: '';
+		cursor: pointer;
+		display: inline-block;
+		height: 0;
+		margin-right: -8px;
+		width: 0;
+	}
+
+	&.down:before {
+		width: 0;
+		height: 0;
+		border-left: 4px solid transparent;
+		border-right: 4px solid transparent;
+		border-top: 8px solid;
+	}
+
+	&.right:before {
+		border-bottom: 4px solid transparent;
+		border-left: 8px solid;
+		border-top: 4px solid transparent;
+	}
+}

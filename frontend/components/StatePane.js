@@ -1,6 +1,7 @@
 import Component, {Config} from 'metal-jsx';
 import {isPlainObject, keys} from 'lodash';
 
+import NodeName from './NodeName';
 import processStateValue from '../lib/processStateValues';
 import getComponentById from '../lib/getComponentById';
 
@@ -18,7 +19,13 @@ class StatePane extends Component {
 
 		return (
 			<div class="state-pane-container">
-				<h1>Component Data: <i>{name}</i></h1>
+				<div class="header">
+					{'Component: '}
+
+					{name &&
+						<NodeName name={name} />
+					}
+				</div>
 
 				{dataExists &&
 					keys(data).map(
@@ -26,16 +33,16 @@ class StatePane extends Component {
 							const stateObj = JSON.parse(data[dataKey]);
 
 							return (
-								<div>
-									<h2>{`${dataKey}:`}</h2>
+								<div class="category">
+									<div class="name">{`${dataKey}:`}</div>
 
-									<ul>
+									<ul class="data">
 										{
 											keys(stateObj).map(
 												stateObjKey => (
 													<li>
-														<b>{`${stateObjKey}: `}</b>
-														<span>{processStateValue(stateObj[stateObjKey])}</span>
+														<b class="key">{`${stateObjKey}: `}</b>
+														<span class="value">{processStateValue(stateObj[stateObjKey])}</span>
 													</li>
 												)
 											)
