@@ -1,10 +1,14 @@
 import Component, {Config} from 'metal-jsx';
+import {bindAll} from 'lodash';
 
-class Resize extends Component {
+class ResizeDivider extends Component {
 	created() {
-		this.doDrag = this.doDrag.bind(this);
-		this.initDrag = this.initDrag.bind(this);
-		this.stopDrag = this.stopDrag.bind(this);
+		bindAll(
+			this,
+			'doDrag',
+			'initDrag',
+			'stopDrag'
+		);
 	}
 
 	attached() {
@@ -15,14 +19,14 @@ class Resize extends Component {
 		this.props.onResize({clientX});
 	}
 
-	stopDrag() {
-		document.body.removeEventListener('mousemove', this.doDrag, false);
-		document.body.removeEventListener('mouseup', this.stopDrag, false);
-	}
-
 	initDrag() {
 		document.body.addEventListener('mousemove', this.doDrag, false);
 		document.body.addEventListener( 'mouseup', this.stopDrag, false);
+	}
+
+	stopDrag() {
+		document.body.removeEventListener('mousemove', this.doDrag, false);
+		document.body.removeEventListener('mouseup', this.stopDrag, false);
 	}
 
 	render() {
@@ -32,8 +36,8 @@ class Resize extends Component {
 	}
 }
 
-Resize.PROPS = {
+ResizeDivider.PROPS = {
 	onResize: Config.func().required()
 };
 
-export default Resize;
+export default ResizeDivider;

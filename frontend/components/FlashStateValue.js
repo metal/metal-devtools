@@ -3,11 +3,17 @@ import Component, {Config} from 'metal-jsx';
 import processStateValue from '../lib/processStateValues';
 import {debounce, isEqual} from 'lodash';
 
-class FlashItem extends Component {
+class FlashStateValue extends Component {
 	created() {
 		this.removeFlash = debounce(this.removeFlash, 100);
 
 		this._firstRender = true;
+	}
+
+	addFlash() {
+		this.element.classList.add('flash');
+
+		this.removeFlash();
 	}
 
 	removeFlash() {
@@ -17,12 +23,6 @@ class FlashItem extends Component {
 			},
 			100
 		);
-	}
-
-	addFlash() {
-		this.element.classList.add('flash');
-
-		this.removeFlash();
 	}
 
 	syncValue(newVal, oldVal) {
@@ -41,8 +41,8 @@ class FlashItem extends Component {
 	}
 }
 
-FlashItem.PROPS = {
+FlashStateValue.PROPS = {
 	value: Config.any()
 };
 
-export default FlashItem;
+export default FlashStateValue;

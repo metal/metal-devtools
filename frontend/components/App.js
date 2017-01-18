@@ -1,16 +1,19 @@
 import Component, {Config} from 'metal-jsx';
-import {values} from 'lodash';
+import {bindAll, keys, values} from 'lodash';
 
 import InitialWarning from './InitialWarning';
-import Resize from './Resize';
+import ResizeDivider from './ResizeDivider';
 import StatePane from './StatePane';
 import TreeNode from './TreeNode';
 
 class App extends Component {
 	created() {
-		this.handleResize = this.handleResize.bind(this);
-		this.processMessage = this.processMessage.bind(this);
-		this.selectedChange = this.selectedChange.bind(this);
+		bindAll(
+			this,
+			'handleResize',
+			'processMessage',
+			'selectedChange'
+		);
 
 		this.props.port.onMessage.addListener(this.processMessage);
 	}
@@ -20,11 +23,13 @@ class App extends Component {
 	}
 
 	processMessage(message) {
-		if (message.id) {
+		const {id, selectedId} = message;
+
+		if (id) {
 			this.setRootComponents(message);
 		}
-		else if (message.selectedId) {
-			this.selectedChange(message.selectedId);
+		else if (selectedId) {
+			this.selectedChange(selectedId);
 		}
 	}
 
@@ -57,7 +62,7 @@ class App extends Component {
 	render() {
 		const {firstColumnWidth, rootComponents, selectedId} = this.state;
 
-		const rootComponentKeys = Object.keys(rootComponents);
+		const rootComponentKeys = keys(rootComponents);
 
 		return (
 			<div class="app-container">
@@ -74,8 +79,8 @@ class App extends Component {
 										componentNode={rootComponents[key]}
 										depth={0}
 										key={i}
-										selectedId={selectedId}
 										onNodeClick={this.selectedChange}
+										selectedId={selectedId}
 									/>
 								)
 							)
@@ -83,7 +88,7 @@ class App extends Component {
 					</div>
 				}
 
-				<Resize onResize={this.handleResize}/>
+				<ResizeDivider onResize={this.handleResize}/>
 
 				<StatePane components={values(rootComponents)} id={selectedId} />
 			</div>

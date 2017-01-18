@@ -16,7 +16,7 @@ export default function(value) {
 		retVal = value.toString();
 	}
 	else if (value === '') {
-		retVal = '\'\'';
+		retVal = '\"\"';
 	}
 	else if (isNull(value)) {
 		retVal = 'null';

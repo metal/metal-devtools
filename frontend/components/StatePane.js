@@ -1,7 +1,7 @@
 import Component, {Config} from 'metal-jsx';
 import {isPlainObject, keys} from 'lodash';
 
-import FlashItem from './FlashItem';
+import FlashStateValue from './FlashStateValue';
 import getComponentById from '../lib/getComponentById';
 import NodeName from './NodeName';
 
@@ -33,16 +33,16 @@ class StatePane extends Component {
 							const stateObj = JSON.parse(data[dataKey]);
 
 							return (
-								<div class="category">
+								<div class="category" key={`${name}-${dataKey}`}>
 									<div class="name">{`${dataKey}:`}</div>
 
 									<ul class="data">
 										{
 											keys(stateObj).map(
 												stateObjKey => (
-													<li>
+													<li key={`${name}-${dataKey}-${stateObjKey}`}>
 														<b class="key">{`${stateObjKey}: `}</b>
-														<FlashItem elementClasses="value" value={stateObj[stateObjKey]} />
+														<FlashStateValue elementClasses="value" value={stateObj[stateObjKey]} />
 													</li>
 												)
 											)

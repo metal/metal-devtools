@@ -43,11 +43,13 @@ class TreeNode extends Component {
 		const oldData = oldVal.data || {};
 
 		if (!this._firstRender && !isEqual(newData, oldData)) {
-			this.refs.nodeName.element.classList.add('flash');
+			const {element} = this.refs.nodeName;
+
+			element.classList.add('flash');
 
 			setTimeout(
 				() => {
-					this.refs.nodeName.element.classList.remove('flash');
+					element.classList.remove('flash');
 				},
 				100
 			);
@@ -68,7 +70,7 @@ class TreeNode extends Component {
 	render() {
 		const {componentNode, depth, onNodeClick, selectedId} = this.props;
 
-		const {childComponents, containsInspected, id, name} = componentNode;
+		const {childComponents, id, name} = componentNode;
 
 		const {expanded_, highlight_} = this.state;
 
@@ -80,25 +82,23 @@ class TreeNode extends Component {
 
 		const style = `padding-left: ${depth * 24 + 12}px`;
 
-		const expanded = containsInspected || expanded_;
-
 		return(
 			<div class="tree-container">
 				<div
 					class={`node-wrapper ${selected} ${highlight} ${hasChildren ? 'expandable' : ''}`}
-					onClick={expanded ? this.focusNode : this.toggleExpanded}
+					onClick={expanded_ ? this.focusNode : this.toggleExpanded}
 					onMouseEnter={this.toggleHighlight(true)}
 					onMouseLeave={this.toggleHighlight(false)}
 					style={style}
 				>
 					{hasChildren &&
-						<div class={expanded ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
+						<div class={expanded_ ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
 					}
 
 					<NodeName ref="nodeName" name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
 				</div>
 
-				{hasChildren && expanded &&
+				{hasChildren && expanded_ &&
 					childComponents.map(
 						(child, i) => (
 							<TreeNode
@@ -112,7 +112,7 @@ class TreeNode extends Component {
 					)
 				}
 
-				{hasChildren && expanded &&
+				{hasChildren && expanded_ &&
 					<div
 						class={`node-wrapper ${selected} ${highlight}`}
 						onClick={this.focusNode}
