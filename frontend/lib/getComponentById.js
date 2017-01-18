@@ -1,24 +1,19 @@
-const getComponentById = (components = [], id) => {
-	let selectedComponent;
+function getComponentById(components = [], id) {
+	for (let i =0; i < components.length; i++) {
+		const component = components[i];
 
-	if (!components) {
-		return {};
-	}
-
-	components.some(
-		component => {
-			if (component.id === id) {
-				selectedComponent = component;
-			}
-			else {
-				selectedComponent = getComponentById(component.childComponents, id);
-			}
-
-			return selectedComponent;
+		if (component.id === id) {
+			return component;
 		}
-	);
 
-	return selectedComponent;
-};
+		if (component.childComponents) {
+			const componentFound = getComponentById(component.childComponents, id);
+
+			if (componentFound) {
+				return componentFound;
+			}
+		}
+	}
+}
 
 export default getComponentById;

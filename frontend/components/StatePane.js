@@ -1,4 +1,5 @@
 import Component, {Config} from 'metal-jsx';
+import {isPlainObject, keys} from 'lodash';
 
 import processStateValue from '../lib/processStateValues';
 import getComponentById from '../lib/getComponentById';
@@ -11,33 +12,30 @@ class StatePane extends Component {
 	}
 
 	render() {
-		const dataManagers = this.getSelectedComponent().data || {};
+		const {data, name} = this.getSelectedComponent();
 
-		const dataManagerKeys = Object.keys(dataManagers);
-
-		const dataManagersLength = dataManagerKeys.length;
+		const dataExists = isPlainObject(data);
 
 		return (
 			<div class="state-pane-container">
-				<h1>Component Data:</h1>
+				<h1>Component Data: <i>{name}</i></h1>
 
-				{!!dataManagersLength &&
-					dataManagerKeys.map(
-						dataManagerKey => {
-							const data = JSON.parse(dataManagers[dataManagerKey]);
-							const dataKeys = Object.keys(data || {});
+				{dataExists &&
+					keys(data).map(
+						dataKey => {
+							const stateObj = JSON.parse(data[dataKey]);
 
 							return (
 								<div>
-									<h2>{`${dataManagerKey}:`}</h2>
+									<h2>{`${dataKey}:`}</h2>
 
 									<ul>
 										{
-											dataKeys.map(
-												key => (
+											keys(stateObj).map(
+												stateObjKey => (
 													<li>
-														<b>{`${key}: `}</b>
-														<span>{processStateValue(data[key])}</span>
+														<b>{`${stateObjKey}: `}</b>
+														<span>{processStateValue(stateObj[stateObjKey])}</span>
 													</li>
 												)
 											)
@@ -49,7 +47,7 @@ class StatePane extends Component {
 					)
 				}
 
-				{!dataManagersLength &&
+				{!dataExists &&
 					<div>
 						<i>{'No Component Data'}</i>
 					</div>

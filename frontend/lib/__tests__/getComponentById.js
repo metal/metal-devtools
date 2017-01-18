@@ -41,8 +41,4 @@ describe('getComponentById', () => {
 		expect(getComponentById(COMPONENTS_ARR, 5).id).toBe(5);
 		expect(getComponentById(COMPONENTS_ARR, 6).id).toBe(6);
 	});
-
-	it('should return empty object if components is null', () => {
-		expect(getComponentById(null, 1)).toEqual({});
-	});
 });
