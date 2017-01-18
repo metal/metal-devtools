@@ -53,6 +53,11 @@ html, .app-container {
 .node-name-container {
 	display: inline-block;
 	font-size: 14px;
+	transition: background 200ms;
+
+	&.flash {
+		background: rgba($purple, 0.5);
+	}
 
 	.name {
 		color: $purple;
@@ -119,7 +124,6 @@ html, .app-container {
 			}
 
 			.value {
-				background: white;
 				transition: background 200ms;
 
 				&.flash {

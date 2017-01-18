@@ -6,6 +6,8 @@ import {debounce, isEqual} from 'lodash';
 class FlashItem extends Component {
 	created() {
 		this.removeFlash = debounce(this.removeFlash, 100);
+
+		this._firstRender = true;
 	}
 
 	removeFlash() {
@@ -24,8 +26,11 @@ class FlashItem extends Component {
 	}
 
 	syncValue(newVal, oldVal) {
-		if (!isEqual(newVal, oldVal)) {
+		if (!this._firstRender && !isEqual(newVal, oldVal)) {
 			this.addFlash();
+		}
+		else if (this._firstRender) {
+			this._firstRender = false;
 		}
 	}
 

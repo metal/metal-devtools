@@ -1,5 +1,5 @@
 import Component, {Config} from 'metal-jsx';
-import {bindAll} from 'lodash';
+import {bindAll, isEqual} from 'lodash';
 
 import NodeName, {OPENING, NORMAL_CLOSING, SELF_CLOSING} from './NodeName';
 
@@ -10,6 +10,8 @@ class TreeNode extends Component {
 			'focusNode',
 			'toggleExpanded'
 		);
+
+		this._firstRender = true;
 	}
 
 	focusNode() {
@@ -34,6 +36,25 @@ class TreeNode extends Component {
 		return () => {
 			this.state.highlight_ = value;
 		};
+	}
+
+	syncComponentNode(newVal = {}, oldVal = {}) {
+		const newData = newVal.data || {};
+		const oldData = oldVal.data || {};
+
+		if (!this._firstRender && !isEqual(newData, oldData)) {
+			this.refs.nodeName.element.classList.add('flash');
+
+			setTimeout(
+				() => {
+					this.refs.nodeName.element.classList.remove('flash');
+				},
+				100
+			);
+		}
+		else if (this._firstRender) {
+			this._firstRender = false;
+		}
 	}
 
 	render() {
@@ -66,7 +87,7 @@ class TreeNode extends Component {
 						<div class={expanded ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
 					}
 
-					<NodeName name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
+					<NodeName ref="nodeName" name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
 				</div>
 
 				{hasChildren && expanded &&

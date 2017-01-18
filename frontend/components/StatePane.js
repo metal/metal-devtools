@@ -1,10 +1,9 @@
 import Component, {Config} from 'metal-jsx';
 import {isPlainObject, keys} from 'lodash';
 
-import NodeName from './NodeName';
 import FlashItem from './FlashItem';
-
 import getComponentById from '../lib/getComponentById';
+import NodeName from './NodeName';
 
 class StatePane extends Component {
 	getSelectedComponent() {
