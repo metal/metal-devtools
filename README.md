@@ -4,7 +4,7 @@
 ![Screenshot](screenshot.png)
 
 ### Installation
-* Download latest `metal-devtools.crx` from [releases](/releases)
+* Download latest `metal-devtools.crx` from [releases](https://github.com/bryceosterhaus/metal-devtools/releases)
 * Open Chrome and navigate to `chrome://extensions/`
 * Drag `metal-devtools.crx` into extensions
 * See how it works by using it [here](https://bryceosterhaus.github.io/metal-devtools/)
