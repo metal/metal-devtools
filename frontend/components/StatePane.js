@@ -13,9 +13,11 @@ class StatePane extends Component {
 	}
 
 	render() {
-		const {data, name} = this.getSelectedComponent();
+		const {data = null, name} = this.getSelectedComponent();
 
-		const dataExists = isPlainObject(data);
+		const dataObj = JSON.parse(data);
+
+		const dataExists = isPlainObject(dataObj);
 
 		return (
 			<div class="state-pane-container">
@@ -28,9 +30,9 @@ class StatePane extends Component {
 				</div>
 
 				{dataExists &&
-					keys(data).map(
+					keys(dataObj).map(
 						dataKey => {
-							const stateObj = JSON.parse(data[dataKey]);
+							const stateObj = dataObj[dataKey];
 
 							return (
 								<div class="category" key={`${name}-${dataKey}`}>

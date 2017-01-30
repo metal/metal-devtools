@@ -18,18 +18,36 @@ class App extends Component {
 		this.props.port.onMessage.addListener(this.processMessage);
 	}
 
+	checkIfRootDetached(id) {
+		const roots = this.state.rootComponents;
+
+		if (roots[id]) {
+			delete roots[id];
+		}
+
+		this.state.rootComponents = roots;
+	}
+
 	handleResize({clientX}) {
 		this.state.firstColumnWidth = clientX;
 	}
 
-	processMessage(message) {
-		const {id, selectedId} = message;
-
-		if (id) {
-			this.setRootComponents(message);
-		}
-		else if (selectedId) {
-			this.selectedChange(selectedId);
+	processMessage({data, type}) {
+		switch(type) {
+			case 'detached':
+				this.checkIfRootDetached(data.id);
+				break;
+			case 'update':
+				this.updateRootComponent(data);
+				break;
+			case 'selected':
+				this.selectedChange(data.id);
+				break;
+			case 'newRoot':
+				this.addRootComponent(data);
+				break;
+			default:
+				console.log(`Unknown Message: ${type}`);
 		}
 	}
 
@@ -41,22 +59,21 @@ class App extends Component {
 		this.state.selectedId = id;
 	}
 
-	setRootComponents(component) {
-		const {id, remove} = component;
+	addRootComponent(root) {
+		this.state.rootComponents = {
+			...this.state.rootComponents,
+			[root.id]: root
+		};
+	}
 
-		let retVal = this.state.rootComponents;
+	updateRootComponent(root) {
+		const roots = this.state.rootComponents;
 
-		if (remove) {
-			delete retVal[id];
+		if (roots[root.id]) {
+			roots[root.id] = root;
 		}
-		else if (id) {
-			retVal = {
-				...retVal,
-				[id]: component
-			};
-		}
 
-		this.state.rootComponents = retVal;
+		this.state.rootComponents = roots;
 	}
 
 	render() {
