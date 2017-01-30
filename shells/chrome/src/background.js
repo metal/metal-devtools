@@ -8,8 +8,8 @@ chrome.extension.onConnect.addListener(function(port) {
 	});
 
 	port.onMessage.addListener(
-		message => {
-			if (message === 'initialize') {
+		({type}) => {
+			if (type === 'initialize') {
 				chrome.tabs.executeScript(
 					Number(port.name),
 					{file: './build/contentScript.js'}

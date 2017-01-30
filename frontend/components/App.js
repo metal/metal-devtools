@@ -107,13 +107,14 @@ class App extends Component {
 
 				<ResizeDivider onResize={this.handleResize}/>
 
-				<StatePane components={values(rootComponents)} id={selectedId} />
+				<StatePane components={values(rootComponents)} id={selectedId} onInspectDOM={this.props.inspectDOM} />
 			</div>
 		);
 	}
 }
 
 App.PROPS = {
+	inspectDOM: Config.func(),
 	port: Config.any()
 };
 

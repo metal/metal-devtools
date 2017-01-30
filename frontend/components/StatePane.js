@@ -6,10 +6,20 @@ import getComponentById from '../lib/getComponentById';
 import NodeName from './NodeName';
 
 class StatePane extends Component {
+	created() {
+		this.inspectComponent = this.inspectComponent.bind(this);
+	}
+
 	getSelectedComponent() {
 		const {components, id} = this.props;
 
 		return id ? getComponentById(components, id) : {};
+	}
+
+	inspectComponent() {
+		const {id, onInspectDOM} = this.props;
+
+		onInspectDOM(id);
 	}
 
 	render() {
@@ -25,7 +35,11 @@ class StatePane extends Component {
 					{'Component: '}
 
 					{name &&
-						<NodeName name={name} />
+						<span>
+							<NodeName name={name} />
+
+							<a class="see-in-dom" href="javascript:;" onClick={this.inspectComponent}>{'(Click to See Element)'}</a>
+						</span>
 					}
 				</div>
 

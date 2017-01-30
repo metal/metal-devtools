@@ -18,8 +18,11 @@ class Messenger extends EventEmitter {
 	_informDetached(data) {
 		window.postMessage(
 			{
-				data,
-				type: 'detached'
+				message: {
+					data,
+					type: 'detached'
+				},
+				from: 'backend'
 			},
 			'*'
 		);
@@ -28,8 +31,11 @@ class Messenger extends EventEmitter {
 	_informUpdate(data) {
 		window.postMessage(
 			{
-				data,
-				type: 'update'
+				message: {
+					data,
+					type: 'update'
+				},
+				from: 'backend'
 			},
 			'*'
 		);
@@ -38,8 +44,11 @@ class Messenger extends EventEmitter {
 	_sendSelectedToFrontend(data) {
 		window.postMessage(
 			{
-				data,
-				type: 'selected'
+				message: {
+					data,
+					type: 'selected'
+				},
+				from: 'backend'
 			},
 			'*'
 		);
@@ -48,8 +57,11 @@ class Messenger extends EventEmitter {
 	_sendRootToFrontend(data) {
 		window.postMessage(
 			{
-				data,
-				type: 'newRoot'
+				message: {
+					data,
+					type: 'newRoot'
+				},
+				from: 'backend'
 			},
 			'*'
 		);

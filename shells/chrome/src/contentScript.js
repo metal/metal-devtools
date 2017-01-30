@@ -1,8 +1,9 @@
 const processComponents =  require('raw-loader!../../../injected/build/processComponents');
 
-window.addEventListener('message', function(event) {
-	console.log('sentToBackround.js', event.data);
-	chrome.extension.sendMessage(event.data);
+window.addEventListener('message', function({data}) {
+	if (data.from === 'backend') {
+		chrome.extension.sendMessage(data.message);
+	}
 });
 
 const script = document.createElement('script');

@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-
 import Messenger from './Messenger';
 import processDataManagers from './processDataManagers';
 
@@ -15,7 +14,7 @@ class RootManager extends EventEmitter {
 		this._messenger = new Messenger();
 		this._listeners = {};
 		this._roots = [];
-		this._componentMap = [];
+		this._componentMap = {};
 
 		this._handleInitialRoots = this._handleInitialRoots.bind(this);
 		this._handleNewRoot = this._handleNewRoot.bind(this);
@@ -25,6 +24,16 @@ class RootManager extends EventEmitter {
 		this.on('addRoot', this._handleNewRoot);
 		this.on('loadRoots', this._handleInitialRoots);
 		this.on('removeRoot', this._handleRemoveRoot);
+	}
+
+	getComponentNode(id) {
+		if (this._componentMap[id] && this._componentMap[id].element) {
+			return this._componentMap[id].element;
+		}
+	}
+
+	hasComponent(id) {
+		return !!this._componentMap[id];
 	}
 
 	hasRoots() {
