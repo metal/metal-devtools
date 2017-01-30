@@ -1,5 +1,5 @@
 import Component, {Config} from 'metal-jsx';
-import {bindAll, isEqual} from 'lodash';
+import {bindAll, debounce, isEqual} from 'lodash';
 
 import NodeName, {OPENING, NORMAL_CLOSING, SELF_CLOSING} from './NodeName';
 
@@ -7,11 +7,34 @@ class TreeNode extends Component {
 	created() {
 		bindAll(
 			this,
+			'debounceOverlay',
 			'focusNode',
+			'handleContextMenu',
+			'handleInspect',
 			'toggleExpanded'
 		);
 
+		this.debounceOverlay = debounce(this.debounceOverlay, 200);
+
 		this._firstRender = true;
+	}
+
+	debounceOverlay() {
+		this.state.showMenu_ = false;
+	}
+
+	handleInspect() {
+		const {componentNode, onInspectDOM} = this.props;
+
+		onInspectDOM(componentNode.id);
+	}
+
+	handleContextMenu(event) {
+		event.preventDefault();
+
+		console.log('event', event);
+
+		this.state.showMenu_ = true;
 	}
 
 	focusNode() {
@@ -80,11 +103,11 @@ class TreeNode extends Component {
 	}
 
 	render() {
-		const {componentNode, depth, onNodeClick, selectedId} = this.props;
+		const {componentNode, depth, onInspectDOM, onNodeClick, selectedId} = this.props;
 
 		const {childComponents, id, name} = componentNode;
 
-		const {expanded_, highlight_} = this.state;
+		const {expanded_, highlight_, showMenu_} = this.state;
 
 		const hasChildren = childComponents && childComponents.length > 0;
 
@@ -99,6 +122,7 @@ class TreeNode extends Component {
 				<div
 					class={`node-wrapper ${selected} ${highlight} ${hasChildren ? 'expandable' : ''}`}
 					onClick={expanded_ ? this.focusNode : this.toggleExpanded}
+					onContextMenu={this.handleContextMenu}
 					onMouseEnter={this.toggleHighlight(true)}
 					onMouseLeave={this.toggleHighlight(false)}
 					style={style}
@@ -108,6 +132,14 @@ class TreeNode extends Component {
 					}
 
 					<NodeName ref="nodeName" name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
+
+					{showMenu_ &&
+						<div class="overlay" onMouseLeave={this.debounceOverlay}>
+							<ul>
+								<li onClick={this.handleInspect}>{'Show in Elements Panel'}</li>
+							</ul>
+						</div>
+					}
 				</div>
 
 				{hasChildren && expanded_ &&
@@ -117,6 +149,7 @@ class TreeNode extends Component {
 								componentNode={child}
 								depth={this.props.depth + 1}
 								key={`${name}-${i}`}
+								onInspectDOM={onInspectDOM}
 								onNodeClick={onNodeClick}
 								selectedId={selectedId}
 							/>
@@ -144,12 +177,14 @@ TreeNode.PROPS = {
 	componentNode: Config.value({}),
 	depth: Config.number().value(0),
 	onNodeClick: Config.func(),
+	onInspectDOM: Config.func(),
 	selectedId: Config.string()
 };
 
 TreeNode.STATE = {
 	expanded_: Config.value(false),
-	highlight_: Config.value(false)
+	highlight_: Config.value(false),
+	showMenu_: Config.bool(false)
 };
 
 export default TreeNode;

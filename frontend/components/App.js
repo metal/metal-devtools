@@ -10,12 +10,17 @@ class App extends Component {
 	created() {
 		bindAll(
 			this,
+			'handleClick',
 			'handleResize',
 			'processMessage',
 			'selectedChange'
 		);
 
 		this.props.port.onMessage.addListener(this.processMessage);
+	}
+
+	handleClick(event) {
+		console.log('event', event);
 	}
 
 	checkIfRootDetached(id) {
@@ -77,6 +82,7 @@ class App extends Component {
 	}
 
 	render() {
+		const {inspectDOM} = this.props;
 		const {firstColumnWidth, rootComponents, selectedId} = this.state;
 
 		const rootComponentKeys = keys(rootComponents);
@@ -96,6 +102,7 @@ class App extends Component {
 										componentNode={rootComponents[key]}
 										depth={0}
 										key={i}
+										onInspectDOM={inspectDOM}
 										onNodeClick={this.selectedChange}
 										selectedId={selectedId}
 									/>
@@ -107,7 +114,7 @@ class App extends Component {
 
 				<ResizeDivider onResize={this.handleResize}/>
 
-				<StatePane components={values(rootComponents)} id={selectedId} onInspectDOM={this.props.inspectDOM} />
+				<StatePane components={values(rootComponents)} id={selectedId} onInspectDOM={inspectDOM} />
 			</div>
 		);
 	}
