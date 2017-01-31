@@ -11,10 +11,10 @@ class RootManager extends EventEmitter {
 	constructor() {
 		super();
 
-		this._messenger = new Messenger();
-		this._listeners = {};
-		this._roots = [];
 		this._componentMap = {};
+		this._listeners = {};
+		this._messenger = new Messenger();
+		this._roots = [];
 
 		this._handleInitialRoots = this._handleInitialRoots.bind(this);
 		this._handleNewRoot = this._handleNewRoot.bind(this);

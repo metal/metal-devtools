@@ -32,4 +32,4 @@ const processDataManagers = (dataManagerData = {}) => {
 	return retVal;
 };
 
-export default processDataManagers
+export default processDataManagers;

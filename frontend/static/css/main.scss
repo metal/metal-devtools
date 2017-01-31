@@ -1,8 +1,12 @@
+$hoverState: rgba(#9552ef, 0.1);
 $purple: rgb(136, 18, 128);
 $sand: rgb(153, 69, 0);
+$selectedState: rgba(#9552ef, 0.2);
 $slate: rgba(35, 50, 64, 0.8);
+$white: #FFFFFF;
 
 body {
+	background: $white;
 	height: 100%;
 	margin: 0;
 	overflow: hidden;
@@ -71,11 +75,11 @@ html, .app-container {
 	position: relative;
 
 	&.highlight {
-		background: rgba(0, 0, 0, 0.2);
+		background: $hoverState;
 	}
 
 	&.selected {
-		background: rgba(0, 0, 0, 0.1);
+		background: $selectedState;
 	}
 
 	.node-name-container {
@@ -83,7 +87,8 @@ html, .app-container {
 	}
 
 	.overlay {
-		background: #FFFFFF;
+		background: $white;
+		border-radius: 4px;
 		box-shadow: 0px 0px 1px 1px $slate;
 		position: absolute;
 		top: -4px;

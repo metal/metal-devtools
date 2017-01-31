@@ -20,21 +20,7 @@ class TreeNode extends Component {
 	}
 
 	debounceOverlay() {
-		this.state.showMenu_ = false;
-	}
-
-	handleInspect() {
-		const {componentNode, onInspectDOM} = this.props;
-
-		onInspectDOM(componentNode.id);
-	}
-
-	handleContextMenu(event) {
-		event.preventDefault();
-
-		console.log('event', event);
-
-		this.state.showMenu_ = true;
+		this.state.showMenu = false;
 	}
 
 	focusNode() {
@@ -43,21 +29,33 @@ class TreeNode extends Component {
 		onNodeClick(componentNode.id);
 	}
 
+	handleContextMenu(event) {
+		event.preventDefault();
+
+		this.state.showMenu = true;
+	}
+
+	handleInspect() {
+		const {componentNode, onInspectDOM} = this.props;
+
+		onInspectDOM(componentNode.id);
+	}
+
 	toggleExpanded(event) {
 		event.stopPropagation();
 
 		const {componentNode, onNodeClick} = this.props;
 
-		const newVal = !this.state.expanded_;
+		const newVal = !this.state.expanded;
 
-		this.state.expanded_ = newVal;
+		this.state.expanded = newVal;
 
 		onNodeClick(componentNode.id);
 	}
 
 	toggleHighlight(value) {
 		return () => {
-			this.state.highlight_ = value;
+			this.state.highlight = value;
 		};
 	}
 
@@ -91,8 +89,10 @@ class TreeNode extends Component {
 			selectedId
 		} = this.props;
 
+		// TODO: This is sketchy, but currently the best way I have found to automatically
+		// expand nodes after it is inspected in the elements pane. Should revisit.
 		if (containsInspected) {
-			this.state.expanded_ = true;
+			this.state.expanded = true;
 
 			delete this.props.componentNode.containsInspected;
 
@@ -103,37 +103,50 @@ class TreeNode extends Component {
 	}
 
 	render() {
-		const {componentNode, depth, onInspectDOM, onNodeClick, selectedId} = this.props;
+		const {
+			props: {
+				componentNode: {
+					childComponents = [],
+					id,
+					name
+				},
+				depth,
+				onInspectDOM,
+				onNodeClick,
+				selectedId
+			},
+			state: {
+				expanded,
+				highlight,
+				showMenu
+			}
+		} = this;
 
-		const {childComponents, id, name} = componentNode;
-
-		const {expanded_, highlight_, showMenu_} = this.state;
-
-		const hasChildren = childComponents && childComponents.length > 0;
+		const hasChildren = !!childComponents.length;
 
 		const selected = id === selectedId ? 'selected' : '';
 
-		const highlight = highlight_ ? 'highlight' : '';
+		const highlighted = highlight ? 'highlight' : '';
 
 		const style = `padding-left: ${depth * 24 + 12}px`;
 
 		return(
 			<div class="tree-container">
 				<div
-					class={`node-wrapper ${selected} ${highlight} ${hasChildren ? 'expandable' : ''}`}
-					onClick={expanded_ ? this.focusNode : this.toggleExpanded}
+					class={`node-wrapper ${selected} ${highlighted} ${hasChildren ? 'expandable' : ''}`}
+					onClick={expanded ? this.focusNode : this.toggleExpanded}
 					onContextMenu={this.handleContextMenu}
 					onMouseEnter={this.toggleHighlight(true)}
 					onMouseLeave={this.toggleHighlight(false)}
 					style={style}
 				>
 					{hasChildren &&
-						<div class={expanded_ ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
+						<div class={expanded ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
 					}
 
 					<NodeName ref="nodeName" name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
 
-					{showMenu_ &&
+					{showMenu &&
 						<div class="overlay" onMouseLeave={this.debounceOverlay}>
 							<ul>
 								<li onClick={this.handleInspect}>{'Show in Elements Panel'}</li>
@@ -142,7 +155,7 @@ class TreeNode extends Component {
 					}
 				</div>
 
-				{hasChildren && expanded_ &&
+				{hasChildren && expanded &&
 					childComponents.map(
 						(child, i) => (
 							<TreeNode
@@ -157,9 +170,9 @@ class TreeNode extends Component {
 					)
 				}
 
-				{hasChildren && expanded_ &&
+				{hasChildren && expanded &&
 					<div
-						class={`node-wrapper ${selected} ${highlight}`}
+						class={`node-wrapper ${highlighted}`}
 						onClick={this.focusNode}
 						onMouseEnter={this.toggleHighlight(true)}
 						onMouseLeave={this.toggleHighlight(false)}
@@ -182,9 +195,9 @@ TreeNode.PROPS = {
 };
 
 TreeNode.STATE = {
-	expanded_: Config.value(false),
-	highlight_: Config.value(false),
-	showMenu_: Config.bool(false)
+	expanded: Config.value(false),
+	highlight: Config.value(false),
+	showMenu: Config.bool(false)
 };
 
 export default TreeNode;

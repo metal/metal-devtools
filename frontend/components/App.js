@@ -10,7 +10,6 @@ class App extends Component {
 	created() {
 		bindAll(
 			this,
-			'handleClick',
 			'handleResize',
 			'processMessage',
 			'selectedChange'
@@ -19,8 +18,11 @@ class App extends Component {
 		this.props.port.onMessage.addListener(this.processMessage);
 	}
 
-	handleClick(event) {
-		console.log('event', event);
+	addRootComponent(root) {
+		this.state.rootComponents = {
+			...this.state.rootComponents,
+			[root.id]: root
+		};
 	}
 
 	checkIfRootDetached(id) {
@@ -52,7 +54,7 @@ class App extends Component {
 				this.addRootComponent(data);
 				break;
 			default:
-				console.log(`Unknown Message: ${type}`);
+				console.log(`Unknown Message Type: ${type}`);
 		}
 	}
 
@@ -62,13 +64,6 @@ class App extends Component {
 
 	selectedChange(id) {
 		this.state.selectedId = id;
-	}
-
-	addRootComponent(root) {
-		this.state.rootComponents = {
-			...this.state.rootComponents,
-			[root.id]: root
-		};
 	}
 
 	updateRootComponent(root) {
@@ -82,8 +77,14 @@ class App extends Component {
 	}
 
 	render() {
-		const {inspectDOM} = this.props;
-		const {firstColumnWidth, rootComponents, selectedId} = this.state;
+		const {
+			props: {inspectDOM},
+			state: {
+				firstColumnWidth,
+				rootComponents,
+				selectedId
+			}
+		} = this;
 
 		const rootComponentKeys = keys(rootComponents);
 
@@ -114,7 +115,11 @@ class App extends Component {
 
 				<ResizeDivider onResize={this.handleResize}/>
 
-				<StatePane components={values(rootComponents)} id={selectedId} onInspectDOM={inspectDOM} />
+				<StatePane
+					components={values(rootComponents)}
+					id={selectedId}
+					onInspectDOM={inspectDOM}
+				/>
 			</div>
 		);
 	}
