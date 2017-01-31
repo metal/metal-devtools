@@ -1,7 +1,7 @@
 import './popup.html';
 
-chrome.extension.onConnect.addListener(function(port) {
-	chrome.extension.onMessage.addListener(function (message, sender) {
+chrome.extension.onConnect.addListener(port => {
+	chrome.extension.onMessage.addListener((message, sender) => {
 		if (port.name === sender.tab.id.toString()) {
 			port.postMessage(message);
 		}

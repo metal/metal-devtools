@@ -1,5 +1,5 @@
 function getComponentById(components = [], id) {
-	for (let i =0; i < components.length; i++) {
+	for (let i = 0; i < components.length; i++) {
 		const component = components[i];
 
 		if (component.id === id) {
