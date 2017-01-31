@@ -120,15 +120,33 @@ describe('TreeNode', () => {
 			highlightDOM: spy
 		});
 
-		const posFun = component.toggleHighlight(true);
-		posFun();
+		component.toggleHighlight(true);
 		expect(component.state.highlight).toBe(true);
 		expect(spy).toHaveBeenCalledTimes(1);
 
-		const negFun = component.toggleHighlight(false);
-		negFun();
+		component.toggleHighlight(false);
 		expect(component.state.highlight).toBe(false);
 		expect(spy).toHaveBeenCalledTimes(2);
+	});
+
+	it('should call toggleHighlight with true', () => {
+		const component = new TreeNode();
+
+		component.toggleHighlight = jest.fn();
+
+		component.addHighlight();
+
+		expect(component.toggleHighlight).toBeCalledWith(true);
+	});
+
+	it('should call toggleHighlight with false', () => {
+		const component = new TreeNode();
+
+		component.toggleHighlight = jest.fn();
+
+		component.removeHighlight();
+
+		expect(component.toggleHighlight).toBeCalledWith(false);
 	});
 
 	it('should call highlightDOM prop and set highlight value', () => {
