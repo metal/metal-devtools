@@ -21,7 +21,7 @@ class ResizeDivider extends Component {
 
 	initDrag() {
 		document.body.addEventListener('mousemove', this.doDrag, false);
-		document.body.addEventListener( 'mouseup', this.stopDrag, false);
+		document.body.addEventListener('mouseup', this.stopDrag, false);
 	}
 
 	stopDrag() {

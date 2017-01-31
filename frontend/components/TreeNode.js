@@ -7,16 +7,22 @@ class TreeNode extends Component {
 	created() {
 		bindAll(
 			this,
+			'addHighlight',
 			'debounceOverlay',
 			'focusNode',
 			'handleContextMenu',
 			'handleInspect',
+			'removeHighlight',
 			'toggleExpanded'
 		);
 
 		this.debounceOverlay = debounce(this.debounceOverlay, 200);
 
 		this._firstRender = true;
+	}
+
+	addHighlight() {
+		this.toggleHighlight(true);
 	}
 
 	debounceOverlay() {
@@ -56,16 +62,14 @@ class TreeNode extends Component {
 	toggleHighlight(value) {
 		const {componentNode, highlightDOM} = this.props;
 
-		return () => {
-			if (value) {
-				highlightDOM(componentNode.id);
-			}
-			else {
-				highlightDOM(null);
-			}
+		if (value) {
+			highlightDOM(componentNode.id);
+		}
+		else {
+			highlightDOM(null);
+		}
 
-			this.state.highlight = value;
-		};
+		this.state.highlight = value;
 	}
 
 	syncComponentNode(newVal = {}, oldVal = {}) {
@@ -87,6 +91,10 @@ class TreeNode extends Component {
 		else if (this._firstRender) {
 			this._firstRender = false;
 		}
+	}
+
+	removeHighlight() {
+		this.toggleHighlight(false);
 	}
 
 	// TODO: This is sketchy, but currently the best way I have found to automatically
@@ -139,14 +147,14 @@ class TreeNode extends Component {
 
 		const style = `padding-left: ${depth * 24 + 12}px`;
 
-		return(
+		return (
 			<div class="tree-container">
 				<div
 					class={`node-wrapper ${selected} ${highlighted} ${hasChildren ? 'expandable' : ''}`}
 					onClick={expanded ? this.focusNode : this.toggleExpanded}
 					onContextMenu={this.handleContextMenu}
-					onMouseEnter={this.toggleHighlight(true)}
-					onMouseLeave={this.toggleHighlight(false)}
+					onMouseEnter={this.addHighlight}
+					onMouseLeave={this.removeHighlight}
 					style={style}
 				>
 					{hasChildren &&
@@ -184,8 +192,8 @@ class TreeNode extends Component {
 					<div
 						class={`node-wrapper ${highlighted}`}
 						onClick={this.focusNode}
-						onMouseEnter={this.toggleHighlight(true)}
-						onMouseLeave={this.toggleHighlight(false)}
+						onMouseEnter={this.addHighlight}
+						onMouseLeave={this.removeHighlight}
 						style={style}
 					>
 						<NodeName name={name} type={NORMAL_CLOSING} />
@@ -200,8 +208,8 @@ TreeNode.PROPS = {
 	componentNode: Config.value({}),
 	depth: Config.number().value(0),
 	highlightDOM: Config.func(),
-	onNodeClick: Config.func(),
 	onInspectDOM: Config.func(),
+	onNodeClick: Config.func(),
 	selectedId: Config.string()
 };
 
