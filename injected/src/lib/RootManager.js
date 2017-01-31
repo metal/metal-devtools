@@ -83,9 +83,9 @@ class RootManager extends EventEmitter {
 			this.createOverlayMask();
 		}
 
-		if (this._componentMap[id]) {
-			const {element} = this._componentMap[id];
+		const element = this.getComponentNode(id);
 
+		if (element) {
 			const {height, left, top, width} = element.getBoundingClientRect();
 
 			this._maskDimensions.innerHTML = `${width}px x ${height}px`;
