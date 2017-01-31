@@ -78,7 +78,10 @@ class App extends Component {
 
 	render() {
 		const {
-			props: {inspectDOM},
+			props: {
+				highlightDOM,
+				inspectDOM
+			},
 			state: {
 				firstColumnWidth,
 				rootComponents,
@@ -103,6 +106,7 @@ class App extends Component {
 										componentNode={rootComponents[key]}
 										depth={0}
 										key={i}
+										highlightDOM={highlightDOM}
 										onInspectDOM={inspectDOM}
 										onNodeClick={this.selectedChange}
 										selectedId={selectedId}
@@ -126,6 +130,7 @@ class App extends Component {
 }
 
 App.PROPS = {
+	highlightDOM: Config.func(),
 	inspectDOM: Config.func(),
 	port: Config.any()
 };

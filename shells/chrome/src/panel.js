@@ -8,6 +8,11 @@ const port = chrome.extension.connect({name: '' + chrome.devtools.inspectedWindo
 const app = new App(
 	{
 		element: document.getElementById('container'),
+		highlightDOM: (id) => {
+			chrome.devtools.inspectedWindow.eval(
+				`window.__METAL_DEV_TOOLS_HOOK__.highlightNode('${id}');`
+			);
+		},
 		inspectDOM: (id) => {
 			chrome.devtools.inspectedWindow.eval(
 				`inspect(window.__METAL_DEV_TOOLS_HOOK__.getComponentNode('${id}'));`

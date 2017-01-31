@@ -54,7 +54,16 @@ class TreeNode extends Component {
 	}
 
 	toggleHighlight(value) {
+		const {componentNode, highlightDOM} = this.props;
+
 		return () => {
+			if (value) {
+				highlightDOM(componentNode.id);
+			}
+			else {
+				highlightDOM(null);
+			}
+
 			this.state.highlight = value;
 		};
 	}
@@ -162,6 +171,7 @@ class TreeNode extends Component {
 								componentNode={child}
 								depth={this.props.depth + 1}
 								key={`${name}-${i}`}
+								highlightDOM={this.props.highlightDOM}
 								onInspectDOM={onInspectDOM}
 								onNodeClick={onNodeClick}
 								selectedId={selectedId}
@@ -189,6 +199,7 @@ class TreeNode extends Component {
 TreeNode.PROPS = {
 	componentNode: Config.value({}),
 	depth: Config.number().value(0),
+	highlightDOM: Config.func(),
 	onNodeClick: Config.func(),
 	onInspectDOM: Config.func(),
 	selectedId: Config.string()
