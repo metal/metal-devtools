@@ -33,13 +33,17 @@
   },
   "jest": {
     "automock": true,
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/docroot/js/src/tests/"
+    ],
     "modulePathIgnorePatterns": [
       "node_modules"
     ],
     "snapshotSerializers": [
-      "<rootDir>/tests/metal-serializer"
+      "<rootDir>/tests/metal-serializer.js"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/tests/setup.js",
+    "timers": "fake",
     "unmockedModulePathPatterns": [
       "immutable",
       "lodash",

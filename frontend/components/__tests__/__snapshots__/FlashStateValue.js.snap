@@ -1,1 +1,1 @@
-exports[`FlashStateValue should render 1`] = `undefined`;
+exports[`FlashStateValue should render 1`] = `<span></span>`;

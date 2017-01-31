@@ -1,1 +1,19 @@
-exports[`App should render 1`] = `undefined`;
+exports[`App should render 1`] = `
+<div class="app-container">
+  <div class="roots-wrapper" key="_metal_jsx_2">
+    <div class="tree-container" key="_metal_jsx_1">
+      <div class="node-wrapper   " style="padding-left: 12px;" key="_metal_jsx_1">
+        <span class="node-name-container" key="_metal_jsx_2">&lt;
+          <span class="name" key="_metal_jsx_1"></span> /&gt;</span>
+      </div>
+    </div>
+  </div>
+  <div class="resize-container" key="_metal_jsx_3"></div>
+  <div class="state-pane-container" key="_metal_jsx_4">
+    <div class="header" key="_metal_jsx_1">Component: </div>
+    <div key="_metal_jsx_3">
+      <i key="_metal_jsx_1">No Component Data</i>
+    </div>
+  </div>
+</div>
+`;

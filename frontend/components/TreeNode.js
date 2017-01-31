@@ -89,6 +89,8 @@ class TreeNode extends Component {
 		}
 	}
 
+	// TODO: This is sketchy, but currently the best way I have found to automatically
+	// expand nodes after it is inspected in the elements pane. Should revisit.
 	rendered() {
 		const {
 			componentNode: {
@@ -98,8 +100,6 @@ class TreeNode extends Component {
 			selectedId
 		} = this.props;
 
-		// TODO: This is sketchy, but currently the best way I have found to automatically
-		// expand nodes after it is inspected in the elements pane. Should revisit.
 		if (containsInspected) {
 			this.state.expanded = true;
 
@@ -208,7 +208,7 @@ TreeNode.PROPS = {
 TreeNode.STATE = {
 	expanded: Config.value(false),
 	highlight: Config.value(false),
-	showMenu: Config.bool(false)
+	showMenu: Config.value(false)
 };
 
 export default TreeNode;

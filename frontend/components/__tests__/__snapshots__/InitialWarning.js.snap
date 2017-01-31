@@ -1,1 +1,10 @@
-exports[`InitialWarning should render 1`] = `undefined`;
+exports[`InitialWarning should render 1`] = `
+<div class="initial-warning-container">
+  <div key="_metal_jsx_1">If you do not see your components here, try refreshing the page while keeping this panel open.
+    <br key="_metal_jsx_1">
+    <i key="_metal_jsx_2">Or there may be no Metal.js components on the page. metal@^2.6.2 required.
+      <a href="https://github.com/bryceosterhaus/metal-devtools" target="blank_" key="_metal_jsx_1">Repo</a>
+    </i>
+  </div>
+</div>
+`;

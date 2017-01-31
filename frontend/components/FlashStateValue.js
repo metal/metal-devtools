@@ -29,7 +29,7 @@ class FlashStateValue extends Component {
 		if (!this._firstRender && !isEqual(newVal, oldVal)) {
 			this.addFlash();
 		}
-		else if (this._firstRender) {
+		else {
 			this._firstRender = false;
 		}
 	}

@@ -1,1 +1,29 @@
-exports[`TreeNode should render 1`] = `undefined`;
+exports[`TreeNode should render 1`] = `
+<div class="tree-container">
+  <div class="node-wrapper selected  expandable" style="padding-left: 12px;" key="_metal_jsx_1">
+    <div class="arrow right" key="_metal_jsx_1"></div>
+    <span class="node-name-container" key="_metal_jsx_2">&lt;
+      <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  </div>
+</div>
+`;
+
+exports[`TreeNode should show when expanded 1`] = `
+<div class="tree-container">
+  <div class="node-wrapper selected  expandable" style="padding-left: 12px;" key="_metal_jsx_1">
+    <div class="arrow right" key="_metal_jsx_1"></div>
+    <span class="node-name-container" key="_metal_jsx_2">&lt;
+      <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  </div>
+</div>
+`;
+
+exports[`TreeNode should show when highlighted 1`] = `
+<div class="tree-container">
+  <div class="node-wrapper selected  expandable" style="padding-left: 12px;" key="_metal_jsx_1">
+    <div class="arrow right" key="_metal_jsx_1"></div>
+    <span class="node-name-container" key="_metal_jsx_2">&lt;
+      <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  </div>
+</div>
+`;

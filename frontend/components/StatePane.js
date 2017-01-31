@@ -82,6 +82,7 @@ class StatePane extends Component {
 
 StatePane.PROPS = {
 	components: Config.array().value([]),
+	onInspectDOM: Config.func(),
 	id: Config.string()
 };
 
