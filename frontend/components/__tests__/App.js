@@ -105,7 +105,7 @@ describe('App', () => {
 			expect(spy).toBeCalled();
 		});
 
-		it('should call `selectedChange`', () => {
+		it('should set selectedComponent', () => {
 			const component = new App({
 				port: {
 					onMessage: {
@@ -114,13 +114,9 @@ describe('App', () => {
 				}
 			});
 
-			const spy = jest.fn();
+			component.processMessage({data: fooRoot, type: 'selected'});
 
-			component.selectedChange = spy;
-
-			component.processMessage({data: {}, type: 'selected'});
-
-			expect(spy).toBeCalled();
+			expect(component.state.selectedComponent).toBe(fooRoot);
 		});
 
 		it('should call `addRootComponent`', () => {
@@ -174,22 +170,6 @@ describe('App', () => {
 		component.resetRoots();
 
 		expect(component.state.rootComponents).toEqual({});
-	});
-
-	it('should set selectedId', () => {
-		const component = new App({
-			port: {
-				onMessage: {
-					addListener: jest.fn()
-				}
-			}
-		});
-
-		component.state.selectedId = 'foo';
-
-		component.selectedChange('bar');
-
-		expect(component.state.selectedId).toEqual('bar');
 	});
 
 	it('should update component', () => {

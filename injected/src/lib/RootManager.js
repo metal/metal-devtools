@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-import {bindAll} from 'lodash';
 
 import Messenger from './Messenger';
 import processDataManagers from './processDataManagers';
@@ -31,20 +30,17 @@ class RootManager extends EventEmitter {
 	constructor() {
 		super();
 
+		this._handleInitialRoots = this._handleInitialRoots.bind(this);
+		this._handleNewRoot = this._handleNewRoot.bind(this);
+		this._handleRemoveRoot = this._handleRemoveRoot.bind(this);
+		this._traverseTree = this._traverseTree.bind(this);
+
 		this._componentMap = {};
 		this._listeners = {};
 		this._mask = null;
 		this._maskDimensions = null;
 		this._messenger = new Messenger();
 		this._roots = [];
-
-		bindAll(
-			this,
-			'_handleInitialRoots',
-			'_handleNewRoot',
-			'_handleRemoveRoot',
-			'_traverseTree'
-		);
 
 		this.on('addRoot', this._handleNewRoot);
 		this.on('loadRoots', this._handleInitialRoots);
@@ -104,6 +100,21 @@ class RootManager extends EventEmitter {
 		else {
 			this._mask.style.display = 'none';
 		}
+	}
+
+	processComponentObj(component) {
+		return {
+			data: processDataManagers(component.__DATA_MANAGER_DATA__),
+			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
+			name: component.name || component.constructor.name,
+		};
+	}
+
+	selectComponent(id) {
+		this._messenger.emit(
+			'selected',
+			this.processComponentObj(this._componentMap[id])
+		);
 	}
 
 	_attachComponentListeners(component, rootComponent) {
@@ -179,13 +190,12 @@ class RootManager extends EventEmitter {
 			containsInspected = component.element.contains(window.__METAL_DEV_TOOLS_HOOK__.$0);
 
 			if (window.__METAL_DEV_TOOLS_HOOK__.$0 === component.element) {
-				this._messenger.emit('selected', {id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__]});
+				this.selectComponent(component[__METAL_DEV_TOOLS_COMPONENT_KEY__]);
 			}
 		}
 
 		return {
 			containsInspected,
-			data: processDataManagers(component.__DATA_MANAGER_DATA__),
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.name || component.constructor.name,
 			childComponents: renderer && renderer.childComponents && renderer.childComponents.map(

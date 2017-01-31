@@ -2,7 +2,6 @@ import Component, {Config} from 'metal-jsx';
 import {isPlainObject, keys} from 'lodash';
 
 import FlashStateValue from './FlashStateValue';
-import getComponentById from '../lib/getComponentById';
 import NodeName from './NodeName';
 
 class StatePane extends Component {
@@ -10,20 +9,14 @@ class StatePane extends Component {
 		this.inspectComponent = this.inspectComponent.bind(this);
 	}
 
-	getSelectedComponent() {
-		const {components, id} = this.props;
-
-		return id ? getComponentById(components, id) : {};
-	}
-
 	inspectComponent() {
-		const {id, onInspectDOM} = this.props;
+		const {component, onInspectDOM} = this.props;
 
-		onInspectDOM(id);
+		onInspectDOM(component.id);
 	}
 
 	render() {
-		const {data = null, name} = this.getSelectedComponent();
+		const {data = null, name} = this.props.component;
 
 		const dataObj = JSON.parse(data);
 
@@ -81,9 +74,8 @@ class StatePane extends Component {
 }
 
 StatePane.PROPS = {
-	components: Config.array().value([]),
-	onInspectDOM: Config.func(),
-	id: Config.string()
+	component: Config.any(),
+	onInspectDOM: Config.func()
 };
 
 export default StatePane;

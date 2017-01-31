@@ -1,17 +1,13 @@
 import EventEmitter from 'events';
-import {bindAll} from 'lodash';
 
 class Messenger extends EventEmitter {
 	constructor() {
 		super();
 
-		bindAll(
-			this,
-			'_informDetached',
-			'_informUpdate',
-			'_sendRootToFrontend',
-			'_sendSelectedToFrontend'
-		);
+		this._informDetached = this._informDetached.bind(this);
+		this._informUpdate = this._informUpdate.bind(this);
+		this._sendRootToFrontend = this._sendRootToFrontend.bind(this);
+		this._sendSelectedToFrontend = this._sendSelectedToFrontend.bind(this);
 
 		this.on('detached', this._informDetached);
 		this.on('root', this._sendRootToFrontend);

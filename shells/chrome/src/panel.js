@@ -13,6 +13,11 @@ const app = new App(
 				`window.__METAL_DEV_TOOLS_HOOK__.highlightNode('${id}');`
 			);
 		},
+		onSelectedChange: id => {
+			chrome.devtools.inspectedWindow.eval(
+				`window.__METAL_DEV_TOOLS_HOOK__.selectComponent('${id}');`
+			);
+		},
 		inspectDOM: id => {
 			chrome.devtools.inspectedWindow.eval(
 				`inspect(window.__METAL_DEV_TOOLS_HOOK__.getComponentNode('${id}'));`

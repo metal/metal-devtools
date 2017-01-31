@@ -1,5 +1,5 @@
 import Component, {Config} from 'metal-jsx';
-import {bindAll, keys, values} from 'lodash';
+import {bindAll, keys} from 'lodash';
 
 import InitialWarning from './InitialWarning';
 import ResizeDivider from './ResizeDivider';
@@ -11,8 +11,7 @@ class App extends Component {
 		bindAll(
 			this,
 			'handleResize',
-			'processMessage',
-			'selectedChange'
+			'processMessage'
 		);
 
 		this.props.port.onMessage.addListener(this.processMessage);
@@ -48,7 +47,7 @@ class App extends Component {
 				this.updateRootComponent(data);
 				break;
 			case 'selected':
-				this.selectedChange(data.id);
+				this.state.selectedComponent = data;
 				break;
 			case 'newRoot':
 				this.addRootComponent(data);
@@ -60,10 +59,6 @@ class App extends Component {
 
 	resetRoots() {
 		this.state.rootComponents = {};
-	}
-
-	selectedChange(id) {
-		this.state.selectedId = id;
 	}
 
 	updateRootComponent(root) {
@@ -80,12 +75,13 @@ class App extends Component {
 		const {
 			props: {
 				highlightDOM,
-				inspectDOM
+				inspectDOM,
+				onSelectedChange
 			},
 			state: {
 				firstColumnWidth,
 				rootComponents,
-				selectedId
+				selectedComponent
 			}
 		} = this;
 
@@ -108,8 +104,8 @@ class App extends Component {
 										key={i}
 										highlightDOM={highlightDOM}
 										onInspectDOM={inspectDOM}
-										onNodeClick={this.selectedChange}
-										selectedId={selectedId}
+										onNodeClick={onSelectedChange}
+										selectedId={selectedComponent.id}
 									/>
 								)
 							)
@@ -119,11 +115,7 @@ class App extends Component {
 
 				<ResizeDivider onResize={this.handleResize}/>
 
-				<StatePane
-					components={values(rootComponents)}
-					id={selectedId}
-					onInspectDOM={inspectDOM}
-				/>
+				<StatePane component={selectedComponent} onInspectDOM={inspectDOM} />
 			</div>
 		);
 	}
@@ -132,13 +124,14 @@ class App extends Component {
 App.PROPS = {
 	highlightDOM: Config.func(),
 	inspectDOM: Config.func(),
+	onSelectedChange: Config.func(),
 	port: Config.any()
 };
 
 App.STATE = {
 	firstColumnWidth: Config.number(),
 	rootComponents: Config.value({}),
-	selectedId: Config.value('')
+	selectedComponent: Config.value({})
 };
 
 export default App;

@@ -1,4 +1,3 @@
-jest.unmock('../../lib/getComponentById');
 jest.unmock('../../lib/processStateValues');
 jest.unmock('../NodeName');
 jest.unmock('../ResizeDivider');
@@ -11,15 +10,14 @@ describe('StatePane', () => {
 	it('should render', () => {
 		const component = new StatePane(
 			{
-				components: [{
+				component: {
 					data: JSON.stringify({
 						one: {foo: 'bar'},
 						two: {}
 					}),
 					id: 'foo',
 					name: 'fooComponent'
-				}],
-				id: 'foo'
+				}
 			}
 		);
 
@@ -31,14 +29,14 @@ describe('StatePane', () => {
 		const spy = jest.fn();
 
 		const component = new StatePane({
-			components: [{
+			component: {
 				data: JSON.stringify({
 					one: {foo: 'bar'},
 					two: {}
 				}),
-				id
-			}],
-			id,
+				id: 'foo',
+				name: 'fooComponent'
+			},
 			onInspectDOM: spy
 		});
 

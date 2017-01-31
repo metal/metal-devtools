@@ -16,6 +16,7 @@ if (__METAL_DEV_TOOLS_HOOK__) {
 	window.__METAL_DEV_TOOLS_HOOK__.hasComponent = RootManager.hasComponent.bind(RootManager);
 	window.__METAL_DEV_TOOLS_HOOK__.hasRoots = RootManager.hasRoots.bind(RootManager);
 	window.__METAL_DEV_TOOLS_HOOK__.highlightNode = RootManager.highlightNode.bind(RootManager);
+	window.__METAL_DEV_TOOLS_HOOK__.selectComponent = RootManager.selectComponent.bind(RootManager);
 
 	RootManager.emit('loadRoots');
 }
