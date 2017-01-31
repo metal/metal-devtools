@@ -1,4 +1,6 @@
 import EventEmitter from 'events';
+import {bindAll} from 'lodash';
+
 import Messenger from './Messenger';
 import processDataManagers from './processDataManagers';
 
@@ -36,10 +38,13 @@ class RootManager extends EventEmitter {
 		this._messenger = new Messenger();
 		this._roots = [];
 
-		this._handleInitialRoots = this._handleInitialRoots.bind(this);
-		this._handleNewRoot = this._handleNewRoot.bind(this);
-		this._handleRemoveRoot = this._handleRemoveRoot.bind(this);
-		this._traverseTree = this._traverseTree.bind(this);
+		bindAll(
+			this,
+			'_handleInitialRoots',
+			'_handleNewRoot',
+			'_handleRemoveRoot',
+			'_traverseTree'
+		);
 
 		this.on('addRoot', this._handleNewRoot);
 		this.on('loadRoots', this._handleInitialRoots);
