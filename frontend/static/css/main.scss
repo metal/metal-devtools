@@ -8,6 +8,7 @@ $paneBorder: 1px solid #CCC;
 
 body {
 	background: $white;
+	font-family: Menlo, monospace;
 	height: 100%;
 	margin: 0;
 	overflow: hidden;
@@ -23,7 +24,7 @@ html, .app-container {
 }
 
 .app-container {
-	display: flex;
+	display: flex
 }
 
 .resize-container {
