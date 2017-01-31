@@ -2,8 +2,8 @@ var srcDir = __dirname + '/src';
 
 module.exports = {
 	entry: {
-		installHook: srcDir + '/installHook.js',
-		processComponents: srcDir + '/processComponents.js'
+		installInitialHook: srcDir + '/installInitialHook.js',
+		installRootManagerHook: srcDir + '/installRootManagerHook.js'
 	},
 	module: {
 		loaders: [

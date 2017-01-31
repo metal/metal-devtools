@@ -1,8 +1,8 @@
-const installHook =  require('raw-loader!../../../injected/build/installHook');
+const installInitialHook =  require('raw-loader!../../../injected/build/installInitialHook');
 
 const script = document.createElement('script');
 
-script.textContent = installHook;
+script.textContent = installInitialHook;
 
 document.documentElement.appendChild(script);
 

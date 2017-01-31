@@ -1,4 +1,4 @@
-const processComponents =  require('raw-loader!../../../injected/build/processComponents');
+const installRootManagerHook =  require('raw-loader!../../../injected/build/installRootManagerHook');
 
 window.addEventListener('message', function({data}) {
 	if (data.from === 'backend') {
@@ -8,7 +8,7 @@ window.addEventListener('message', function({data}) {
 
 const script = document.createElement('script');
 
-script.textContent = processComponents;
+script.textContent = installRootManagerHook;
 
 document.documentElement.appendChild(script);
 
