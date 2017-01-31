@@ -1,9 +1,10 @@
 $hoverState: rgba(#9552EF, 0.1);
 $purple: rgb(136, 18, 128);
-$sand: rgb(153, 69, 0);
+$sand: #C50000;
 $selectedState: rgba(#9552EF, 0.2);
 $slate: rgba(35, 50, 64, 0.8);
 $white: #FFFFFF;
+$paneBorder: 1px solid #CCC;
 
 body {
 	background: $white;
@@ -26,7 +27,7 @@ html, .app-container {
 }
 
 .resize-container {
-	border-right: 2px solid black;
+	border-right: $paneBorder;
 	cursor: col-resize;
 	flex: 0 0 0;
 	height: 100%;
@@ -37,7 +38,6 @@ html, .app-container {
 
 .initial-warning-container {
 	align-items: center;
-	border-right: 1px solid black;
 	display: flex;
 	flex: 0 0 70%;
 	font-size: 16px;
@@ -55,6 +55,7 @@ html, .app-container {
 /* ---- Node Name Component ---- */
 
 .node-name-container {
+	color: #A894A6;
 	display: inline-block;
 	font-size: 14px;
 	transition: background 200ms;
@@ -89,7 +90,7 @@ html, .app-container {
 	.overlay {
 		background: $white;
 		border-radius: 4px;
-		box-shadow: 0px 0px 1px 1px $slate;
+		box-shadow: 0 0 1px 1px $slate;
 		position: absolute;
 		top: -4px;
 		z-index: 1;
@@ -130,7 +131,7 @@ html, .app-container {
 	}
 
 	.header {
-		border-bottom: 2px solid black;
+		border-bottom: $paneBorder;
 		font-weight: bold;
 		padding: 8px 0 8px 12px;
 
