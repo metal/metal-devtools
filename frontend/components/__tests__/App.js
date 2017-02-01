@@ -1,5 +1,6 @@
 jest.disableAutomock();
 
+import * as messageTypes from '../../../shared/messageTypes';
 import App from '../App';
 
 const fooRoot = {
@@ -82,7 +83,7 @@ describe('App', () => {
 
 			component.checkIfRootDetached = spy;
 
-			component.processMessage({data: {}, type: 'detached'});
+			component.processMessage({data: {}, type: messageTypes.DETACHED});
 
 			expect(spy).toBeCalled();
 		});
@@ -100,7 +101,7 @@ describe('App', () => {
 
 			component.updateRootComponent = spy;
 
-			component.processMessage({data: {}, type: 'update'});
+			component.processMessage({data: {}, type: messageTypes.UPDATE});
 
 			expect(spy).toBeCalled();
 		});
@@ -114,7 +115,7 @@ describe('App', () => {
 				}
 			});
 
-			component.processMessage({data: fooRoot, type: 'selected'});
+			component.processMessage({data: fooRoot, type: messageTypes.SELECTED});
 
 			expect(component.state.selectedComponent).toBe(fooRoot);
 		});
@@ -132,7 +133,7 @@ describe('App', () => {
 
 			component.addRootComponent = spy;
 
-			component.processMessage({data: {}, type: 'newRoot'});
+			component.processMessage({data: {}, type: messageTypes.NEW_ROOT});
 
 			expect(spy).toBeCalled();
 		});
