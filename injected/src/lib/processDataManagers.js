@@ -1,3 +1,6 @@
+const STATE_KEY_BLACKLIST = ['children', 'events', 'storeState'];
+const INSTANCE_BLACKLIST = [HTMLElement];
+
 const removeDOMReferences = (stateInfo) => {
 	let retVal = {};
 
@@ -5,7 +8,7 @@ const removeDOMReferences = (stateInfo) => {
 		for (let key in stateInfo) {
 			const {value} = stateInfo[key];
 
-			if (!(value instanceof HTMLElement)) {
+			if (STATE_KEY_BLACKLIST.indexOf(key) === -1 && !INSTANCE_BLACKLIST.some(type => value instanceof type)) {
 				retVal[key] = value;
 			}
 		}
@@ -26,6 +29,8 @@ const processDataManagers = (dataManagerData = {}) => {
 	try {
 		retVal = JSON.stringify(retVal);
 	} catch (e) {
+		console.log('%c Metal-Devtools Extension:\n', 'background: #222; color: #BADA55', e);
+
 		retVal = 'null';
 	}
 
