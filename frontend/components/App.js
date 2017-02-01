@@ -34,6 +34,21 @@ class App extends Component {
 		this.state.rootComponents = roots;
 	}
 
+	flashNode(id) {
+		const node = document.querySelector(`[data-nodeid="${id}"]`);
+
+		if (node) {
+			node.classList.add('flash');
+
+			setTimeout(
+				() => {
+					node.classList.remove('flash');
+				},
+				100
+			);
+		}
+	}
+
 	handleResize({clientX}) {
 		this.state.firstColumnWidth = clientX;
 	}
@@ -43,14 +58,17 @@ class App extends Component {
 			case 'detached':
 				this.checkIfRootDetached(data.id);
 				break;
-			case 'update':
-				this.updateRootComponent(data);
+			case 'newRoot':
+				this.addRootComponent(data);
+				break;
+			case 'rendered':
+				this.flashNode(data);
 				break;
 			case 'selected':
 				this.state.selectedComponent = data;
 				break;
-			case 'newRoot':
-				this.addRootComponent(data);
+			case 'update':
+				this.updateRootComponent(data);
 				break;
 			default:
 				console.log(`Unknown Message Type: ${type}`);

@@ -5,11 +5,13 @@ class Messenger extends EventEmitter {
 		super();
 
 		this._informDetached = this._informDetached.bind(this);
+		this._informRendered = this._informRendered.bind(this);
 		this._informUpdate = this._informUpdate.bind(this);
 		this._sendRootToFrontend = this._sendRootToFrontend.bind(this);
 		this._sendSelectedToFrontend = this._sendSelectedToFrontend.bind(this);
 
 		this.on('detached', this._informDetached);
+		this.on('rendered', this._informRendered);
 		this.on('root', this._sendRootToFrontend);
 		this.on('selected', this._sendSelectedToFrontend);
 		this.on('update', this._informUpdate);
@@ -45,6 +47,18 @@ class Messenger extends EventEmitter {
 				message: {
 					data,
 					type: 'update'
+				},
+				from: 'backend'
+			}
+		);
+	}
+
+	_informRendered(data) {
+		this.postWindowMessage(
+			{
+				message: {
+					data,
+					type: 'rendered'
 				},
 				from: 'backend'
 			}

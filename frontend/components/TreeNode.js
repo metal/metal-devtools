@@ -1,5 +1,5 @@
 import Component, {Config} from 'metal-jsx';
-import {bindAll, debounce, isEqual} from 'lodash';
+import {bindAll, debounce} from 'lodash';
 
 import NodeName, {OPENING, NORMAL_CLOSING, SELF_CLOSING} from './NodeName';
 
@@ -72,27 +72,6 @@ class TreeNode extends Component {
 		this.state.highlight = value;
 	}
 
-	syncComponentNode(newVal = {}, oldVal = {}) {
-		const newData = newVal.data || {};
-		const oldData = oldVal.data || {};
-
-		if (!this._firstRender && !isEqual(newData, oldData)) {
-			const {element} = this.refs.nodeName;
-
-			element.classList.add('flash');
-
-			setTimeout(
-				() => {
-					element.classList.remove('flash');
-				},
-				100
-			);
-		}
-		else if (this._firstRender) {
-			this._firstRender = false;
-		}
-	}
-
 	removeHighlight() {
 		this.toggleHighlight(false);
 	}
@@ -161,7 +140,7 @@ class TreeNode extends Component {
 						<div class={expanded ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
 					}
 
-					<NodeName ref="nodeName" name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
+					<NodeName data-nodeid={id} ref="nodeName" name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
 
 					{showMenu &&
 						<div class="overlay" onMouseLeave={this.debounceOverlay}>

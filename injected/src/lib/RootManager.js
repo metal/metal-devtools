@@ -129,13 +129,18 @@ class RootManager extends EventEmitter {
 			this._componentMap[id] = component;
 
 			component.on(
-				'rendered',
-				() => this._handleComponentUpdated(rootComponent)
+				'detached',
+				() => this._messenger.emit('detached', {id})
 			);
 
 			component.on(
-				'detached',
-				() => this._messenger.emit('detached', {id})
+				'rendered',
+				() => this._messenger.emit('rendered', id)
+			);
+
+			component.on(
+				'stateSynced',
+				() => this._handleComponentUpdated(rootComponent, id)
 			);
 		}
 	}
