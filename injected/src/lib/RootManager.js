@@ -39,7 +39,6 @@ class RootManager extends EventEmitter {
 		this._listeners = {};
 		this._mask = null;
 		this._maskDimensions = null;
-		this._messenger = new Messenger();
 		this._previousSelectedId = '';
 		this._roots = [];
 
@@ -114,10 +113,7 @@ class RootManager extends EventEmitter {
 	selectComponent(id) {
 		this._previousSelectedId = id;
 
-		this._messenger.emit(
-			'selected',
-			this.processComponentObj(this._componentMap[id])
-		);
+		Messenger.informSelected(this.processComponentObj(this._componentMap[id]));
 	}
 
 	_attachComponentListeners(component, rootComponent) {
@@ -130,17 +126,17 @@ class RootManager extends EventEmitter {
 
 			component.on(
 				'detached',
-				() => this._messenger.emit('detached', {id})
+				() => Messenger.informDetached({id})
 			);
 
 			component.on(
 				'rendered',
-				() => this._messenger.emit('rendered', id)
+				() => Messenger.informDetached(id)
 			);
 
 			component.on(
 				'stateSynced',
-				() => this._handleComponentUpdated(rootComponent, id)
+				() => this._handleComponentUpdated(rootComponent)
 			);
 		}
 	}
@@ -153,10 +149,7 @@ class RootManager extends EventEmitter {
 
 			setTimeout(
 				() => {
-					this._messenger.emit(
-						'update',
-						this._traverseTree(rootComponent, rootComponent)
-					);
+					Messenger.informUpdate(this._traverseTree(rootComponent, rootComponent));
 
 					this._updateCurrentSelected();
 
@@ -170,7 +163,7 @@ class RootManager extends EventEmitter {
 	_handleInitialRoots() {
 		this._roots.forEach(
 			root => {
-				this._messenger.emit('root', this._traverseTree(root, root));
+				Messenger.informNewRoot(this._traverseTree(root, root));
 			}
 		);
 	}
@@ -215,10 +208,7 @@ class RootManager extends EventEmitter {
 	}
 
 	_updateCurrentSelected() {
-		this._messenger.emit(
-			'selected',
-			this.processComponentObj(this._componentMap[this._previousSelectedId])
-		);
+		Messenger.informSelected(this.processComponentObj(this._componentMap[this._previousSelectedId]));
 	}
 }
 

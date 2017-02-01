@@ -1,25 +1,7 @@
-import EventEmitter from 'events';
-
 import * as messageTypes from '../../../shared/messageTypes';
 
-class Messenger extends EventEmitter {
-	constructor() {
-		super();
-
-		this._informDetached = this._informDetached.bind(this);
-		this._informRendered = this._informRendered.bind(this);
-		this._informUpdate = this._informUpdate.bind(this);
-		this._sendRootToFrontend = this._sendRootToFrontend.bind(this);
-		this._sendSelectedToFrontend = this._sendSelectedToFrontend.bind(this);
-
-		this.on('detached', this._informDetached);
-		this.on('rendered', this._informRendered);
-		this.on('root', this._sendRootToFrontend);
-		this.on('selected', this._sendSelectedToFrontend);
-		this.on('update', this._informUpdate);
-	}
-
-	postWindowMessage(data) {
+class Messenger {
+	static 	postWindowMessage(data) {
 		try {
 			window.postMessage(
 				data,
@@ -31,7 +13,7 @@ class Messenger extends EventEmitter {
 		}
 	}
 
-	_informDetached(data) {
+	static informDetached(data) {
 		this.postWindowMessage(
 			{
 				message: {
@@ -43,7 +25,7 @@ class Messenger extends EventEmitter {
 		);
 	}
 
-	_informUpdate(data) {
+	static informUpdate(data) {
 		this.postWindowMessage(
 			{
 				message: {
@@ -67,7 +49,7 @@ class Messenger extends EventEmitter {
 		);
 	}
 
-	_sendSelectedToFrontend(data) {
+	static informSelected(data) {
 		this.postWindowMessage(
 			{
 				message: {
@@ -79,7 +61,7 @@ class Messenger extends EventEmitter {
 		);
 	}
 
-	_sendRootToFrontend(data) {
+	static informNewRoot(data) {
 		this.postWindowMessage(
 			{
 				message: {
