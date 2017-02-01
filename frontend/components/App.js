@@ -1,6 +1,7 @@
 import Component, {Config} from 'metal-jsx';
 import {bindAll, keys} from 'lodash';
 
+import * as messageTypes from '../../shared/messageTypes';
 import InitialWarning from './InitialWarning';
 import ResizeDivider from './ResizeDivider';
 import StatePane from './StatePane';
@@ -55,19 +56,19 @@ class App extends Component {
 
 	processMessage({data, type}) {
 		switch(type) {
-			case 'detached':
+			case messageTypes.DETACHED:
 				this.checkIfRootDetached(data.id);
 				break;
-			case 'newRoot':
+			case messageTypes.NEW_ROOT':
 				this.addRootComponent(data);
 				break;
-			case 'rendered':
+			case messageTypes.RENDERED':
 				this.flashNode(data);
 				break;
-			case 'selected':
+			case messageTypes.SELECTED:
 				this.state.selectedComponent = data;
 				break;
-			case 'update':
+			case messageTypes.UPDATE':
 				this.updateRootComponent(data);
 				break;
 			default:
