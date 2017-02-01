@@ -15,55 +15,63 @@ class Messenger extends EventEmitter {
 		this.on('update', this._informUpdate);
 	}
 
+	postWindowMessage(data) {
+		try {
+			window.postMessage(
+				data,
+				'*'
+			);
+		} catch (err) {
+			console.log('%c Metal-Devtools Extension:\n', 'background: #222; color: #BADA55', err);
+			console.log('%c Data:', 'background: #222; color: #BADA55', data);
+		}
+	}
+
 	_informDetached(data) {
-		window.postMessage(
+		this.postWindowMessage(
 			{
 				message: {
 					data,
 					type: 'detached'
 				},
 				from: 'backend'
-			},
-			'*'
+			}
 		);
 	}
 
 	_informUpdate(data) {
-		window.postMessage(
+		this.postWindowMessage(
 			{
 				message: {
 					data,
 					type: 'update'
 				},
 				from: 'backend'
-			},
-			'*'
+			}
 		);
 	}
 
 	_sendSelectedToFrontend(data) {
-		window.postMessage(
+		this.postWindowMessage(
 			{
 				message: {
 					data,
 					type: 'selected'
 				},
 				from: 'backend'
-			},
-			'*'
+			}
 		);
 	}
 
 	_sendRootToFrontend(data) {
-		window.postMessage(
+		this.postWindowMessage(
 			{
 				message: {
 					data,
 					type: 'newRoot'
 				},
 				from: 'backend'
-			},
-			'*'
+			}
 		);
 	}
 }

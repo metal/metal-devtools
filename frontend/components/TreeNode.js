@@ -139,7 +139,7 @@ class TreeNode extends Component {
 			}
 		} = this;
 
-		const hasChildren = !!childComponents.length;
+		const hasChildren = childComponents && !!childComponents.length;
 
 		const selected = id === selectedId ? 'selected' : '';
 
