@@ -59,16 +59,16 @@ class App extends Component {
 			case messageTypes.DETACHED:
 				this.checkIfRootDetached(data.id);
 				break;
-			case messageTypes.NEW_ROOT':
+			case messageTypes.NEW_ROOT:
 				this.addRootComponent(data);
 				break;
-			case messageTypes.RENDERED':
+			case messageTypes.RENDERED:
 				this.flashNode(data);
 				break;
 			case messageTypes.SELECTED:
 				this.state.selectedComponent = data;
 				break;
-			case messageTypes.UPDATE':
+			case messageTypes.UPDATE:
 				this.updateRootComponent(data);
 				break;
 			default:

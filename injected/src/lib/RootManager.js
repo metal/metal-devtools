@@ -113,7 +113,9 @@ class RootManager extends EventEmitter {
 	selectComponent(id) {
 		this._previousSelectedId = id;
 
-		Messenger.informSelected(this.processComponentObj(this._componentMap[id]));
+		Messenger.informSelected(
+			this.processComponentObj(this._componentMap[id])
+		);
 	}
 
 	_attachComponentListeners(component, rootComponent) {
@@ -131,7 +133,7 @@ class RootManager extends EventEmitter {
 
 			component.on(
 				'rendered',
-				() => Messenger.informDetached(id)
+				() => Messenger.informRendered(id)
 			);
 
 			component.on(
@@ -149,7 +151,9 @@ class RootManager extends EventEmitter {
 
 			setTimeout(
 				() => {
-					Messenger.informUpdate(this._traverseTree(rootComponent, rootComponent));
+					Messenger.informUpdate(
+						this._traverseTree(rootComponent, rootComponent)
+					);
 
 					this._updateCurrentSelected();
 
@@ -208,7 +212,9 @@ class RootManager extends EventEmitter {
 	}
 
 	_updateCurrentSelected() {
-		Messenger.informSelected(this.processComponentObj(this._componentMap[this._previousSelectedId]));
+		Messenger.informSelected(
+			this.processComponentObj(this._componentMap[this._previousSelectedId])
+		);
 	}
 }
 

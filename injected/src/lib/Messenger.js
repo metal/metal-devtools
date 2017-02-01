@@ -1,7 +1,9 @@
 import * as messageTypes from '../../../shared/messageTypes';
 
+const BACKEND = 'backend';
+
 class Messenger {
-	static 	postWindowMessage(data) {
+	static postWindowMessage(data) {
 		try {
 			window.postMessage(
 				data,
@@ -20,43 +22,7 @@ class Messenger {
 					data,
 					type: messageTypes.DETACHED
 				},
-				from: 'backend'
-			}
-		);
-	}
-
-	static informUpdate(data) {
-		this.postWindowMessage(
-			{
-				message: {
-					data,
-					type: messageTypes.UPDATE
-				},
-				from: 'backend'
-			}
-		);
-	}
-
-	_informRendered(data) {
-		this.postWindowMessage(
-			{
-				message: {
-					data,
-					type: messageTypes.RENDERED
-				},
-				from: 'backend'
-			}
-		);
-	}
-
-	static informSelected(data) {
-		this.postWindowMessage(
-			{
-				message: {
-					data,
-					type: messageTypes.SELECTED
-				},
-				from: 'backend'
+				from: BACKEND
 			}
 		);
 	}
@@ -68,7 +34,43 @@ class Messenger {
 					data,
 					type: messageTypes.NEW_ROOT
 				},
-				from: 'backend'
+				from: BACKEND
+			}
+		);
+	}
+
+	static informRendered(data) {
+		this.postWindowMessage(
+			{
+				message: {
+					data,
+					type: messageTypes.RENDERED
+				},
+				from: BACKEND
+			}
+		);
+	}
+
+	static informSelected(data) {
+		this.postWindowMessage(
+			{
+				message: {
+					data,
+					type: messageTypes.SELECTED
+				},
+				from: BACKEND
+			}
+		);
+	}
+
+	static informUpdate(data) {
+		this.postWindowMessage(
+			{
+				message: {
+					data,
+					type: messageTypes.UPDATE
+				},
+				from: BACKEND
 			}
 		);
 	}
