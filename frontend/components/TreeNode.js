@@ -30,9 +30,9 @@ class TreeNode extends Component {
 	}
 
 	focusNode() {
-		const {componentNode, onNodeClick} = this.props;
+		const {componentNode, onNodeSelect} = this.props;
 
-		onNodeClick(componentNode.id);
+		onNodeSelect(componentNode.id);
 	}
 
 	handleContextMenu(event) {
@@ -50,13 +50,13 @@ class TreeNode extends Component {
 	toggleExpanded(event) {
 		event.stopPropagation();
 
-		const {componentNode, onNodeClick} = this.props;
+		const {componentNode, onNodeSelect} = this.props;
 
 		const newVal = !this.state.expanded;
 
 		this.state.expanded = newVal;
 
-		onNodeClick(componentNode.id);
+		onNodeSelect(componentNode.id);
 	}
 
 	toggleHighlight(value) {
@@ -129,7 +129,7 @@ class TreeNode extends Component {
 				},
 				depth,
 				onInspectDOM,
-				onNodeClick,
+				onNodeSelect,
 				selectedId
 			},
 			state: {
@@ -181,7 +181,7 @@ class TreeNode extends Component {
 								key={`${name}-${i}`}
 								highlightDOM={this.props.highlightDOM}
 								onInspectDOM={onInspectDOM}
-								onNodeClick={onNodeClick}
+								onNodeSelect={onNodeSelect}
 								selectedId={selectedId}
 							/>
 						)
@@ -209,7 +209,7 @@ TreeNode.PROPS = {
 	depth: Config.number().value(0),
 	highlightDOM: Config.func(),
 	onInspectDOM: Config.func(),
-	onNodeClick: Config.func(),
+	onNodeSelect: Config.func(),
 	selectedId: Config.string()
 };
 

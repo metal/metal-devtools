@@ -104,7 +104,7 @@ class App extends Component {
 										key={i}
 										highlightDOM={highlightDOM}
 										onInspectDOM={inspectDOM}
-										onNodeClick={onSelectedChange}
+										onNodeSelect={onSelectedChange}
 										selectedId={selectedComponent.id}
 									/>
 								)

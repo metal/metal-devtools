@@ -40,6 +40,7 @@ class RootManager extends EventEmitter {
 		this._mask = null;
 		this._maskDimensions = null;
 		this._messenger = new Messenger();
+		this._previousSelectedId = '';
 		this._roots = [];
 
 		this.on('addRoot', this._handleNewRoot);
@@ -111,6 +112,8 @@ class RootManager extends EventEmitter {
 	}
 
 	selectComponent(id) {
+		this._previousSelectedId = id;
+
 		this._messenger.emit(
 			'selected',
 			this.processComponentObj(this._componentMap[id])
@@ -149,6 +152,8 @@ class RootManager extends EventEmitter {
 						'update',
 						this._traverseTree(rootComponent, rootComponent)
 					);
+
+					this._updateCurrentSelected();
 
 					updateScheduled[rootId] = false;
 				},
@@ -202,6 +207,13 @@ class RootManager extends EventEmitter {
 				childComponent => this._traverseTree(childComponent, rootComponent)
 			)
 		};
+	}
+
+	_updateCurrentSelected() {
+		this._messenger.emit(
+			'selected',
+			this.processComponentObj(this._componentMap[this._previousSelectedId])
+		);
 	}
 }
 
