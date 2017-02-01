@@ -3,7 +3,7 @@ exports[`App should render 1`] = `
   <div class="roots-wrapper" key="_metal_jsx_2">
     <div class="tree-container" key="_metal_jsx_1">
       <div class="node-wrapper   " style="padding-left: 12px;" key="_metal_jsx_1">
-        <span class="node-name-container" key="_metal_jsx_2">&lt;
+        <span data-nodeid="foo" class="node-name-container" key="_metal_jsx_2">&lt;
           <span class="name" key="_metal_jsx_1"></span> /&gt;</span>
       </div>
     </div>

@@ -18,6 +18,10 @@ class App extends Component {
 		this.props.port.onMessage.addListener(this.processMessage);
 	}
 
+	addFlash(node) {
+		node.classList.add('flash');
+	}
+
 	addRootComponent(root) {
 		this.state.rootComponents = {
 			...this.state.rootComponents,
@@ -39,11 +43,11 @@ class App extends Component {
 		const node = document.querySelector(`[data-nodeid="${id}"]`);
 
 		if (node) {
-			node.classList.add('flash');
+			this.addFlash(node);
 
 			setTimeout(
 				() => {
-					node.classList.remove('flash');
+					this.removeFlash(node);
 				},
 				100
 			);
@@ -74,6 +78,10 @@ class App extends Component {
 			default:
 				console.log(`Unknown Message Type: ${type}`);
 		}
+	}
+
+	removeFlash(node) {
+		node.classList.remove('flash');
 	}
 
 	resetRoots() {

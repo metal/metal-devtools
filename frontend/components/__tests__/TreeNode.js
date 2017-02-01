@@ -63,11 +63,11 @@ describe('TreeNode', () => {
 		expect(component.state.showMenu).toBe(false);
 	});
 
-	it('should call onNodeClick prop', () => {
+	it('should call onNodeSelect prop', () => {
 		const spy = jest.fn();
 
 		const component = new TreeNode({
-			onNodeClick: spy
+			onNodeSelect: spy
 		});
 
 		component.focusNode();
@@ -97,11 +97,11 @@ describe('TreeNode', () => {
 		expect(spy).toBeCalled();
 	});
 
-	it('should toggle expanded and call onNodeClick prop', () => {
+	it('should toggle expanded and call onNodeSelect prop', () => {
 		const spy = jest.fn();
 
 		const component = new TreeNode({
-			onNodeClick: spy
+			onNodeSelect: spy
 		});
 
 		component.toggleExpanded(eventObj);
@@ -147,28 +147,6 @@ describe('TreeNode', () => {
 		component.removeHighlight();
 
 		expect(component.toggleHighlight).toBeCalledWith(false);
-	});
-
-	it('should call highlightDOM prop and set highlight value', () => {
-		const component = new TreeNode();
-
-		component._firstRender = true;
-
-		component.syncComponentNode({}, {});
-
-		expect(component._firstRender).toBe(false);
-
-		const {element} = component.refs.nodeName;
-
-		element.classList.add = jest.fn();
-		element.classList.remove = jest.fn();
-
-		component.syncComponentNode({}, {data: 'two'});
-
-		jest.runAllTimers();
-
-		expect(element.classList.add).toBeCalled();
-		expect(element.classList.remove).toBeCalled();
 	});
 
 	it('should call highlightDOM prop and set highlight value', () => {

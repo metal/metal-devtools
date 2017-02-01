@@ -11,10 +11,10 @@ describe('StatePane', () => {
 		const component = new StatePane(
 			{
 				component: {
-					data: JSON.stringify({
+					data: {
 						one: {foo: 'bar'},
 						two: {}
-					}),
+					},
 					id: 'foo',
 					name: 'fooComponent'
 				}
@@ -30,10 +30,10 @@ describe('StatePane', () => {
 
 		const component = new StatePane({
 			component: {
-				data: JSON.stringify({
+				data: {
 					one: {foo: 'bar'},
 					two: {}
-				}),
+				},
 				id: 'foo',
 				name: 'fooComponent'
 			},

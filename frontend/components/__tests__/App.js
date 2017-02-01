@@ -147,14 +147,34 @@ describe('App', () => {
 				}
 			});
 
-			const spy = jest.fn();
+			const logVal = console.log;
 
-			console.log = spy;
+			console.log = jest.fn();
 
 			component.processMessage({data: {}, type: 'bar'});
 
-			expect(spy).toBeCalled();
+			expect(console.log).toBeCalled();
+
+			console.log = logVal;
 		});
+	});
+
+	it('should emit console.log', () => {
+		const component = new App({
+			port: {
+				onMessage: {
+					addListener: jest.fn()
+				}
+			}
+		});
+
+		const spy = jest.fn();
+
+		component.flashNode = spy;
+
+		component.processMessage({data: {}, type: messageTypes.RENDERED});
+
+		expect(spy).toBeCalled();
 	});
 
 	it('should reset rootComponents state', () => {
@@ -187,5 +207,49 @@ describe('App', () => {
 		component.updateRootComponent({...fooRoot, name: 'fooRoot'});
 
 		expect(component.state.rootComponents['foo'].name).toEqual('fooRoot');
+	});
+
+	it('should add/remove `flash` class', () => {
+		const component = new App({
+			port: {
+				onMessage: {
+					addListener: jest.fn()
+				}
+			}
+		});
+
+		component.addFlash(component.element);
+
+		expect(component.element.classList).toContain('flash');
+
+		component.removeFlash(component.element);
+
+		expect(component.element.classList).not.toContain('flash');
+	});
+
+	it('should add/remove `flash` class', () => {
+		const component = new App({
+			element: document.getElementById('testComponent'),
+			port: {
+				onMessage: {
+					addListener: jest.fn()
+				}
+			}
+		});
+
+		const initialStub = document.querySelector;
+
+		document.querySelector = jest.fn(() => true);
+		component.addFlash = jest.fn();
+		component.removeFlash = jest.fn();
+
+		component.flashNode(component.element);
+
+		jest.runAllTimers();
+
+		expect(component.addFlash).toBeCalled();
+		expect(component.removeFlash).toBeCalled();
+
+		document.querySelector = initialStub;
 	});
 });

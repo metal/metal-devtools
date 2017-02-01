@@ -30,6 +30,8 @@ describe('ResizeDivider', () => {
 		component.initDrag();
 
 		expect(spy).toHaveBeenCalledTimes(2);
+
+		document.body.addEventListener.mockClear();
 	});
 
 	it('should remove event listeners on body', () => {
@@ -42,5 +44,7 @@ describe('ResizeDivider', () => {
 		component.stopDrag();
 
 		expect(spy).toHaveBeenCalledTimes(2);
+
+		document.body.removeEventListener.mockClear();
 	});
 });
