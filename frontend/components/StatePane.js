@@ -18,9 +18,7 @@ class StatePane extends Component {
 	render() {
 		const {data = null, name} = this.props.component;
 
-		const dataObj = JSON.parse(data);
-
-		const dataExists = isPlainObject(dataObj);
+		const dataExists = isPlainObject(data);
 
 		return (
 			<div class="state-pane-container">
@@ -37,9 +35,9 @@ class StatePane extends Component {
 				</div>
 
 				{dataExists &&
-					keys(dataObj).map(
+					keys(data).map(
 						dataKey => {
-							const stateObj = dataObj[dataKey];
+							const stateObj = data[dataKey];
 
 							return (
 								<div class="category" key={`${name}-${dataKey}`}>
