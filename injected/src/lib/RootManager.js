@@ -104,7 +104,7 @@ class RootManager extends EventEmitter {
 
 	processComponentObj(component) {
 		return {
-			data: processDataManagers(component.__DATA_MANAGER_DATA__),
+			data: component && component.__DATA_MANAGER_DATA__ ? processDataManagers(component.__DATA_MANAGER_DATA__) : null,
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.name || component.constructor.name,
 		};

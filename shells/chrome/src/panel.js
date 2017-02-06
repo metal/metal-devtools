@@ -13,7 +13,7 @@ const app = new App(
 				`window.__METAL_DEV_TOOLS_HOOK__.highlightNode('${id}');`,
 				(res, err) => {
 					if (err) {
-						console.log('%c Metal-Devtools Extension: (`highlightDOM`)\n', 'background: #222; color: #BADA55', err);
+						console.log('%c metal-devtools extension: (`highlightDOM`)\n', 'background: rgb(136, 18, 128); color: #DDD', err);
 					}
 				}
 			);
@@ -23,7 +23,7 @@ const app = new App(
 				`window.__METAL_DEV_TOOLS_HOOK__.selectComponent('${id}');`,
 				(res, err) => {
 					if (err) {
-						console.log('%c Metal-Devtools Extension: (`selectComponent`)\n', 'background: #222; color: #BADA55', err);
+						console.log('%c metal-devtools extension: (`selectComponent`)\n', 'background: rgb(136, 18, 128); color: #DDD', err);
 					}
 				}
 			);
@@ -33,7 +33,7 @@ const app = new App(
 					`inspect(window.__METAL_DEV_TOOLS_HOOK__.getComponentNode('${id}'));`,
 				(res, err) => {
 					if (err) {
-						console.log('%c Metal-Devtools Extension: (`getComponentNode`)\n', 'background: #222; color: #BADA55', err);
+						console.log('%c metal-devtools extension: (`getComponentNode`)\n', 'background: rgb(136, 18, 128); color: #DDD', err);
 					}
 				}
 			);

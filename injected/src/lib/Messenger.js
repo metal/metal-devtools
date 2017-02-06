@@ -10,8 +10,8 @@ class Messenger {
 				'*'
 			);
 		} catch (err) {
-			console.log('%c Metal-Devtools Extension:\n', 'background: #222; color: #BADA55', err);
-			console.log('%c Data:', 'background: #222; color: #BADA55', data);
+			console.log('%c metal-devtools extension:\n', 'background: #222; color: #BADA55', err);
+			console.log('%c Args:', 'background: #222; color: #BADA55', data);
 		}
 	}
 
