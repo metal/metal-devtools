@@ -31,7 +31,7 @@ function createPanelIfMetalLoaded() {
 
 					panel.onShown.addListener(function() {
 						chrome.devtools.inspectedWindow.eval(
-							'window.__METAL_DEV_TOOLS_HOOK__.emit("loadRoots"); window.__METAL_DEV_TOOLS_HOOK__.$0 = undefined;'
+							'window.__METAL_DEV_TOOLS_HOOK__.loadRoots(); window.__METAL_DEV_TOOLS_HOOK__.$0 = undefined;'
 						);
 					});
 				}

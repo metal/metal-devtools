@@ -1,5 +1,3 @@
-import EventEmitter from 'events';
-
 import Messenger from './Messenger';
 import processDataManagers from './processDataManagers';
 
@@ -26,13 +24,8 @@ function applyStyles(element, styles) {
 	Object.keys(styles).forEach(name => element.style[name] = styles[name]);
 }
 
-class RootManager extends EventEmitter {
+class RootManager {
 	constructor() {
-		super();
-
-		this._handleInitialRoots = this._handleInitialRoots.bind(this);
-		this._handleNewRoot = this._handleNewRoot.bind(this);
-		this._handleRemoveRoot = this._handleRemoveRoot.bind(this);
 		this._traverseTree = this._traverseTree.bind(this);
 
 		this._componentMap = {};
@@ -41,10 +34,6 @@ class RootManager extends EventEmitter {
 		this._maskDimensions = null;
 		this._previousSelectedId = '';
 		this._roots = [];
-
-		this.on('addRoot', this._handleNewRoot);
-		this.on('loadRoots', this._handleInitialRoots);
-		this.on('removeRoot', this._handleRemoveRoot);
 	}
 
 	createOverlayMask() {
@@ -102,6 +91,28 @@ class RootManager extends EventEmitter {
 		}
 	}
 
+	addRoot(component) {
+		this._roots.push(component);
+
+		this._executeAsync(
+			() => {
+				Messenger.informNewRoot(this._traverseTree(component, component));
+			}
+		);
+	}
+
+	loadRoots() {
+		this._executeAsync(
+			() => {
+				this._roots.forEach(
+					root => {
+						Messenger.informNewRoot(this._traverseTree(root, root));
+					}
+				);
+			}
+		);
+	}
+
 	processComponentObj(component) {
 		return {
 			data: component && component.__DATA_MANAGER_DATA__ ? processDataManagers(component.__DATA_MANAGER_DATA__) : null,
@@ -128,7 +139,11 @@ class RootManager extends EventEmitter {
 
 			component.on(
 				'detached',
-				() => Messenger.informDetached({id})
+				() => {
+					this._checkIfRootDetached(id);
+
+					Messenger.informDetached({id});
+				}
 			);
 
 			component.on(
@@ -143,13 +158,17 @@ class RootManager extends EventEmitter {
 		}
 	}
 
+	_executeAsync(fn) {
+		setTimeout(fn, 0);
+	}
+
 	_handleComponentUpdated(rootComponent) {
 		const rootId = rootComponent[__METAL_DEV_TOOLS_COMPONENT_KEY__];
 
 		if (!updateScheduled[rootId]) {
 			updateScheduled[rootId] = true;
 
-			setTimeout(
+			this._executeAsync(
 				() => {
 					Messenger.informUpdate(
 						this._traverseTree(rootComponent, rootComponent)
@@ -158,28 +177,21 @@ class RootManager extends EventEmitter {
 					this._updateCurrentSelected();
 
 					updateScheduled[rootId] = false;
-				},
-				0
+				}
 			);
 		}
 	}
 
-	_handleInitialRoots() {
-		this._roots.forEach(
-			root => {
-				Messenger.informNewRoot(this._traverseTree(root, root));
+	_checkIfRootDetached(id) {
+		for (let i = 0; i < this._roots.length; i++) {
+			const root = this._roots[i];
+
+			if (root[__METAL_DEV_TOOLS_COMPONENT_KEY__] === id) {
+				this._roots.splice(i, 1);
+
+				return;
 			}
-		);
-	}
-
-	_handleNewRoot(component) {
-		this._roots.push(component);
-	}
-
-	_handleRemoveRoot(component) {
-		this._roots = this._roots.filter(
-			rootComponent => component !== rootComponent
-		);
+		}
 	}
 
 	_traverseTree(component, rootComponent) {
@@ -212,9 +224,11 @@ class RootManager extends EventEmitter {
 	}
 
 	_updateCurrentSelected() {
-		Messenger.informSelected(
-			this.processComponentObj(this._componentMap[this._previousSelectedId])
-		);
+		if (this._previousSelectedId) {
+			Messenger.informSelected(
+				this.processComponentObj(this._componentMap[this._previousSelectedId])
+			);
+		}
 	}
 }
 
