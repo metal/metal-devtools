@@ -1,7 +1,7 @@
 import Messenger from './Messenger';
 import processDataManagers from './processDataManagers';
 
-const __METAL_DEV_TOOLS_COMPONENT_KEY__ = '__METAL_DEV_TOOLS_COMPONENT_KEY__';
+export const __METAL_DEV_TOOLS_COMPONENT_KEY__ = '__METAL_DEV_TOOLS_COMPONENT_KEY__';
 
 const maskDimensionStyles = {
 	background: 'rgba(0, 0, 0, 0.65)',
@@ -45,8 +45,8 @@ class RootManager {
 
 		this._mask.setAttribute('id', '__METAL_DEV_TOOLS_MASK__');
 
-		this._mask.append(this._maskDimensions);
-		document.body.append(this._mask);
+		this._mask.appendChild(this._maskDimensions);
+		document.body.appendChild(this._mask);
 	}
 
 	getComponentNode(id) {

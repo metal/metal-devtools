@@ -1,6 +1,6 @@
 import * as messageTypes from '../../../shared/messageTypes';
 
-const BACKEND = 'backend';
+export const BACKEND = 'backend';
 
 class Messenger {
 	static postWindowMessage(data) {
