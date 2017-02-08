@@ -25,13 +25,13 @@ function createPanelIfMetalLoaded() {
 				(panel) => {
 					chrome.devtools.panels.elements.onSelectionChanged.addListener(function() {
 						chrome.devtools.inspectedWindow.eval(
-							'window.__METAL_DEV_TOOLS_HOOK__.$0 = $0;'
+							'window.__METAL_DEV_TOOLS_HOOK__.setInspected($0);'
 						);
 					});
 
 					panel.onShown.addListener(function() {
 						chrome.devtools.inspectedWindow.eval(
-							'window.__METAL_DEV_TOOLS_HOOK__.loadRoots(); window.__METAL_DEV_TOOLS_HOOK__.$0 = undefined;'
+							'window.__METAL_DEV_TOOLS_HOOK__.reloadRoots();'
 						);
 					});
 				}

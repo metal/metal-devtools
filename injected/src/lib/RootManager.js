@@ -26,10 +26,12 @@ function applyStyles(element, styles) {
 
 class RootManager {
 	constructor() {
+		this.setInspected = this.setInspected.bind(this);
 		this._traverseTree = this._traverseTree.bind(this);
 
 		this._componentMap = {};
 		this._listeners = {};
+		this._inspectedNode = null;
 		this._mask = null;
 		this._maskDimensions = null;
 		this._previousSelectedId = '';
@@ -101,18 +103,6 @@ class RootManager {
 		);
 	}
 
-	loadRoots() {
-		this._executeAsync(
-			() => {
-				this._roots.forEach(
-					root => {
-						Messenger.informNewRoot(this._traverseTree(root, root));
-					}
-				);
-			}
-		);
-	}
-
 	processComponentObj(component) {
 		return {
 			data: component && component.__DATA_MANAGER_DATA__ ? processDataManagers(component.__DATA_MANAGER_DATA__) : null,
@@ -121,12 +111,25 @@ class RootManager {
 		};
 	}
 
+	reloadRoots() {
+		this._executeAsync(
+			() => this._roots.forEach(
+				root => this._handleComponentUpdated(root)
+			)
+		);
+	}
+
 	selectComponent(id) {
+		this.setInspected(null);
 		this._previousSelectedId = id;
 
 		Messenger.informSelected(
 			this.processComponentObj(this._componentMap[id])
 		);
+	}
+
+	setInspected(node) {
+		this._inspectedNode = node;
 	}
 
 	_attachComponentListeners(component, rootComponent) {
@@ -205,10 +208,10 @@ class RootManager {
 
 		let containsInspected = false;
 
-		if (window.__METAL_DEV_TOOLS_HOOK__.$0 && component.element && component.element.contains) {
-			containsInspected = component.element.contains(window.__METAL_DEV_TOOLS_HOOK__.$0);
+		if (this._inspectedNode && component.element && component.element.contains) {
+			containsInspected = component.element.contains(this._inspectedNode);
 
-			if (window.__METAL_DEV_TOOLS_HOOK__.$0 === component.element) {
+			if (this._inspectedNode === component.element) {
 				this.selectComponent(component[__METAL_DEV_TOOLS_COMPONENT_KEY__]);
 			}
 		}

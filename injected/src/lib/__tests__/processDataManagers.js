@@ -1,7 +1,6 @@
 jest.unmock('../processDataManagers');
 
 import cloneObj from '../cloneObj';
-import preprocessMetalState from '../preprocessMetalState';
 import processDataManagers from '../processDataManagers';
 
 const DATA_MANAGER = {

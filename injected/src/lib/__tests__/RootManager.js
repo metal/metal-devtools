@@ -135,14 +135,14 @@ describe('RootManager', () => {
 
 	test('should call `_executeAsync` and informNewRoot', () => {
 		RootManager._executeAsync = jest.fn(fn => fn());
-		RootManager._traverseTree = jest.fn();
+		RootManager._handleComponentUpdated = jest.fn();
 
 		RootManager._roots = [1, 2, 3];
 
-		RootManager.loadRoots();
+		RootManager.reloadRoots();
 
 		expect(RootManager._executeAsync).toHaveBeenCalled();
-		expect(Messenger.informNewRoot).toHaveBeenCalled();
+		expect(RootManager._handleComponentUpdated).toHaveBeenCalled();
 	});
 
 	test('should process metal component object and call `processDataManagers`', () => {
@@ -254,10 +254,7 @@ describe('RootManager', () => {
 		const id = 'foo';
 
 		component['__METAL_DEV_TOOLS_COMPONENT_KEY__'] = id;
-
-		window.__METAL_DEV_TOOLS_HOOK__ = {
-			'$0': component.element
-		};
+		RootManager._inspectedNode = component.element;
 
 		const retVal = RootManager._traverseTree(component, component);
 
