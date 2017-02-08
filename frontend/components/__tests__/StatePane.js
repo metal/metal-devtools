@@ -7,7 +7,7 @@ jest.unmock('../FlashStateValue');
 import StatePane from '../StatePane';
 
 describe('StatePane', () => {
-	it('should render', () => {
+	test('should render', () => {
 		const component = new StatePane(
 			{
 				component: {
@@ -24,7 +24,7 @@ describe('StatePane', () => {
 		expect(snap(component)).toMatchSnapshot();
 	});
 
-	it('should call onInspectDOM prop', () => {
+	test('should call onInspectDOM prop', () => {
 		const id = 'foo';
 		const spy = jest.fn();
 

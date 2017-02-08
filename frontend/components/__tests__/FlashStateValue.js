@@ -4,13 +4,13 @@ jest.unmock('../../lib/processStateValues');
 import FlashStateValue from '../FlashStateValue';
 
 describe('FlashStateValue', () => {
-	it('should render', () => {
+	test('should render', () => {
 		const component = new FlashStateValue();
 
 		expect(snap(component)).toMatchSnapshot();
 	});
 
-	it('should add `flash` class', () => {
+	test('should add `flash` class', () => {
 		const component = new FlashStateValue();
 
 		const spy = jest.fn();
@@ -23,7 +23,7 @@ describe('FlashStateValue', () => {
 		expect(spy).toBeCalled();
 	});
 
-	it('should remove `flash` class', () => {
+	test('should remove `flash` class', () => {
 		const component = new FlashStateValue();
 
 		component.element.classList.add('flash');
@@ -35,7 +35,7 @@ describe('FlashStateValue', () => {
 		expect(component.element.classList).not.toContain('flash');
 	});
 
-	it('should call addFlash if it is not the firstRender', () => {
+	test('should call addFlash if it is not the firstRender', () => {
 		const component = new FlashStateValue();
 
 		const spy = jest.fn();
@@ -49,7 +49,7 @@ describe('FlashStateValue', () => {
 		expect(spy).toBeCalled();
 	});
 
-	it('should set _firstRender to false', () => {
+	test('should set _firstRender to false', () => {
 		const component = new FlashStateValue();
 
 		component.syncValue(0, 1);

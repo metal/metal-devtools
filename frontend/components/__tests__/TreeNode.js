@@ -9,7 +9,7 @@ const eventObj = {
 };
 
 describe('TreeNode', () => {
-	it('should render', () => {
+	test('should render', () => {
 		const component = new TreeNode(
 			{
 				componentNode: {
@@ -21,7 +21,7 @@ describe('TreeNode', () => {
 		expect(snap(component)).toMatchSnapshot();
 	});
 
-	it('should show when expanded', () => {
+	test('should show when expanded', () => {
 		const component = new TreeNode(
 			{
 				componentNode: {
@@ -35,7 +35,7 @@ describe('TreeNode', () => {
 		expect(snap(component)).toMatchSnapshot();
 	});
 
-	it('should show when highlighted', () => {
+	test('should show when highlighted', () => {
 		const component = new TreeNode(
 			{
 				componentNode: {
@@ -49,7 +49,7 @@ describe('TreeNode', () => {
 		expect(snap(component)).toMatchSnapshot();
 	});
 
-	it('should set showMenu to false', () => {
+	test('should set showMenu to false', () => {
 		const component = new TreeNode();
 
 		component.state.showMenu = true;
@@ -63,7 +63,7 @@ describe('TreeNode', () => {
 		expect(component.state.showMenu).toBe(false);
 	});
 
-	it('should call onNodeSelect prop', () => {
+	test('should call onNodeSelect prop', () => {
 		const spy = jest.fn();
 
 		const component = new TreeNode({
@@ -75,7 +75,7 @@ describe('TreeNode', () => {
 		expect(spy).toBeCalled();
 	});
 
-	it('should set showMenu to true', () => {
+	test('should set showMenu to true', () => {
 		const component = new TreeNode();
 
 		expect(component.state.showMenu).toBe(false);
@@ -85,7 +85,7 @@ describe('TreeNode', () => {
 		expect(component.state.showMenu).toBe(true);
 	});
 
-	it('should call onInspectDOM prop', () => {
+	test('should call onInspectDOM prop', () => {
 		const spy = jest.fn();
 
 		const component = new TreeNode({
@@ -97,7 +97,7 @@ describe('TreeNode', () => {
 		expect(spy).toBeCalled();
 	});
 
-	it('should toggle expanded and call onNodeSelect prop', () => {
+	test('should toggle expanded and call onNodeSelect prop', () => {
 		const spy = jest.fn();
 
 		const component = new TreeNode({
@@ -113,7 +113,7 @@ describe('TreeNode', () => {
 		expect(spy).toHaveBeenCalledTimes(2);
 	});
 
-	it('should call highlightDOM prop and set highlight value', () => {
+	test('should call highlightDOM prop and set highlight value', () => {
 		const spy = jest.fn();
 
 		const component = new TreeNode({
@@ -129,7 +129,7 @@ describe('TreeNode', () => {
 		expect(spy).toHaveBeenCalledTimes(2);
 	});
 
-	it('should call toggleHighlight with true', () => {
+	test('should call toggleHighlight with true', () => {
 		const component = new TreeNode();
 
 		component.toggleHighlight = jest.fn();
@@ -139,7 +139,7 @@ describe('TreeNode', () => {
 		expect(component.toggleHighlight).toBeCalledWith(true);
 	});
 
-	it('should call toggleHighlight with false', () => {
+	test('should call toggleHighlight with false', () => {
 		const component = new TreeNode();
 
 		component.toggleHighlight = jest.fn();
@@ -149,7 +149,7 @@ describe('TreeNode', () => {
 		expect(component.toggleHighlight).toBeCalledWith(false);
 	});
 
-	it('should call highlightDOM prop and set highlight value', () => {
+	test('should call highlightDOM prop and set highlight value', () => {
 		const id = 'foo';
 
 		const div = document.createElement('div');

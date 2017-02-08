@@ -3,13 +3,13 @@ jest.unmock('../ResizeDivider');
 import ResizeDivider from '../ResizeDivider';
 
 describe('ResizeDivider', () => {
-	it('should render', () => {
+	test('should render', () => {
 		const component = new ResizeDivider({onResize: jest.fn()});
 
 		expect(snap(component)).toMatchSnapshot();
 	});
 
-	it('should call onResize prop with specific arg', () => {
+	test('should call onResize prop with specific arg', () => {
 		const spy = jest.fn();
 		const component = new ResizeDivider({onResize: spy});
 
@@ -20,7 +20,7 @@ describe('ResizeDivider', () => {
 		expect(spy).toBeCalledWith(arg);
 	});
 
-	it('should add event listeners on body', () => {
+	test('should add event listeners on body', () => {
 		const spy = jest.fn();
 
 		document.body.addEventListener = spy;
@@ -34,7 +34,7 @@ describe('ResizeDivider', () => {
 		document.body.addEventListener.mockClear();
 	});
 
-	it('should remove event listeners on body', () => {
+	test('should remove event listeners on body', () => {
 		const spy = jest.fn();
 
 		document.body.removeEventListener = spy;

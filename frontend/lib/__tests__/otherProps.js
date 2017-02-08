@@ -7,7 +7,7 @@ import otherProps from '../otherProps';
 describe(
 	'otherProps',
 	() => {
-		it(
+		test(
 			'should return all config props not declared in STATE',
 			() => {
 				class TestComponent extends Component {
@@ -38,7 +38,7 @@ describe(
 			}
 		);
 
-		it(
+		test(
 			'should ignore children',
 			() => {
 				class TestComponent extends Component {

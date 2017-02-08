@@ -7,9 +7,8 @@ const fooRoot = {
 	id: 'foo'
 };
 
-
 describe('App', () => {
-	it('should render', () => {
+	test('should render', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -25,7 +24,7 @@ describe('App', () => {
 		expect(snap(component)).toMatchSnapshot();
 	});
 
-	it('should add root to state', () => {
+	test('should add root to state', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -40,7 +39,7 @@ describe('App', () => {
 		expect(component.state.rootComponents).toEqual({foo: fooRoot});
 	});
 
-	it('should check id detached component is a root', () => {
+	test('should check id detached component is a root', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -55,7 +54,7 @@ describe('App', () => {
 		expect(component.state.rootComponents).toEqual({});
 	});
 
-	it('should set column width', () => {
+	test('should set column width', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -70,7 +69,7 @@ describe('App', () => {
 	});
 
 	describe('processMessage', () => {
-		it('should call `checkIfRootDetached`', () => {
+		test('should call `checkIfRootDetached`', () => {
 			const component = new App({
 				port: {
 					onMessage: {
@@ -88,7 +87,7 @@ describe('App', () => {
 			expect(spy).toBeCalled();
 		});
 
-		it('should call `updateRootComponent`', () => {
+		test('should call `updateRootComponent`', () => {
 			const component = new App({
 				port: {
 					onMessage: {
@@ -106,7 +105,7 @@ describe('App', () => {
 			expect(spy).toBeCalled();
 		});
 
-		it('should set selectedComponent', () => {
+		test('should set selectedComponent', () => {
 			const component = new App({
 				port: {
 					onMessage: {
@@ -120,7 +119,7 @@ describe('App', () => {
 			expect(component.state.selectedComponent).toBe(fooRoot);
 		});
 
-		it('should call `addRootComponent`', () => {
+		test('should call `addRootComponent`', () => {
 			const component = new App({
 				port: {
 					onMessage: {
@@ -138,7 +137,7 @@ describe('App', () => {
 			expect(spy).toBeCalled();
 		});
 
-		it('should emit console.log', () => {
+		test('should emit console.log', () => {
 			const component = new App({
 				port: {
 					onMessage: {
@@ -159,7 +158,7 @@ describe('App', () => {
 		});
 	});
 
-	it('should emit console.log', () => {
+	test('should emit console.log', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -177,7 +176,7 @@ describe('App', () => {
 		expect(spy).toBeCalled();
 	});
 
-	it('should reset rootComponents state', () => {
+	test('should reset rootComponents state', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -193,7 +192,7 @@ describe('App', () => {
 		expect(component.state.rootComponents).toEqual({});
 	});
 
-	it('should update component', () => {
+	test('should update component', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -209,7 +208,7 @@ describe('App', () => {
 		expect(component.state.rootComponents['foo'].name).toEqual('fooRoot');
 	});
 
-	it('should add/remove `flash` class', () => {
+	test('should add/remove `flash` class', () => {
 		const component = new App({
 			port: {
 				onMessage: {
@@ -227,7 +226,7 @@ describe('App', () => {
 		expect(component.element.classList).not.toContain('flash');
 	});
 
-	it('should add/remove `flash` class', () => {
+	test('should add/remove `flash` class', () => {
 		const component = new App({
 			element: document.getElementById('testComponent'),
 			port: {
