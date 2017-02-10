@@ -46,7 +46,7 @@ function cloneObj(objectToBeCloned) {
 
 	if (objectClone instanceof Object) {
 		for (let prop in objectToBeCloned) {
-			if (objectToBeCloned[prop]) {
+			if (typeof objectToBeCloned[prop] !== 'undefined') {
 				objectClone[prop] = cloneObj(objectToBeCloned[prop]);
 			}
 		}
