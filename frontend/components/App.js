@@ -11,15 +11,20 @@ class App extends Component {
 	created() {
 		bindAll(
 			this,
+			'handleFreezeToggle',
 			'handleResize',
 			'processMessage'
 		);
 
 		this.props.port.onMessage.addListener(this.processMessage);
+
+		this._pendingFlashRemovals = [];
 	}
 
 	addFlash(node) {
-		node.classList.add('flash');
+		if (node && node.classList) {
+			node.classList.add('flash');
+		}
 	}
 
 	addRootComponent(root) {
@@ -45,12 +50,26 @@ class App extends Component {
 		if (node) {
 			this.addFlash(node);
 
-			setTimeout(
-				() => {
-					this.removeFlash(node);
-				},
-				100
+			if (!this.state.freezeUpdates) {
+				setTimeout(() => this.removeFlash(node), 100);
+			}
+			else {
+				this._pendingFlashRemovals.push(node);
+			}
+		}
+	}
+
+	handleFreezeToggle({target}) {
+		const {checked} = target;
+
+		this.state.freezeUpdates = checked;
+
+		if (!checked) {
+			this._pendingFlashRemovals.forEach(
+				node => this.removeFlash(node)
 			);
+
+			this._pendingFlashRemovals = [];
 		}
 	}
 
@@ -81,7 +100,9 @@ class App extends Component {
 	}
 
 	removeFlash(node) {
-		node.classList.remove('flash');
+		if (node && node.classList) {
+			node.classList.remove('flash');
+		}
 	}
 
 	resetRoots() {
@@ -107,6 +128,7 @@ class App extends Component {
 			},
 			state: {
 				firstColumnWidth,
+				freezeUpdates,
 				rootComponents,
 				selectedComponent
 			}
@@ -122,6 +144,17 @@ class App extends Component {
 
 				{rootComponentKeys && !!rootComponentKeys.length &&
 					<div class="roots-wrapper" style={firstColumnWidth && `flex-basis:${firstColumnWidth}px`}>
+						<div class="options" title="Freezes highlights by expanded components">
+							<label for="freezeUpdates">{'Freeze Updates'}</label>
+
+							<input
+								checked={freezeUpdates}
+								name="freezeUpdates"
+								onChange={this.handleFreezeToggle}
+								type="checkbox"
+							/>
+						</div>
+
 						{
 							rootComponentKeys.map(
 								(key, i) => (
@@ -157,6 +190,7 @@ App.PROPS = {
 
 App.STATE = {
 	firstColumnWidth: Config.number(),
+	freezeUpdates: Config.value(false),
 	rootComponents: Config.value({}),
 	selectedComponent: Config.value({})
 };

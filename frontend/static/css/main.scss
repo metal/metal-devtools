@@ -118,7 +118,12 @@ html, .app-container {
 
 .roots-wrapper {
 	flex: 0 0 70%;
-	padding-top: 12px;
+
+	.options {
+		border-bottom: $paneBorder;
+		margin-bottom: 12px;
+		padding: 4px;
+	}
 }
 
 /* ---- State Pane Component ---- */
