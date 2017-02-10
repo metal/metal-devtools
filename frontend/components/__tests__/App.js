@@ -228,7 +228,6 @@ describe('App', () => {
 
 	test('should add/remove `flash` class', () => {
 		const component = new App({
-			element: document.getElementById('testComponent'),
 			port: {
 				onMessage: {
 					addListener: jest.fn()
@@ -242,13 +241,43 @@ describe('App', () => {
 		component.addFlash = jest.fn();
 		component.removeFlash = jest.fn();
 
-		component.flashNode(component.element);
+		component.flashNode('testComponent');
 
 		jest.runAllTimers();
 
 		expect(component.addFlash).toBeCalled();
 		expect(component.removeFlash).toBeCalled();
 
+		component.state.freezeUpdates = true;
+
+		jest.runAllTimers();
+
+		component.flashNode('testComponent');
+
+		component.removeFlash.mockReset();
+
+		expect(component.removeFlash).not.toBeCalled();
+
 		document.querySelector = initialStub;
+	});
+
+	test('should toggle freezeUpdates', () => {
+		const component = new App({
+			port: {
+				onMessage: {
+					addListener: jest.fn()
+				}
+			}
+		});
+
+		expect(component.state.freezeUpdates).toEqual(false);
+
+		component.handleFreezeToggle({target: {checked: true}});
+		expect(component.state.freezeUpdates).toEqual(true);
+
+		component._pendingFlashRemovals = [document.createElement('div')];
+
+		component.handleFreezeToggle({target: {checked: false}});
+		expect(component.state.freezeUpdates).toEqual(false);
 	});
 });

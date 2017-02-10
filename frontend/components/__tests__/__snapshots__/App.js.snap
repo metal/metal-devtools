@@ -1,7 +1,11 @@
 exports[`App should render 1`] = `
 <div class="app-container">
   <div class="roots-wrapper" key="_metal_jsx_2">
-    <div class="tree-container" key="_metal_jsx_1">
+    <div class="options" title="Freezes highlights by expanded components" key="_metal_jsx_1">
+      <label for="freezeUpdates" key="_metal_jsx_1">Freeze Updates</label>
+      <input name="freezeUpdates" type="checkbox" key="_metal_jsx_2">
+    </div>
+    <div class="tree-container" key="_metal_jsx_2">
       <div class="node-wrapper   " style="padding-left: 12px;" key="_metal_jsx_1">
         <span data-nodeid="foo" class="node-name-container" key="_metal_jsx_2">&lt;
           <span class="name" key="_metal_jsx_1"></span> /&gt;</span>
