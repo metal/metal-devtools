@@ -1,0 +1,17 @@
+.app-container > .state-pane-container {
+	.jsoneditor {
+		border-width: 0;
+
+		.jsoneditor-menu {
+			display: none;
+		}
+
+		.jsoneditor-value.jsoneditor-empty {
+			border-width: 0;
+
+			&:after {
+				content: '""';
+			}
+		}
+	}
+}

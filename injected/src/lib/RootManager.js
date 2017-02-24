@@ -53,6 +53,7 @@ class RootManager {
 
 	getComponentNode(id) {
 		if (this._componentMap[id] && this._componentMap[id].element) {
+			console.log('this._componentMap[id]', this._componentMap[id]);
 			return this._componentMap[id].element;
 		}
 	}

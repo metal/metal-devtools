@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 var srcDir = __dirname + '/src';
 
 module.exports = {
@@ -16,18 +18,20 @@ module.exports = {
 				loader: 'babel'
 			},
 			{
-				test: /(\.html|\.png)$/,
-				exclude: /node_modules/,
+				test: /(\.html|\.png|\.svg|\.json)$/,
 				loader: 'file?name=[name].[ext]'
 			},
 			{
-					test: /\.scss$/,
-					loaders: ['style', 'css', 'sass']
+				test: /\.scss$/,
+				loaders: ['style', 'css', 'sass']
 			}
 		]
 	},
 	output: {
 		filename: '[name].js',
 		path: __dirname + '/build'
-	}
+	},
+	plugins: [
+		new webpack.IgnorePlugin(/regenerator|nodent|js-beautify/, /ajv/)
+	]
 };

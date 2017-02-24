@@ -1,8 +1,9 @@
 import Component, {Config} from 'metal-jsx';
 import {isPlainObject, keys} from 'lodash';
 
-import FlashStateValue from './FlashStateValue';
+// import FlashStateValue from './FlashStateValue';
 import NodeName from './NodeName';
+import JSONEditor from './JSONEditor';
 
 class StatePane extends Component {
 	created() {
@@ -43,18 +44,7 @@ class StatePane extends Component {
 								<div class="category" key={`${name}-${dataKey}`}>
 									<div class="name">{`${dataKey}:`}</div>
 
-									<ul class="data">
-										{
-											keys(stateObj).map(
-												stateObjKey => (
-													<li key={`${name}-${dataKey}-${stateObjKey}`}>
-														<b class="key">{`${stateObjKey}: `}</b>
-														<FlashStateValue elementClasses="value" value={stateObj[stateObjKey]} />
-													</li>
-												)
-											)
-										}
-									</ul>
+									<JSONEditor type={dataKey} value={stateObj}/>
 								</div>
 							);
 						}
