@@ -1,13 +1,13 @@
 # metal-devtools
-[![Build Status](https://travis-ci.org/bryceosterhaus/metal-devtools.svg?branch=master)](https://travis-ci.org/bryceosterhaus/metal-devtools)
+[![Build Status](https://travis-ci.org/metal/metal-devtools.svg?branch=master)](https://travis-ci.org/metal/metal-devtools)
 
 ![Screenshot](screenshot.png)
 
 ### Installation
-* Download latest `metal-devtools.crx` from [releases](https://github.com/bryceosterhaus/metal-devtools/releases)
+* Download latest `metal-devtools.crx` from [releases](https://github.com/metal/metal-devtools/releases)
 * Open Chrome and navigate to `chrome://extensions/`
 * Drag `metal-devtools.crx` into extensions
-* See how it works by using it [here](https://bryceosterhaus.github.io/metal-devtools/)
+* See how it works by using it [here](https://metal.github.io/metal-devtools/)
 
 ### Developing
 * Clone Repo

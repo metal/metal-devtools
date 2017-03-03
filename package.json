@@ -10,12 +10,13 @@
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build",
     "test": "jest"
   },
+  "author": "Bryce Osterhaus <bryceosterhaus@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bryceosterhaus/metal-devtools"
+    "url": "https://github.com/metal/metal-devtools"
   },
   "license": "MIT",
-  "homepage": "https://github.com/bryceosterhaus/metal-devtools",
+  "homepage": "https://github.com/metal/metal-devtools",
   "dependencies": {
     "immutable": "^3.8.1",
     "lodash": "^4.17.4",
