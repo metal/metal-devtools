@@ -86,4 +86,23 @@ describe('cloneObj', () => {
 
 		console.log = initialLog;
 	});
+
+	test.only('should not follow circular references', () => {
+		const objA = {};
+		const objB = {};
+		const objC = {};
+		objA.ref = objB;
+		objB.ref = objC;
+		objC.ref = objA;
+
+		expect(cloneObj(objA)).toMatchObject(
+			{
+				ref: {
+					ref: {
+						ref: '[Circular]'
+					}
+				}
+			}
+		);
+	});
 });

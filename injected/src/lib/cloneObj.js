@@ -1,7 +1,7 @@
 export const ITERABLE_KEY = '@@__IMMUTABLE_ITERABLE__@@';
 
 // Copied pattern from MDN, https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
-function cloneObj(objectToBeCloned) {
+function cloneObj(objectToBeCloned, visited = new Set()) {
 	if (!(objectToBeCloned instanceof Object)) {
 		return objectToBeCloned;
 	}
@@ -45,9 +45,13 @@ function cloneObj(objectToBeCloned) {
 	}
 
 	if (objectClone instanceof Object) {
-		for (let prop in objectToBeCloned) {
-			if (typeof objectToBeCloned[prop] !== 'undefined') {
-				objectClone[prop] = cloneObj(objectToBeCloned[prop]);
+		visited.add(objectToBeCloned);
+
+		for (let key in objectToBeCloned) {
+			const prop = objectToBeCloned[key];
+
+			if (typeof prop !== 'undefined') {
+				objectClone[key] = visited.has(prop) ? '[Circular]' : cloneObj(prop, visited);
 			}
 		}
 	}
