@@ -6,8 +6,7 @@
 		"node": true
 	},
 	"globals": {
-		"chrome": true,
-		"snap": true
+		"chrome": true
 	},
 	"parserOptions": {
 		"ecmaVersion": 7,

@@ -7,7 +7,7 @@ describe('FlashStateValue', () => {
 	test('should render', () => {
 		const component = new FlashStateValue();
 
-		expect(snap(component)).toMatchSnapshot();
+		expect(component).toMatchSnapshot();
 	});
 
 	test('should add `flash` class', () => {

@@ -6,7 +6,7 @@ describe('ResizeDivider', () => {
 	test('should render', () => {
 		const component = new ResizeDivider({onResize: jest.fn()});
 
-		expect(snap(component)).toMatchSnapshot();
+		expect(component).toMatchSnapshot();
 	});
 
 	test('should call onResize prop with specific arg', () => {
