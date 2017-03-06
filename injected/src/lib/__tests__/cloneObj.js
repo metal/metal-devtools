@@ -34,13 +34,16 @@ describe('cloneObj', () => {
 		expect(cloneObj(new Date())).toBeInstanceOf(Date);
 	});
 
-	test('should copy DOM node', () => {
-		const node = {
-			constructor: HTMLElement,
-			tagName: 'DIV'
-		};
+	test('should use constructor name', () => {
+		const date = new Date();
 
-		expect(cloneObj(node)).toEqual('<DIV />');
+		function mockConstructor() {
+			throw Error();
+		}
+
+		date.constructor = mockConstructor;
+
+		expect(cloneObj(date)).toEqual('mockConstructor');
 	});
 
 	test('should copy immutable type to be plain js', () => {

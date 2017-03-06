@@ -22,9 +22,6 @@ function cloneObj(objectToBeCloned, visited = new Set()) {
 			case Date:
 				objectClone = new Constructor(objectToBeCloned.getTime());
 				break;
-			case HTMLElement:
-				objectClone = `<${objectToBeCloned.tagName} />`;
-				break;
 			case Function:
 				if (objectToBeCloned.name) {
 					objectClone = `function ${objectToBeCloned.name}()`;
@@ -37,7 +34,12 @@ function cloneObj(objectToBeCloned, visited = new Set()) {
 				}
 				break;
 			default:
-				objectClone = new Constructor();
+				try {
+					objectClone = new Constructor();
+				}
+				catch (err) {
+					objectClone = Constructor.name;
+				}
 		}
 	} catch (err) {
 		console.log('%c metal-devtools extension: (`clone`)\n', 'background: rgb(136, 18, 128); color: #DDD', err);
@@ -50,7 +52,7 @@ function cloneObj(objectToBeCloned, visited = new Set()) {
 		for (let key in objectToBeCloned) {
 			const prop = objectToBeCloned[key];
 
-			if (typeof prop !== 'undefined') {
+			if (typeof prop !== undefined) {
 				objectClone[key] = visited.has(prop) ? '[Circular]' : cloneObj(prop, visited);
 			}
 		}
