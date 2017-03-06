@@ -21,7 +21,7 @@ describe('StatePane', () => {
 			}
 		);
 
-		expect(snap(component)).toMatchSnapshot();
+		expect(component).toMatchSnapshot();
 	});
 
 	test('should call onInspectDOM prop', () => {

@@ -41,9 +41,8 @@
       "node_modules"
     ],
     "snapshotSerializers": [
-      "<rootDir>/tests/metal-serializer.js"
+      "metal-jest-serializer"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/tests/setup.js",
     "timers": "fake",
     "unmockedModulePathPatterns": [
       "immutable",
@@ -67,6 +66,7 @@
     "file-loader": "^0.9.0",
     "jest": "^18.1.0",
     "js-beautify": "^1.6.8",
+    "metal-jest-serializer": "^1.0.0",
     "node-sass": "^4.3.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^4.1.1",

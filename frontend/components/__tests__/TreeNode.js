@@ -18,7 +18,7 @@ describe('TreeNode', () => {
 			}
 		);
 
-		expect(snap(component)).toMatchSnapshot();
+		expect(component).toMatchSnapshot();
 	});
 
 	test('should show when expanded', () => {
@@ -32,7 +32,7 @@ describe('TreeNode', () => {
 
 		component.state.expanded = true;
 
-		expect(snap(component)).toMatchSnapshot();
+		expect(component).toMatchSnapshot();
 	});
 
 	test('should show when highlighted', () => {
@@ -46,7 +46,7 @@ describe('TreeNode', () => {
 
 		component.state.highlight = true;
 
-		expect(snap(component)).toMatchSnapshot();
+		expect(component).toMatchSnapshot();
 	});
 
 	test('should set showMenu to false', () => {

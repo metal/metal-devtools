@@ -21,7 +21,7 @@ describe('App', () => {
 
 		jest.runAllTimers();
 
-		expect(snap(component)).toMatchSnapshot();
+		expect(component).toMatchSnapshot();
 	});
 
 	test('should add root to state', () => {
