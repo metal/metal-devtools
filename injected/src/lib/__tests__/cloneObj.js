@@ -90,7 +90,7 @@ describe('cloneObj', () => {
 		console.log = initialLog;
 	});
 
-	test.only('should not follow circular references', () => {
+	test('should not follow circular references', () => {
 		const objA = {};
 		const objB = {};
 		const objC = {};
