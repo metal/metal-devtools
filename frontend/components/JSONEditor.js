@@ -1,20 +1,22 @@
 import Component, {Config} from 'metal-jsx';
 import JSONEditor from 'jsoneditor';
+import {debounce, isEqual, keys} from 'lodash';
 
 class MetalJSONEditor extends Component {
 	created() {
-		this.handleChange = this.handleChange.bind(this);
+		this.handleChange = debounce(this.handleChange.bind(this), 350);
 	}
 
 	attached() {
-		const {config, value} = this.props;
+		const {config, type, value} = this.props;
 
 		this._editor = new JSONEditor(
-			this.refs.editor,
+			this.element,
 			{
 				history: false,
-				mode: 'view',
+				mode: 'form',
 				...config,
+				name: type,
 				onChange: this.handleChange
 			}
 		);
@@ -22,34 +24,49 @@ class MetalJSONEditor extends Component {
 		this._editor.set(value);
 	}
 
-	handleChange() {
-		this.props.onChange(this._editor.get(), this.props.type);
-	}
+	getChangedData() {
+		const {value} = this.props;
 
-	getEditor() {
-		return this._editor;
+		const newValue = this.getData();
+
+		let changedData = {};
+
+		keys(value).forEach(
+			key => {
+				const keyVal = value[key];
+				const newKeyValue = newValue[key];
+
+				if (!isEqual(keyVal, newKeyValue)) {
+					changedData[key] = newKeyValue;
+				}
+			}
+		);
+
+		return changedData;
 	}
 
 	getData() {
 		return this._editor.get();
 	}
 
-	syncValue(newVal) {
-		if (this._editor) {
-			this._editor.set(newVal);
-		}
+	getEditor() {
+		return this._editor;
+	}
+
+	handleChange() {
+		const {onChange, type} = this.props;
+
+		onChange(this.getChangedData(), type);
 	}
 
 	shouldUpdate() {
 		return false;
 	}
 
-	render() {
-		return (
-			<div>
-				<div ref="editor"></div>
-			</div>
-		);
+	syncValue(newVal) {
+		if (this._editor) {
+			this._editor.set(newVal);
+		}
 	}
 }
 

@@ -16,6 +16,7 @@ const hook = () => {
 		window.__METAL_DEV_TOOLS_HOOK__.highlightNode = RootManager.highlightNode.bind(RootManager);
 		window.__METAL_DEV_TOOLS_HOOK__.reloadRoots = RootManager.reloadRoots.bind(RootManager);
 		window.__METAL_DEV_TOOLS_HOOK__.selectComponent = RootManager.selectComponent.bind(RootManager);
+		window.__METAL_DEV_TOOLS_HOOK__.setComponentState = RootManager.setComponentState.bind(RootManager);
 		window.__METAL_DEV_TOOLS_HOOK__.setInspected = RootManager.setInspected.bind(RootManager);
 	}
 };

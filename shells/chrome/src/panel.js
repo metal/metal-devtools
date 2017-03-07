@@ -38,6 +38,16 @@ const app = new App(
 				}
 			);
 		},
+		setStateFn: (id, state, managerName) => {
+			chrome.devtools.inspectedWindow.eval(
+				`inspect(window.__METAL_DEV_TOOLS_HOOK__.setComponentState('${id}', '${JSON.stringify(state)}', '${managerName}'));`,
+				(res, err) => {
+					if (err) {
+						console.log('%c metal-devtools extension: (`setComponentState`)\n', 'background: rgb(136, 18, 128); color: #DDD', err);
+					}
+				}
+			);
+		},
 		port
 	}
 );

@@ -124,7 +124,8 @@ class App extends Component {
 			props: {
 				highlightDOM,
 				inspectDOM,
-				onSelectedChange
+				onSelectedChange,
+				setStateFn
 			},
 			state: {
 				firstColumnWidth,
@@ -175,7 +176,7 @@ class App extends Component {
 
 				<ResizeDivider onResize={this.handleResize}/>
 
-				<StatePane component={selectedComponent} onInspectDOM={inspectDOM} />
+				<StatePane component={selectedComponent} onInspectDOM={inspectDOM} setStateFn={setStateFn} />
 			</div>
 		);
 	}
@@ -185,7 +186,8 @@ App.PROPS = {
 	highlightDOM: Config.func(),
 	inspectDOM: Config.func(),
 	onSelectedChange: Config.func(),
-	port: Config.any()
+	port: Config.any(),
+	setStateFn: Config.func()
 };
 
 App.STATE = {

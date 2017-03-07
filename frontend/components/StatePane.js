@@ -1,13 +1,22 @@
 import Component, {Config} from 'metal-jsx';
-import {isPlainObject, keys} from 'lodash';
+import {bindAll, isPlainObject, keys} from 'lodash';
 
-// import FlashStateValue from './FlashStateValue';
 import NodeName from './NodeName';
 import JSONEditor from './JSONEditor';
 
 class StatePane extends Component {
 	created() {
-		this.inspectComponent = this.inspectComponent.bind(this);
+		bindAll(
+			this,
+			'inspectComponent',
+			'handleStateChange'
+		);
+	}
+
+	handleStateChange(data, type) {
+		const {component, setStateFn} = this.props;
+
+		setStateFn(component.id, data, type);
 	}
 
 	inspectComponent() {
@@ -44,7 +53,7 @@ class StatePane extends Component {
 								<div class="category" key={`${name}-${dataKey}`}>
 									<div class="name">{`${dataKey}:`}</div>
 
-									<JSONEditor type={dataKey} value={stateObj}/>
+									<JSONEditor onChange={this.handleStateChange} type={dataKey} value={stateObj}/>
 								</div>
 							);
 						}
@@ -63,7 +72,8 @@ class StatePane extends Component {
 
 StatePane.PROPS = {
 	component: Config.any(),
-	onInspectDOM: Config.func()
+	onInspectDOM: Config.func(),
+	setStateFn: Config.func()
 };
 
 export default StatePane;

@@ -53,9 +53,18 @@ class RootManager {
 
 	getComponentNode(id) {
 		if (this._componentMap[id] && this._componentMap[id].element) {
-			console.log('this._componentMap[id]', this._componentMap[id]);
 			return this._componentMap[id].element;
 		}
+	}
+
+	getDataManagers(id) {
+		let retVal = null;
+
+		if (this.hasComponent(id)) {
+			retVal = this._componentMap[id].__DATA_MANAGER_DATA__;
+		}
+
+		return retVal;
 	}
 
 	hasComponent(id) {
@@ -127,6 +136,18 @@ class RootManager {
 		Messenger.informSelected(
 			this.processComponentObj(this._componentMap[id])
 		);
+	}
+
+	setComponentState(id, newState, dataManagerName) {
+		const dataManagers = this.getDataManagers(id);
+
+		if (dataManagers) {
+			const dataManager = dataManagers[`${dataManagerName}_`];
+
+			if (dataManager) {
+				dataManager.setState(JSON.parse(newState));
+			}
+		}
 	}
 
 	setInspected(node) {
