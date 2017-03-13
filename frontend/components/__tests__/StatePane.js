@@ -3,6 +3,7 @@ jest.unmock('../NodeName');
 jest.unmock('../ResizeDivider');
 jest.unmock('../StatePane');
 jest.unmock('../FlashStateValue');
+jest.unmock('../JSONEditor');
 
 import StatePane from '../StatePane';
 
@@ -43,5 +44,22 @@ describe('StatePane', () => {
 		component.inspectComponent();
 
 		expect(spy).toBeCalledWith(id);
+	});
+
+	test('should call `setStateFn` prop', () => {
+		const spy = jest.fn();
+
+		const component = new StatePane({
+			component: {
+				id: 'foo'
+			},
+			setStateFn: spy
+		});
+
+		const data = {foo: 'bar'};
+
+		component.handleStateChange(data, 'state');
+
+		expect(spy).toHaveBeenCalledWith('foo', data,'state');
 	});
 });

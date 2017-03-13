@@ -292,4 +292,42 @@ describe('RootManager', () => {
 		expect(Messenger.informDetached).toHaveBeenCalled();
 		expect(Messenger.informRendered).toHaveBeenCalled();
 	});
+
+	test('should return data managers', () => {
+		const id = '123';
+		const state = {foo: 'bar'};
+
+		RootManager._componentMap = {
+			[id]: {
+				__DATA_MANAGER_DATA__: state
+			}
+		};
+		const retVal = RootManager.getDataManagers(id);
+
+		expect(retVal).toEqual(state);
+	});
+
+	test('should call `setState` on data manager', () => {
+		const dataManagerName = 'state';
+		const id = 1;
+
+		const spy = jest.fn();
+
+		const newState = JSON.stringify({foo: 'bar'});
+
+		RootManager.getDataManagers = jest.fn(
+			() => (
+				{
+					[`${dataManagerName}_`]: {
+						setState: spy
+					},
+				}
+			)
+		);
+
+		RootManager.setComponentState(id, newState, dataManagerName);
+
+		expect(RootManager.getDataManagers).toHaveBeenCalledWith(id);
+		expect(spy).toHaveBeenCalledWith({foo: 'bar'});
+	});
 });
