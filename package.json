@@ -6,8 +6,8 @@
     "build": "npm run build:injected && npm run build:chrome",
     "build:chrome": "webpack --config shells/chrome/webpack.config.js",
     "build:injected": "webpack --config injected/webpack.config.js",
-    "format": "eslint . --ignore-pattern node_modules --ignore-pattern build --fix",
-    "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build",
+    "format": "eslint . --ignore-pattern node_modules --ignore-pattern build --ignore-pattern coverage --fix",
+    "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build --ignore-pattern coverage",
     "test": "jest"
   },
   "author": "Bryce Osterhaus <bryceosterhaus@gmail.com>",
