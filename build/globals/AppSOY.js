@@ -1674,10 +1674,20 @@ babelHelpers;
   }
 
   this['metalNamed']['coreNamed']['isDocument'] = isDocument; /**
-                                                               * Returns true if value is a dom element.
+                                                               * Returns true if value is a document-fragment.
                                                                * @param {*} val
                                                                * @return {boolean}
                                                                */
+
+  function isDocumentFragment(val) {
+    return val && (typeof val === 'undefined' ? 'undefined' : babelHelpers.typeof(val)) === 'object' && val.nodeType === 11;
+  }
+
+  this['metalNamed']['coreNamed']['isDocumentFragment'] = isDocumentFragment; /**
+                                                                               * Returns true if value is a dom element.
+                                                                               * @param {*} val
+                                                                               * @return {boolean}
+                                                                               */
 
   function isElement(val) {
     return val && (typeof val === 'undefined' ? 'undefined' : babelHelpers.typeof(val)) === 'object' && val.nodeType === 1;
@@ -1799,6 +1809,9 @@ babelHelpers;
     * @return {boolean}
     */
 			value: function equal(arr1, arr2) {
+				if (arr1 === arr2) {
+					return true;
+				}
 				if (arr1.length !== arr2.length) {
 					return false;
 				}
@@ -3835,6 +3848,7 @@ babelHelpers;
 (function () {
 	var isDef = this['metalNamed']['metal']['isDef'];
 	var isDocument = this['metalNamed']['metal']['isDocument'];
+	var isDocumentFragment = this['metalNamed']['metal']['isDocumentFragment'];
 	var isElement = this['metalNamed']['metal']['isElement'];
 	var isObject = this['metalNamed']['metal']['isObject'];
 	var isString = this['metalNamed']['metal']['isString'];
@@ -4523,7 +4537,7 @@ babelHelpers;
   * @return {Element} The converted element, or null if none was found.
   */
 	function toElement(selectorOrElement) {
-		if (isElement(selectorOrElement) || isDocument(selectorOrElement)) {
+		if (isElement(selectorOrElement) || isDocument(selectorOrElement) || isDocumentFragment(selectorOrElement)) {
 			return selectorOrElement;
 		} else if (isString(selectorOrElement)) {
 			if (selectorOrElement[0] === '#' && selectorOrElement.indexOf(' ') === -1) {
@@ -5643,6 +5657,20 @@ babelHelpers;
 
 	var Config = {
 		/**
+   * Adds the `internal` flag to the `State` configuration.
+   * @param {boolean} required Flag to set "internal" to. True by default.
+   * @return {!Object} `State` configuration object.
+   */
+		internal: function internal() {
+			var _internal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+			return mergeConfig(this, {
+				internal: _internal
+			});
+		},
+
+
+		/**
    * Adds the `required` flag to the `State` configuration.
    * @param {boolean} required Flag to set "required" to. True by default.
    * @return {!Object} `State` configuration object.
@@ -5824,7 +5852,30 @@ babelHelpers;
 					var info = this.getStateInfo(name);
 					var value = info.state === State.KeyStates.INITIALIZED ? this.get(name) : this.initialValues_[name];
 					if (!isDefAndNotNull(value)) {
-						console.error('The property called "' + name + '" is required but didn\'t receive a value.');
+						var errorMessage = 'The property called "' + name + '" is required but didn\'t receive a value.';
+						if (this.shouldThrowValidationError()) {
+							throw new Error(errorMessage);
+						} else {
+							console.error(errorMessage);
+						}
+					}
+				}
+			}
+
+			/**
+    * Logs an error if the `validatorReturn` is instance of `Error`.
+    * @param {*} validatorReturn
+    * @protected
+    */
+
+		}, {
+			key: 'assertValidatorReturnInstanceOfError_',
+			value: function assertValidatorReturnInstanceOfError_(validatorReturn) {
+				if (validatorReturn instanceof Error) {
+					if (this.shouldThrowValidationError()) {
+						throw validatorReturn;
+					} else {
+						console.error('Warning: ' + validatorReturn);
 					}
 				}
 			}
@@ -5921,10 +5972,7 @@ babelHelpers;
 				var config = this.stateConfigs_[name];
 				if (config.validator) {
 					var validatorReturn = this.callFunction_(config.validator, [value, name, this.context_]);
-
-					if (validatorReturn instanceof Error) {
-						console.error('Warning: ' + validatorReturn);
-					}
+					this.assertValidatorReturnInstanceOfError_(validatorReturn);
 					return validatorReturn;
 				}
 				return true;
@@ -6419,6 +6467,18 @@ babelHelpers;
 			value: function shouldInformChange_(name, prevVal) {
 				var info = this.getStateInfo(name);
 				return info.state === State.KeyStates.INITIALIZED && (isObject(prevVal) || prevVal !== this.get(name));
+			}
+
+			/**
+    * Returns a boolean that determines whether or not should throw error when
+    * vaildator functions returns an `Error` instance.
+    * @return {boolean} By default returns false.
+    */
+
+		}, {
+			key: 'shouldThrowValidationError',
+			value: function shouldThrowValidationError() {
+				return false;
 			}
 
 			/**
@@ -7488,7 +7548,6 @@ babelHelpers;
 					element = opt_configOrElement;
 				}
 				var instance = new Ctor(config, false);
-
 				instance.renderComponent(element);
 				return instance;
 			}
@@ -9370,14 +9429,22 @@ babelHelpers;
 				this.state.numOfChildren += 1;
 			}
 		}, {
+			key: 'randomColor',
+			value: function randomColor() {
+				this.state.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var children = Array(this.state.numOfChildren).fill();
 
-				IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 16px;');
+				IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 16px;background-color:' + this.state.backgroundColor + ';');
 				IncrementalDOM.text('Parent:');
 				IncrementalDOM.elementOpen('button', null, null, 'onClick', this.addChild.bind(this));
 				IncrementalDOM.text('Add a child!');
+				IncrementalDOM.elementClose('button');
+				IncrementalDOM.elementOpen('button', null, null, 'onClick', this.randomColor.bind(this));
+				IncrementalDOM.text('color!');
 				IncrementalDOM.elementClose('button');
 				iDOMHelpers.renderArbitrary(children.map(function (child, i) {
 					return iDOMHelpers.jsxWrapper(function (_i, _i2) {
@@ -9391,6 +9458,7 @@ babelHelpers;
 	}(Component);
 
 	Parent.STATE = {
+		backgroundColor: Config.value('inherit'),
 		numOfChildren: Config.value(1)
 	};
 
@@ -9408,12 +9476,20 @@ babelHelpers;
 				this.state.subTree = true;
 			}
 		}, {
+			key: 'randomColor',
+			value: function randomColor() {
+				this.state.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+			}
+		}, {
 			key: 'render',
 			value: function render() {
-				IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left:32px');
+				IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 32px;background-color:' + this.state.backgroundColor + ';');
 				iDOMHelpers.renderArbitrary('Child #' + this.props.index + ':');
 				IncrementalDOM.elementOpen('button', null, null, 'onClick', this.handleClick.bind(this));
 				IncrementalDOM.text('+');
+				IncrementalDOM.elementClose('button');
+				IncrementalDOM.elementOpen('button', null, null, 'onClick', this.randomColor.bind(this));
+				IncrementalDOM.text('color!');
 				IncrementalDOM.elementClose('button');
 				iDOMHelpers.renderArbitrary(this.state.subTree && (IncrementalDOM.elementOpen('div'), (IncrementalDOM.elementVoid(Parent)), IncrementalDOM.elementClose('div')));
 				return IncrementalDOM.elementClose('div');
@@ -9427,6 +9503,7 @@ babelHelpers;
 	};
 
 	Child.STATE = {
+		backgroundColor: Config.value('inherit'),
 		subTree: Config.bool().value(false)
 	};
 
@@ -14449,11 +14526,13 @@ babelHelpers;
 'use strict';
 
 (function () {
+	var ComponentRegistry = this['metalNamed']['component']['ComponentRegistry'];
 	var isFunction = this['metalNamed']['metal']['isFunction'];
 	var isObject = this['metalNamed']['metal']['isObject'];
 	var isString = this['metalNamed']['metal']['isString'];
 	var object = this['metalNamed']['metal']['object'];
-	var ComponentRegistry = this['metalNamed']['component']['ComponentRegistry'];
+	var validators = this['metalNamed']['state']['validators'];
+	var Config = this['metalNamed']['state']['Config'];
 	var HTML2IncDom = this['metal']['withParser'];
 	var IncrementalDomRenderer = this['metal']['IncrementalDomRenderer'];
 	var SoyAop = this['metal']['SoyAop'];
@@ -14519,7 +14598,7 @@ babelHelpers;
 				component.getStateKeys().forEach(function (key) {
 					var value = component[key];
 					if (_this2.isHtmlParam_(component, key)) {
-						value = soyRenderer.toIncDom(value);
+						value = soyRenderer_.toIncDom(value);
 					}
 					data[key] = value;
 				});
@@ -14614,7 +14693,7 @@ babelHelpers;
 			value: function register(componentCtor, templates) {
 				var mainTemplate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'render';
 
-				componentCtor.RENDERER = soyRenderer;
+				componentCtor.RENDERER = soyRenderer_;
 				componentCtor.TEMPLATE = SoyAop.getOriginalFn(templates[mainTemplate]);
 				componentCtor.TEMPLATE.componentCtor = componentCtor;
 				SoyAop.registerForInterception(templates, mainTemplate);
@@ -14716,13 +14795,15 @@ babelHelpers;
 		return Soy;
 	}(IncrementalDomRenderer.constructor);
 
-	var soyRenderer = new Soy();
-	Soy.RENDERER_NAME = 'soy';
+	var soyRenderer_ = new Soy();
+	soyRenderer_.RENDERER_NAME = 'soy';
 
-	this['metal']['Soy'] = soyRenderer;
+	this['metal']['Soy'] = soyRenderer_;
 	this['metalNamed']['Soy'] = this['metalNamed']['Soy'] || {};
-	this['metalNamed']['Soy']['Soy'] = soyRenderer;
+	this['metalNamed']['Soy']['Config'] = Config;
+	this['metalNamed']['Soy']['Soy'] = soyRenderer_;
 	this['metalNamed']['Soy']['SoyAop'] = SoyAop;
+	this['metalNamed']['Soy']['validators'] = validators;
 }).call(this);
 'use strict';
 
@@ -14781,7 +14862,7 @@ babelHelpers;
       ie_open('h1');
       itext('Soy example');
       ie_close('h1');
-      $templateAlias1({ childrenArr: [] }, null, opt_ijData);
+      $templateAlias1(null, null, opt_ijData);
       ie_close('div');
     }
     exports.render = $render;
@@ -14886,7 +14967,7 @@ babelHelpers;
      * @suppress {checkTypes}
      */
     function $render(opt_data, opt_ignored, opt_ijData) {
-      ie_open('div', null, null, 'style', 'padding-left:32px');
+      ie_open('div', null, null, 'style', 'padding-left:32px; background-color: ' + opt_data.backgroundColor + ';');
       itext('Child #');
       var dyn0 = opt_data.index;
       if (typeof dyn0 == 'function') dyn0();else if (dyn0 != null) itext(dyn0);
@@ -14894,9 +14975,12 @@ babelHelpers;
       ie_open('button', null, null, 'onClick', 'handleClick');
       itext('+');
       ie_close('button');
+      ie_open('button', null, null, 'onClick', 'randomColor');
+      itext('color!');
+      ie_close('button');
       if (opt_data.subTree) {
         ie_open('div');
-        $templateAlias1({ childrenArr: [] }, null, opt_ijData);
+        $templateAlias1(null, null, opt_ijData);
         ie_close('div');
       }
       ie_close('div');
@@ -14906,8 +14990,8 @@ babelHelpers;
       $render.soyTemplateName = 'ChildSoy.render';
     }
 
-    exports.render.params = ["index", "subTree"];
-    exports.render.types = { "index": "any", "subTree": "any" };
+    exports.render.params = ["backgroundColor", "index", "subTree"];
+    exports.render.types = { "backgroundColor": "any", "index": "any", "subTree": "any" };
     templates = exports;
     return exports;
   });
@@ -14950,6 +15034,11 @@ babelHelpers;
 			value: function handleClick() {
 				this.subTree = true;
 			}
+		}, {
+			key: 'randomColor',
+			value: function randomColor() {
+				this.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+			}
 		}]);
 		return ChildSoy;
 	}(Component);
@@ -14957,14 +15046,19 @@ babelHelpers;
 	;
 
 	ChildSoy.STATE = {
+		backgroundColor: {
+			internal: true,
+			value: 'inherit'
+		},
 		subTree: {
+			internal: true,
 			value: false
 		}
 	};
 
 	Soy.register(ChildSoy, templates);
 
-	this['metal']['ChildSoy'] = ChildSoy;
+	this['metal']['Childsoy'] = ChildSoy;
 }).call(this);
 'use strict';
 
@@ -15015,16 +15109,20 @@ babelHelpers;
      * @suppress {checkTypes}
      */
     function $render(opt_data, opt_ignored, opt_ijData) {
-      ie_open('div', null, null, 'style', 'padding-left: 16px;');
+      opt_data = opt_data || {};
+      ie_open('div', null, null, 'style', 'padding-left: 16px;background-color: ' + opt_data.backgroundColor + ';');
       itext('Parent:');
       ie_open('button', null, null, 'onClick', 'addChild');
       itext('Add a Child!');
       ie_close('button');
-      var childList25 = opt_data.childrenArr;
-      var childListLen25 = childList25.length;
-      for (var childIndex25 = 0; childIndex25 < childListLen25; childIndex25++) {
-        var childData25 = childList25[childIndex25];
-        $templateAlias1({ index: childIndex25, subTree: false }, null, opt_ijData);
+      ie_open('button', null, null, 'onClick', 'randomColor');
+      itext('color!');
+      ie_close('button');
+      var childList26 = opt_data.childrenArr;
+      var childListLen26 = childList26.length;
+      for (var childIndex26 = 0; childIndex26 < childListLen26; childIndex26++) {
+        var childData26 = childList26[childIndex26];
+        $templateAlias1({ index: childIndex26 }, null, opt_ijData);
       }
       ie_close('div');
     }
@@ -15033,8 +15131,8 @@ babelHelpers;
       $render.soyTemplateName = 'ParentSoy.render';
     }
 
-    exports.render.params = ["childrenArr"];
-    exports.render.types = { "childrenArr": "any" };
+    exports.render.params = ["backgroundColor", "childrenArr"];
+    exports.render.types = { "backgroundColor": "any", "childrenArr": "any" };
     templates = exports;
     return exports;
   });
@@ -15077,12 +15175,22 @@ babelHelpers;
 			value: function addChild() {
 				this.childrenArr = [].concat(babelHelpers.toConsumableArray(this.childrenArr), [0]);
 			}
+		}, {
+			key: 'randomColor',
+			value: function randomColor() {
+				this.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+			}
 		}]);
 		return ParentSoy;
 	}(Component);
 
 	ParentSoy.STATE = {
+		backgroundColor: {
+			internal: true,
+			value: 'inherit'
+		},
 		childrenArr: {
+			internal: true,
 			value: [0]
 		}
 	};

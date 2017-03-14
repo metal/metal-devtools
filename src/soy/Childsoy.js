@@ -6,10 +6,19 @@ class ChildSoy extends Component {
 	handleClick() {
 		this.subTree = true;
 	}
+
+	randomColor() {
+		this.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+	}
 };
 
 ChildSoy.STATE = {
+	backgroundColor: {
+		internal: true,
+		value: 'inherit'
+	},
 	subTree: {
+		internal: true,
 		value: false
 	}
 };

@@ -735,7 +735,6 @@ var Component = function (_EventEmitter) {
 				element = opt_configOrElement;
 			}
 			var instance = new Ctor(config, false);
-
 			instance.renderComponent(element);
 			return instance;
 		}
@@ -842,7 +841,6 @@ var proxyBlackList_ = {
 };
 
 exports.default = Component;
-
 },{"./ComponentDataManager":2,"./ComponentRenderer":4,"./events/events":6,"./sync/sync":7,"metal":48,"metal-dom":11,"metal-events":23}],2:[function(require,module,exports){
 'use strict';
 
@@ -2479,7 +2477,7 @@ function triggerDelegatedListeners_(container, event, defaultFns) {
  * @return {Element} The converted element, or null if none was found.
  */
 function toElement(selectorOrElement) {
-	if ((0, _metal.isElement)(selectorOrElement) || (0, _metal.isDocument)(selectorOrElement)) {
+	if ((0, _metal.isElement)(selectorOrElement) || (0, _metal.isDocument)(selectorOrElement) || (0, _metal.isDocumentFragment)(selectorOrElement)) {
 		return selectorOrElement;
 	} else if ((0, _metal.isString)(selectorOrElement)) {
 		if (selectorOrElement[0] === '#' && selectorOrElement.indexOf(' ') === -1) {
@@ -3074,8 +3072,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _metal = require('metal');
@@ -3219,23 +3215,15 @@ var EventEmitter = function (_Disposable) {
 	}, {
 		key: 'buildFacade_',
 		value: function buildFacade_(event) {
-			var _this2 = this;
-
 			if (this.getShouldUseFacade()) {
-				var _ret = function () {
-					var facade = {
-						preventDefault: function preventDefault() {
-							facade.preventedDefault = true;
-						},
-						target: _this2,
-						type: event
-					};
-					return {
-						v: facade
-					};
-				}();
-
-				if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+				var facade = {
+					preventDefault: function preventDefault() {
+						facade.preventedDefault = true;
+					},
+					target: this,
+					type: event
+				};
+				return facade;
 			}
 		}
 
@@ -6860,39 +6848,37 @@ function renderFromTag_(tag, config, opt_owner) {
  */
 function renderFunction(renderer, fnOrCtor, opt_dataOrElement, opt_parent) {
 	if (!_metalComponent.Component.isComponentCtor(fnOrCtor)) {
-		(function () {
-			var fn = fnOrCtor;
+		var fn = fnOrCtor;
 
-			var TempComponent = function (_Component) {
-				_inherits(TempComponent, _Component);
+		var TempComponent = function (_Component) {
+			_inherits(TempComponent, _Component);
 
-				function TempComponent() {
-					_classCallCheck(this, TempComponent);
+			function TempComponent() {
+				_classCallCheck(this, TempComponent);
 
-					return _possibleConstructorReturn(this, (TempComponent.__proto__ || Object.getPrototypeOf(TempComponent)).apply(this, arguments));
+				return _possibleConstructorReturn(this, (TempComponent.__proto__ || Object.getPrototypeOf(TempComponent)).apply(this, arguments));
+			}
+
+			_createClass(TempComponent, [{
+				key: 'created',
+				value: function created() {
+					var parent = getComponentBeingRendered();
+					if (parent) {
+						updateContext_(this, parent);
+					}
 				}
+			}, {
+				key: 'render',
+				value: function render() {
+					fn(this.getInitialConfig());
+				}
+			}]);
 
-				_createClass(TempComponent, [{
-					key: 'created',
-					value: function created() {
-						var parent = getComponentBeingRendered();
-						if (parent) {
-							updateContext_(this, parent);
-						}
-					}
-				}, {
-					key: 'render',
-					value: function render() {
-						fn(this.getInitialConfig());
-					}
-				}]);
+			return TempComponent;
+		}(_metalComponent.Component);
 
-				return TempComponent;
-			}(_metalComponent.Component);
-
-			TempComponent.RENDERER = renderer;
-			fnOrCtor = TempComponent;
-		})();
+		TempComponent.RENDERER = renderer;
+		fnOrCtor = TempComponent;
 	}
 	return _metalComponent.Component.render(fnOrCtor, opt_dataOrElement, opt_parent);
 }
@@ -7510,6 +7496,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var Config = {
 	/**
+  * Adds the `internal` flag to the `State` configuration.
+  * @param {boolean} required Flag to set "internal" to. True by default.
+  * @return {!Object} `State` configuration object.
+  */
+	internal: function internal() {
+		var _internal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+		return mergeConfig(this, {
+			internal: _internal
+		});
+	},
+
+
+	/**
   * Adds the `required` flag to the `State` configuration.
   * @param {boolean} required Flag to set "required" to. True by default.
   * @return {!Object} `State` configuration object.
@@ -7698,7 +7698,30 @@ var State = function (_EventEmitter) {
 				var info = this.getStateInfo(name);
 				var value = info.state === State.KeyStates.INITIALIZED ? this.get(name) : this.initialValues_[name];
 				if (!(0, _metal.isDefAndNotNull)(value)) {
-					console.error('The property called "' + name + '" is required but didn\'t receive a value.');
+					var errorMessage = 'The property called "' + name + '" is required but didn\'t receive a value.';
+					if (this.shouldThrowValidationError()) {
+						throw new Error(errorMessage);
+					} else {
+						console.error(errorMessage);
+					}
+				}
+			}
+		}
+
+		/**
+   * Logs an error if the `validatorReturn` is instance of `Error`.
+   * @param {*} validatorReturn
+   * @protected
+   */
+
+	}, {
+		key: 'assertValidatorReturnInstanceOfError_',
+		value: function assertValidatorReturnInstanceOfError_(validatorReturn) {
+			if (validatorReturn instanceof Error) {
+				if (this.shouldThrowValidationError()) {
+					throw validatorReturn;
+				} else {
+					console.error('Warning: ' + validatorReturn);
 				}
 			}
 		}
@@ -7795,10 +7818,7 @@ var State = function (_EventEmitter) {
 			var config = this.stateConfigs_[name];
 			if (config.validator) {
 				var validatorReturn = this.callFunction_(config.validator, [value, name, this.context_]);
-
-				if (validatorReturn instanceof Error) {
-					console.error('Warning: ' + validatorReturn);
-				}
+				this.assertValidatorReturnInstanceOfError_(validatorReturn);
 				return validatorReturn;
 			}
 			return true;
@@ -8296,6 +8316,18 @@ var State = function (_EventEmitter) {
 		}
 
 		/**
+   * Returns a boolean that determines whether or not should throw error when
+   * vaildator functions returns an `Error` instance.
+   * @return {boolean} By default returns false.
+   */
+
+	}, {
+		key: 'shouldThrowValidationError',
+		value: function shouldThrowValidationError() {
+			return false;
+		}
+
+		/**
    * Validates the initial value for the state property with the given name.
    * @param {string} name
    * @protected
@@ -8680,6 +8712,9 @@ var array = function () {
    * @return {boolean}
    */
 		value: function equal(arr1, arr2) {
+			if (arr1 === arr2) {
+				return true;
+			}
 			if (arr1.length !== arr2.length) {
 				return false;
 			}
@@ -8798,9 +8833,6 @@ exports.default = array;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var async = {};
 
 /**
@@ -8976,29 +9008,23 @@ async.nextTick.getSetImmediateEmulator_ = function () {
 		};
 	}
 	if (typeof Channel !== 'undefined') {
-		var _ret = function () {
-			var channel = new Channel();
-			// Use a fifo linked list to call callbacks in the right order.
-			var head = {};
-			var tail = head;
-			channel.port1.onmessage = function () {
-				head = head.next;
-				var cb = head.cb;
-				head.cb = null;
-				cb();
+		var channel = new Channel();
+		// Use a fifo linked list to call callbacks in the right order.
+		var head = {};
+		var tail = head;
+		channel.port1.onmessage = function () {
+			head = head.next;
+			var cb = head.cb;
+			head.cb = null;
+			cb();
+		};
+		return function (cb) {
+			tail.next = {
+				cb: cb
 			};
-			return {
-				v: function v(cb) {
-					tail.next = {
-						cb: cb
-					};
-					tail = tail.next;
-					channel.port2.postMessage(0);
-				}
-			};
-		}();
-
-		if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+			tail = tail.next;
+			channel.port2.postMessage(0);
+		};
 	}
 	// Implementation for IE6-8: Script elements fire an asynchronous
 	// onreadystatechange event when inserted into the DOM.
@@ -9092,6 +9118,7 @@ exports.isBoolean = isBoolean;
 exports.isDef = isDef;
 exports.isDefAndNotNull = isDefAndNotNull;
 exports.isDocument = isDocument;
+exports.isDocumentFragment = isDocumentFragment;
 exports.isElement = isElement;
 exports.isFunction = isFunction;
 exports.isNull = isNull;
@@ -9293,6 +9320,15 @@ function isDefAndNotNull(val) {
  */
 function isDocument(val) {
   return val && (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val.nodeType === 9;
+}
+
+/**
+ * Returns true if value is a document-fragment.
+ * @param {*} val
+ * @return {boolean}
+ */
+function isDocumentFragment(val) {
+  return val && (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val.nodeType === 11;
 }
 
 /**
@@ -9781,14 +9817,22 @@ var Parent = function (_Component2) {
 			this.state.numOfChildren += 1;
 		}
 	}, {
+		key: 'randomColor',
+		value: function randomColor() {
+			this.state.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var children = Array(this.state.numOfChildren).fill();
 
-			IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 16px;');
+			IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 16px;background-color:' + this.state.backgroundColor + ';');
 			IncrementalDOM.text('Parent:');
 			IncrementalDOM.elementOpen('button', null, null, 'onClick', this.addChild.bind(this));
 			IncrementalDOM.text('Add a child!');
+			IncrementalDOM.elementClose('button');
+			IncrementalDOM.elementOpen('button', null, null, 'onClick', this.randomColor.bind(this));
+			IncrementalDOM.text('color!');
 			IncrementalDOM.elementClose('button');
 			iDOMHelpers.renderArbitrary(children.map(function (child, i) {
 				return iDOMHelpers.jsxWrapper(function (_i, _i2) {
@@ -9803,6 +9847,7 @@ var Parent = function (_Component2) {
 }(_metalJsx2.default);
 
 Parent.STATE = {
+	backgroundColor: _metalJsx.Config.value('inherit'),
 	numOfChildren: _metalJsx.Config.value(1)
 };
 
@@ -9821,12 +9866,20 @@ var Child = function (_Component3) {
 			this.state.subTree = true;
 		}
 	}, {
+		key: 'randomColor',
+		value: function randomColor() {
+			this.state.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left:32px');
+			IncrementalDOM.elementOpen('div', null, null, 'style', 'padding-left: 32px;background-color:' + this.state.backgroundColor + ';');
 			iDOMHelpers.renderArbitrary('Child #' + this.props.index + ':');
 			IncrementalDOM.elementOpen('button', null, null, 'onClick', this.handleClick.bind(this));
 			IncrementalDOM.text('+');
+			IncrementalDOM.elementClose('button');
+			IncrementalDOM.elementOpen('button', null, null, 'onClick', this.randomColor.bind(this));
+			IncrementalDOM.text('color!');
 			IncrementalDOM.elementClose('button');
 			iDOMHelpers.renderArbitrary(this.state.subTree && (IncrementalDOM.elementOpen('div'), (IncrementalDOM.elementVoid(Parent)), IncrementalDOM.elementClose('div')));
 			return IncrementalDOM.elementClose('div');
@@ -9841,6 +9894,7 @@ Child.PROPS = {
 };
 
 Child.STATE = {
+	backgroundColor: _metalJsx.Config.value('inherit'),
 	subTree: _metalJsx.Config.bool().value(false)
 };
 

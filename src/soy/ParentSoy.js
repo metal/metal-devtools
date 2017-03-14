@@ -7,10 +7,19 @@ class ParentSoy extends Component {
 		this.childrenArr = [...this.childrenArr, 0];
 
 	}
+
+	randomColor() {
+		this.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+	}
 }
 
 ParentSoy.STATE = {
+	backgroundColor: {
+		internal: true,
+		value: 'inherit'
+	},
 	childrenArr: {
+		internal: true,
 		value: [0]
 	}
 };

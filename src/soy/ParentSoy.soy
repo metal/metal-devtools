@@ -1,16 +1,18 @@
 {namespace ParentSoy}
 
 /**
- * @param childrenArr
+ * @param? backgroundColor
+ * @param? childrenArr
  */
 {template .render}
-	<div style="padding-left: 16px;">
-		Parent:<button onClick="addChild">Add a Child!</button>
+	<div style="padding-left: 16px;background-color: {$backgroundColor};">
+		Parent:
+		<button onClick="addChild">Add a Child!</button>
+		<button onClick="randomColor">color!</button>
 
 		{foreach $child in $childrenArr}
 			{call ChildSoy.render}
 				{param index: index($child) /}
-				{param subTree: false /}
 			{/call}
 		{/foreach}
 	</div>

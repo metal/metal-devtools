@@ -1,20 +1,20 @@
 {namespace ChildSoy}
 
 /**
+ * @param? backgroundColor
  * @param index
- * @param subTree
+ * @param? subTree
  */
 {template .render}
-	<div style="padding-left:32px">
+	<div style="padding-left:32px; background-color: {$backgroundColor};">
 		Child #{$index}:
 
 		<button onClick="handleClick">+</button>
+		<button onClick="randomColor">color!</button>
 
 		{if $subTree}
 			<div>
-				{call ParentSoy.render}
-					{param childrenArr: [] /}
-				{/call}
+				{call ParentSoy.render}{/call}
 			</div>
 		{/if}
 	</div>

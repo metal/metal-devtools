@@ -45,7 +45,7 @@ var $templateAlias1 = Soy.getTemplate('ParentSoy.incrementaldom', 'render');
  */
 function $render(opt_data, opt_ignored, opt_ijData) {
   ie_open('div', null, null,
-      'style', 'padding-left:32px');
+      'style', 'padding-left:32px; background-color: ' + opt_data.backgroundColor + ';');
     itext('Child #');
     var dyn0 = opt_data.index;
     if (typeof dyn0 == 'function') dyn0(); else if (dyn0 != null) itext(dyn0);
@@ -54,9 +54,13 @@ function $render(opt_data, opt_ignored, opt_ijData) {
         'onClick', 'handleClick');
       itext('+');
     ie_close('button');
+    ie_open('button', null, null,
+        'onClick', 'randomColor');
+      itext('color!');
+    ie_close('button');
     if (opt_data.subTree) {
       ie_open('div');
-        $templateAlias1({childrenArr: []}, null, opt_ijData);
+        $templateAlias1(null, null, opt_ijData);
       ie_close('div');
     }
   ie_close('div');
@@ -66,8 +70,8 @@ if (goog.DEBUG) {
   $render.soyTemplateName = 'ChildSoy.render';
 }
 
-exports.render.params = ["index","subTree"];
-exports.render.types = {"index":"any","subTree":"any"};
+exports.render.params = ["backgroundColor","index","subTree"];
+exports.render.types = {"backgroundColor":"any","index":"any","subTree":"any"};
 templates = exports;
 return exports;
 

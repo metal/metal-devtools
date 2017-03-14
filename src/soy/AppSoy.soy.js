@@ -53,7 +53,7 @@ function $render(opt_data, opt_ignored, opt_ijData) {
     ie_open('h1');
       itext('Soy example');
     ie_close('h1');
-    $templateAlias1({childrenArr: []}, null, opt_ijData);
+    $templateAlias1(null, null, opt_ijData);
   ie_close('div');
 }
 exports.render = $render;
