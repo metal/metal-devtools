@@ -144,8 +144,8 @@ class App extends Component {
 				}
 
 				{rootComponentKeys && !!rootComponentKeys.length &&
-					<div class="roots-wrapper" style={firstColumnWidth && `flex-basis:${firstColumnWidth}px`}>
-						<div class="options" title="Freezes highlights by expanded components">
+					<div class="roots-wrapper" style={firstColumnWidth && `flex-basis:${firstColumnWidth}px;`}>
+						<div class="options" title="Freezes highlights by expanded components" style={`width: ${firstColumnWidth + 1}px;`}>
 							<label for="freezeUpdates">{'Freeze Updates'}</label>
 
 							<input

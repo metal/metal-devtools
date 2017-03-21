@@ -118,11 +118,22 @@ html, .app-container {
 
 .roots-wrapper {
 	flex: 0 0 70%;
+	margin-top: 40px;
 
 	.options {
 		border-bottom: $paneBorder;
+		box-sizing: border-box;
+		font-size: 14px;
+		left: 0;
 		margin-bottom: 12px;
-		padding: 4px;
+		padding: 8px 0 8px 12px;
+		position: fixed;
+		top: 0;
+		width: calc(70% + 1px);
+
+		input {
+			margin: 0 4px;
+		}
 	}
 }
 
