@@ -122,10 +122,17 @@ class RootManager {
 		};
 	}
 
-	reloadRoots() {
+	reloadRoots(informNew) {
 		this._executeAsync(
 			() => this._roots.forEach(
-				root => this._handleComponentUpdated(root)
+				root => {
+					if (informNew) {
+						Messenger.informNewRoot(this._traverseTree(root, root));
+					}
+					else {
+						this._handleComponentUpdated(root);
+					}
+				}
 			)
 		);
 	}

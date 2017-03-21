@@ -1,18 +1,18 @@
 class Hook {
 	constructor() {
-		this._components = [];
+		this._roots = [];
 	}
 
 	add(component) {
-		this._components.push(component);
+		this._roots.push(component);
 	}
 
 	getAll() {
-		return this._components;
+		return this._roots;
 	}
 
-	hasComponents() {
-		return this._components && !!this._components.length;
+	hasRoots() {
+		return this._roots && !!this._roots.length;
 	}
 }
 
