@@ -29,6 +29,7 @@ class RootManager {
 		this.setInspected = this.setInspected.bind(this);
 		this._traverseTree = this._traverseTree.bind(this);
 
+		this._closestSelectedId = null;
 		this._componentMap = {};
 		this._listeners = {};
 		this._inspectedNode = null;
@@ -131,6 +132,8 @@ class RootManager {
 
 	selectComponent(id) {
 		this.setInspected(null);
+
+		this._closestSelectedId = null;
 		this._previousSelectedId = id;
 
 		Messenger.informSelected(
@@ -199,7 +202,9 @@ class RootManager {
 						this._traverseTree(rootComponent, rootComponent)
 					);
 
-					this._updateCurrentSelected();
+					this._updateCurrentSelected(this._closestSelectedId);
+
+					this._closestSelectedId = null;
 
 					updateScheduled[rootId] = false;
 				}
@@ -233,8 +238,8 @@ class RootManager {
 		if (this._inspectedNode && component.element && component.element.contains) {
 			containsInspected = component.element.contains(this._inspectedNode);
 
-			if (this._inspectedNode === component.element) {
-				this.selectComponent(component[__METAL_DEV_TOOLS_COMPONENT_KEY__]);
+			if (containsInspected) {
+				this._closestSelectedId = component[__METAL_DEV_TOOLS_COMPONENT_KEY__];
 			}
 		}
 
@@ -248,10 +253,14 @@ class RootManager {
 		};
 	}
 
-	_updateCurrentSelected() {
-		if (this._previousSelectedId) {
+	_updateCurrentSelected(id) {
+		if (!id) {
+			id = this._previousSelectedId;
+		}
+
+		if (id) {
 			Messenger.informSelected(
-				this.processComponentObj(this._componentMap[this._previousSelectedId])
+				this.processComponentObj(this._componentMap[id])
 			);
 		}
 	}
