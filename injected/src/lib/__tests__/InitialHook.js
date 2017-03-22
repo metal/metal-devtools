@@ -14,7 +14,7 @@ describe('InitialHook', () => {
 
 		Hook.add('foo');
 
-		expect(Hook._components).toContain('foo');
+		expect(Hook._roots).toMatchSnapshot();
 	});
 
 	test('should add to components array', () => {
@@ -24,17 +24,17 @@ describe('InitialHook', () => {
 		Hook.add('bar');
 		Hook.add('baz');
 
-		expect(Hook.getAll()).toContain('foo', 'bar', 'baz');
-		expect(Hook.getAll()).toEqual(Hook._components);
+		expect(Hook.getAll()).toMatchSnapshot();
+		expect(Hook.getAll()).toMatchSnapshot();
 	});
 
 	test('should check if components exist', () => {
 		const Hook = new InitialHook();
 
-		expect(Hook.hasComponents()).toBeFalsy();
+		expect(Hook.hasRoots()).toBeFalsy();
 
 		Hook.add('foo');
 
-		expect(Hook.hasComponents()).toBeTruthy();
+		expect(Hook.hasRoots()).toBeTruthy();
 	});
 });

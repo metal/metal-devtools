@@ -1,52 +1,7 @@
-exports[`JSONEditor should render 1`] = `
-<div>
-  <div class="jsoneditor jsoneditor-mode-form">
-    <div class="jsoneditor-menu">
-      <button type="button" class="jsoneditor-expand-all" title="Expand all fields"></button>
-      <button type="button" title="Collapse all fields" class="jsoneditor-collapse-all"></button>
-      <table class="jsoneditor-search">
-        <tbody>
-          <tr>
-            <td>
-              <div class="jsoneditor-results"></div>
-            </td>
-            <td>
-              <div class="jsoneditor-frame" title="Search fields and values">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <button type="button" class="jsoneditor-refresh"></button>
-                      </td>
-                      <td>
-                        <input>
-                      </td>
-                      <td>
-                        <button type="button" title="Next result (Enter)" class="jsoneditor-next"></button>
-                      </td>
-                      <td>
-                        <button type="button" title="Previous result (Shift+Enter)" class="jsoneditor-previous"></button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="jsoneditor-outer">
-      <div class="jsoneditor-tree">
-        <table class="jsoneditor-tree">
-          <colgroup>
-            <col width="24px">
-            <col>
-          </colgroup>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-`;
+exports[`JSONEditor should render 1`] = `<ul class="tree-container" style="list-style: none; margin: 0px;"></ul>`;
+
+exports[`JSONEditor should return changed data 1`] = `undefined`;
+
+exports[`JSONEditor should return jsx element 1`] = `undefined`;
+
+exports[`JSONEditor should return jsx element 2`] = `undefined`;

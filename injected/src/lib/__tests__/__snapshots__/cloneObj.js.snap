@@ -1,0 +1,21 @@
+exports[`cloneObj should copy anonymous function 1`] = `
+Object {
+  "__metal_devtools_read_only": true,
+  "value": "function()",
+}
+`;
+
+exports[`cloneObj should copy jsx type to be function string 1`] = `
+Object {
+  "__jsxDOMWrapper": true,
+  "__metal_devtools_read_only": true,
+  "value": "<JSXElement />",
+}
+`;
+
+exports[`cloneObj should copy named function 1`] = `
+Object {
+  "__metal_devtools_read_only": true,
+  "value": "fooFn()",
+}
+`;

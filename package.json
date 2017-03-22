@@ -49,6 +49,7 @@
       "immutable",
       "lodash",
       "metal-dom",
+      "metal-json-editor",
       "metal-jsx"
     ]
   },

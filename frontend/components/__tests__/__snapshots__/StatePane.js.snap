@@ -9,179 +9,20 @@ exports[`StatePane should render 1`] = `
   </div>
   <div key="fooComponent-one" class="category">
     <div class="name" key="_metal_jsx_1">one:</div>
-    <div key="_metal_jsx_2">
-      <div class="jsoneditor jsoneditor-mode-form">
-        <div class="jsoneditor-menu">
-          <button type="button" class="jsoneditor-expand-all" title="Expand all fields"></button>
-          <button type="button" title="Collapse all fields" class="jsoneditor-collapse-all"></button>
-          <table class="jsoneditor-search">
-            <tbody>
-              <tr>
-                <td>
-                  <div class="jsoneditor-results"></div>
-                </td>
-                <td>
-                  <div class="jsoneditor-frame" title="Search fields and values">
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <button type="button" class="jsoneditor-refresh"></button>
-                          </td>
-                          <td>
-                            <input>
-                          </td>
-                          <td>
-                            <button type="button" title="Next result (Enter)" class="jsoneditor-next"></button>
-                          </td>
-                          <td>
-                            <button type="button" title="Previous result (Shift+Enter)" class="jsoneditor-previous"></button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <ul class="tree-container" style="list-style: none; margin: 0px;" key="_metal_jsx_2">
+      <li key="_metal_jsx_1">
+        <div key="_metal_jsx_1">
+          <span style="" key="_metal_jsx_1">foo: </span>
+          <span style="color: rgb(196, 26, 22);" title="Click to Edit" key="_metal_jsx_2">
+            <span style="white-space: pre;" key="_metal_jsx_1">bar</span>
+          </span>
         </div>
-        <div class="jsoneditor-outer">
-          <div class="jsoneditor-tree">
-            <table class="jsoneditor-tree">
-              <colgroup>
-                <col width="24px">
-                <col>
-              </colgroup>
-              <tbody>
-                <tr class=" jsoneditor-expandable">
-                  <td>
-                    <table style="border-collapse: collapse; margin-left: 0px;" class="jsoneditor-values">
-                      <tbody>
-                        <tr>
-                          <td class="jsoneditor-tree">
-                            <button type="button" class="jsoneditor-expanded" title="Click to expand/collapse this field (Ctrl+E). 
-Ctrl+Click to expand/collapse including all childs."></button>
-                          </td>
-                          <td class="jsoneditor-tree">
-                            <div class="jsoneditor-readonly">one</div>
-                          </td>
-                          <td class="jsoneditor-tree"></td>
-                          <td class="jsoneditor-tree">
-                            <div class="jsoneditor-value jsoneditor-object" title="object containing 1 items">{1}</div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <table style="border-collapse: collapse; margin-left: 24px;" class="jsoneditor-values">
-                      <tbody>
-                        <tr>
-                          <td class="jsoneditor-tree">
-                            <button type="button" class="jsoneditor-invisible" title=""></button>
-                          </td>
-                          <td class="jsoneditor-tree">
-                            <div class="jsoneditor-field">foo</div>
-                          </td>
-                          <td class="jsoneditor-separator">:</td>
-                          <td class="jsoneditor-tree">
-                            <div class="jsoneditor-value jsoneditor-string" title="">bar</div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
   <div key="fooComponent-two" class="category">
     <div class="name" key="_metal_jsx_1">two:</div>
-    <div key="_metal_jsx_2">
-      <div class="jsoneditor jsoneditor-mode-form">
-        <div class="jsoneditor-menu">
-          <button type="button" class="jsoneditor-expand-all" title="Expand all fields"></button>
-          <button type="button" title="Collapse all fields" class="jsoneditor-collapse-all"></button>
-          <table class="jsoneditor-search">
-            <tbody>
-              <tr>
-                <td>
-                  <div class="jsoneditor-results"></div>
-                </td>
-                <td>
-                  <div class="jsoneditor-frame" title="Search fields and values">
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <button type="button" class="jsoneditor-refresh"></button>
-                          </td>
-                          <td>
-                            <input>
-                          </td>
-                          <td>
-                            <button type="button" title="Next result (Enter)" class="jsoneditor-next"></button>
-                          </td>
-                          <td>
-                            <button type="button" title="Previous result (Shift+Enter)" class="jsoneditor-previous"></button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="jsoneditor-outer">
-          <div class="jsoneditor-tree">
-            <table class="jsoneditor-tree">
-              <colgroup>
-                <col width="24px">
-                <col>
-              </colgroup>
-              <tbody>
-                <tr class=" jsoneditor-expandable">
-                  <td>
-                    <table style="border-collapse: collapse; margin-left: 0px;" class="jsoneditor-values">
-                      <tbody>
-                        <tr>
-                          <td class="jsoneditor-tree">
-                            <button type="button" class="jsoneditor-expanded" title="Click to expand/collapse this field (Ctrl+E). 
-Ctrl+Click to expand/collapse including all childs."></button>
-                          </td>
-                          <td class="jsoneditor-tree">
-                            <div class="jsoneditor-readonly">two</div>
-                          </td>
-                          <td class="jsoneditor-tree"></td>
-                          <td class="jsoneditor-tree">
-                            <div class="jsoneditor-value jsoneditor-object" title="object containing 0 items">{0}</div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding-left: 50px;">
-                    <div class="jsoneditor-readonly">(empty object)</div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ul class="tree-container" style="list-style: none; margin: 0px;" key="_metal_jsx_2"></ul>
   </div>
 </div>
 `;

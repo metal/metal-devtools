@@ -23,6 +23,6 @@ describe('installInitialHook', () => {
 		expect(InitialHookClass).toHaveBeenCalled();
 		expect(window.__METAL_DEV_TOOLS_HOOK__).toBeTruthy();
 		expect(window.__METAL_DEV_TOOLS_HOOK__.getAll).toBeTruthy();
-		expect(window.__METAL_DEV_TOOLS_HOOK__.hasComponents).toBeTruthy();
+		expect(window.__METAL_DEV_TOOLS_HOOK__.hasRoots).toBeTruthy();
 	});
 });

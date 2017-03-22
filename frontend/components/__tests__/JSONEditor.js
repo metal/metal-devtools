@@ -1,86 +1,60 @@
-jest.unmock('../JSONEditor');
+/* global IncrementalDOM */
 
-import jsoneditor from 'jsoneditor';
+jest.unmock('../JSONEditor');
 
 import JSONEditor from '../JSONEditor';
 
 describe('JSONEditor', () => {
 	test('should render', () => {
-		const component = new JSONEditor();
+		const component = new JSONEditor(
+			{
+				value: {}
+			}
+		);
 
 		expect(component).toMatchSnapshot();
 	});
 
-	test('should return only the data that was changed', () => {
-		const component = new JSONEditor({
-			value: {
-				baz: 'qux',
-				foo: 'bar'
-			}
-		});
-
-		component.getData = jest.fn(
-			() => ({
-				baz: 'qux',
-				foo: 'boo'
-			})
+	test('should return jsx element', () => {
+		const component = new JSONEditor(
+			{value: {}}
 		);
 
-		const retVal = component.getChangedData();
+		const initSpyVal = IncrementalDOM;
 
-		expect(retVal).toEqual({foo: 'boo'});
+		IncrementalDOM = {
+			elementVoid: jest.fn()
+		};
+
+		expect(component.arrowRenderer(true)).toMatchSnapshot();
+		expect(component.arrowRenderer(false)).toMatchSnapshot();
+
+		IncrementalDOM = initSpyVal;
 	});
 
-	test('should return the jsoneditor value', () => {
-		const component = new JSONEditor();
-
-		component.props.value = {foo: 'bar'};
-
-		jest.runAllTimers();
-
-		expect(component.getData()).toEqual({foo: 'bar'});
-	});
-
-	test('should return jsoneditor instance', () => {
-		const component = new JSONEditor();
-
-		expect(component.getEditor()).toBeInstanceOf(jsoneditor);
-	});
-
-	test('should call onChange prop', () => {
+	test('should return changed data', () => {
 		const spy = jest.fn();
 
-		const component = new JSONEditor({
-			onChange: spy
-		});
+		const component = new JSONEditor(
+			{
+				onChange: spy,
+				value: {
+					baz: {
+						qux: 'test'
+					},
+					foo: 'bar'
+				}
+			}
+		);
 
-		component.handleChange();
+		const newVal = {
+			baz: {
+				qux: 'bar'
+			},
+			foo: 'bar'
+		};
 
-		jest.runAllTimers();
-
+		expect(component.handleOnChange(newVal)).toMatchSnapshot();
 		expect(spy).toHaveBeenCalled();
-	});
-
-	test('should not call render', () => {
-			const component = new JSONEditor();
-
-			component.render = jest.fn();
-
-			component.props.value = {foo: 'bar'};
-
-			expect(component.render).not.toHaveBeenCalled();
-			expect(component.shouldUpdate()).toBe(false);
-	});
-
-	test('should set new jsoneditor value', () => {
-		const component = new JSONEditor();
-
-		component._editor.set = jest.fn();
-
-		component.props.value = {foo: 'bar'};
-
-		jest.runAllTimers();
-
-		expect(component._editor.set).toHaveBeenCalled();
 	});
 });

@@ -16,14 +16,15 @@ describe('cloneObj', () => {
 		expect(cloneObj(str)).toEqual(str);
 	});
 
+
 	test('should copy anonymous function', () => {
-		expect(cloneObj(() => {})).toEqual('function()');
+		expect(cloneObj(() => {})).toMatchSnapshot();
 	});
 
 	test('should copy named function', () => {
 		function fooFn() {};
 
-		expect(cloneObj(fooFn)).toEqual('function fooFn()');
+		expect(cloneObj(fooFn)).toMatchSnapshot();
 	});
 
 	test('should copy array', () => {
@@ -52,7 +53,7 @@ describe('cloneObj', () => {
 	});
 
 	test('should copy jsx type to be function string', () => {
-		expect(cloneObj(<div></div>)).toEqual('<JSXElement />');
+		expect(cloneObj(<div></div>)).toMatchSnapshot();
 	});
 
 	test('should copy object', () => {

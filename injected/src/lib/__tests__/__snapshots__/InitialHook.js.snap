@@ -1,0 +1,21 @@
+exports[`InitialHook should add to components array 1`] = `
+Array [
+  "foo",
+]
+`;
+
+exports[`InitialHook should add to components array 2`] = `
+Array [
+  "foo",
+  "bar",
+  "baz",
+]
+`;
+
+exports[`InitialHook should add to components array 3`] = `
+Array [
+  "foo",
+  "bar",
+  "baz",
+]
+`;

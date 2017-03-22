@@ -145,6 +145,22 @@ describe('RootManager', () => {
 		expect(RootManager._handleComponentUpdated).toHaveBeenCalled();
 	});
 
+	test('should call `_executeAsync` and Messenger.informNewRoot', () => {
+		RootManager._executeAsync = jest.fn(fn => fn());
+		RootManager._traverseTree = jest.fn();
+
+		RootManager._roots = [1, 2, 3];
+
+		Messenger.informNewRoot = jest.fn();
+
+		RootManager.reloadRoots(true);
+
+		expect(RootManager._executeAsync).toHaveBeenCalled();
+		expect(Messenger.informNewRoot).toHaveBeenCalled();
+		expect(RootManager._traverseTree).toHaveBeenCalled();
+
+	});
+
 	test('should process metal component object and call `processDataManagers`', () => {
 		processDataManagers.mockImplementation(() => {
 			return {};
@@ -234,9 +250,18 @@ describe('RootManager', () => {
 
 		const id = 'foo';
 
-		RootManager._previousSelectedId = id;
-
 		RootManager._updateCurrentSelected(id);
+
+		expect(Messenger.informSelected).toHaveBeenCalled();
+		expect(RootManager.processComponentObj).toHaveBeenCalled();
+	});
+
+	test('should handle updating selected, if no id provided use _previousSelectedId', () => {
+		RootManager.processComponentObj = jest.fn();
+
+		RootManager._previousSelectedId = 'foo';
+
+		RootManager._updateCurrentSelected();
 
 		expect(Messenger.informSelected).toHaveBeenCalled();
 		expect(RootManager.processComponentObj).toHaveBeenCalled();
@@ -259,7 +284,7 @@ describe('RootManager', () => {
 		const retVal = RootManager._traverseTree(component, component);
 
 		expect(RootManager._attachComponentListeners).toHaveBeenCalled();
-		expect(RootManager.selectComponent).toHaveBeenCalled();
+		expect(RootManager._closestSelectedId).toBeTruthy();
 		expect(retVal).toEqual({
 			containsInspected: true,
 			id,

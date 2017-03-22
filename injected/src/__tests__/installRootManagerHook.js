@@ -15,6 +15,17 @@ describe('installRootManagerHook', () => {
 		expect(RootManager).not.toHaveBeenCalled();
 	});
 
+	test('should call `reloadRoots` is manager already exists', () => {
+		window.__METAL_DEV_TOOLS_HOOK__= {
+			_managerExists: true,
+			reloadRoots: jest.fn()
+		};
+
+		require('../installRootManagerHook').default();
+
+		expect(window.__METAL_DEV_TOOLS_HOOK__.reloadRoots).toHaveBeenCalled();
+	});
+
 	test('should set up __METAL_DEV_TOOLS_HOOK__', () => {
 		window.__METAL_DEV_TOOLS_HOOK__ = {
 			getAll: jest.fn(() => ['foo'])
