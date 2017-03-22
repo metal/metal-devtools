@@ -19,8 +19,8 @@
   "homepage": "https://github.com/metal/metal-devtools",
   "dependencies": {
     "immutable": "^3.8.1",
-    "jsoneditor": "^5.5.11",
     "lodash": "^4.17.4",
+    "metal-json-editor": "0.0.1",
     "metal-jsx": "^2.5.13"
   },
   "babel": {
@@ -47,7 +47,6 @@
     "timers": "fake",
     "unmockedModulePathPatterns": [
       "immutable",
-      "jsoneditor",
       "lodash",
       "metal-dom",
       "metal-jsx"

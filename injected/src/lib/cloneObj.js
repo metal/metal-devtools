@@ -23,14 +23,18 @@ function cloneObj(objectToBeCloned, visited = new Set()) {
 				objectClone = new Constructor(objectToBeCloned.getTime());
 				break;
 			case Function:
+				objectClone = {
+					__metal_devtools_read_only: true
+				};
+
 				if (objectToBeCloned.name) {
-					objectClone = `function ${objectToBeCloned.name}()`;
+					objectClone.value = `${objectToBeCloned.name}()`;
 				}
 				else if (objectToBeCloned.__jsxDOMWrapper) {
-					objectClone = '<JSXElement />';
+					objectClone.value = '<JSXElement />';
 				}
 				else {
-					objectClone = 'function()';
+					objectClone.value = 'function()';
 				}
 				break;
 			default:
