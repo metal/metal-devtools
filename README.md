@@ -1,19 +1,18 @@
 # metal-devtools
 [![Build Status](https://travis-ci.org/metal/metal-devtools.svg?branch=master)](https://travis-ci.org/metal/metal-devtools)
 
-![Screenshot](images/screenshot.png)
+![Screenshot](images/screenshot1280x800.png)
 
 ### Installation
-* Download latest `metal-devtools.crx` from [releases](https://github.com/metal/metal-devtools/releases)
-* Open Chrome and navigate to `chrome://extensions/`
-* Drag `metal-devtools.crx` into extensions
+* Download from [chrome store](https://chrome.google.com/webstore/detail/metaljs-developer-tools/fagnjmppkokolnbloalifcmcooldhiik)
 * See how it works by using it [here](https://metal.github.io/metal-devtools/)
 
 ### Seeing Errors?
-If you happen to see any errors or logs in your console that look like?
+If you happen to see any errors or logs in your console that contain...
+
 ![Screenshot](images/console_warning.png)
 
-Please report these [here](https://github.com/metal/metal-devtools/issues/new)
+Please report those [here](https://github.com/metal/metal-devtools/issues/new)
 
 ### Developing
 * Clone Repo
