@@ -166,19 +166,7 @@ describe('RootManager', () => {
 			return {};
 		});
 
-		const component1 = {
-			__DATA_MANAGER_DATA__: {},
-			__METAL_DEV_TOOLS_COMPONENT_KEY__: 'foo1',
-			name: 'Foo1'
-		};
-
-		expect(RootManager.processComponentObj(component1)).toMatchObject({
-			data: {},
-			id: 'foo1',
-			name: 'Foo1'
-		});
-
-		const component2 = {
+		const component = {
 			__DATA_MANAGER_DATA__: {},
 			__METAL_DEV_TOOLS_COMPONENT_KEY__: 'foo2',
 			constructor: {
@@ -186,7 +174,7 @@ describe('RootManager', () => {
 			}
 		};
 
-		expect(RootManager.processComponentObj(component2)).toMatchObject({
+		expect(RootManager.processComponentObj(component)).toMatchObject({
 			data: {},
 			id: 'foo2',
 			name: 'Foo2'
@@ -354,5 +342,26 @@ describe('RootManager', () => {
 
 		expect(RootManager.getDataManagers).toHaveBeenCalledWith(id);
 		expect(spy).toHaveBeenCalledWith({foo: 'bar'});
+	});
+
+	test('should always use the contstructor name instead of a STATE attribute', () => {
+		processDataManagers.mockImplementation(() => {
+			return {};
+		});
+
+		const component = {
+			__DATA_MANAGER_DATA__: {},
+			__METAL_DEV_TOOLS_COMPONENT_KEY__: 'foo2',
+			name: 'foo1',
+			constructor: {
+				name: 'Foo2'
+			}
+		};
+
+		expect(RootManager.processComponentObj(component)).toMatchObject({
+			data: {},
+			id: 'foo2',
+			name: 'Foo2'
+		});
 	});
 });

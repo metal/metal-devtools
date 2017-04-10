@@ -118,7 +118,7 @@ class RootManager {
 		return {
 			data: component && component.__DATA_MANAGER_DATA__ ? processDataManagers(component.__DATA_MANAGER_DATA__) : null,
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
-			name: component.name || component.constructor.name,
+			name: component.constructor.name
 		};
 	}
 
@@ -253,18 +253,14 @@ class RootManager {
 		return {
 			containsInspected,
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
-			name: component.name || component.constructor.name,
+			name: component.constructor.name,
 			childComponents: renderer && renderer.childComponents && renderer.childComponents.map(
 				childComponent => this._traverseTree(childComponent, rootComponent)
 			)
 		};
 	}
 
-	_updateCurrentSelected(id) {
-		if (!id) {
-			id = this._previousSelectedId;
-		}
-
+	_updateCurrentSelected(id = this._previousSelectedId) {
 		if (id) {
 			Messenger.informSelected(
 				this.processComponentObj(this._componentMap[id])
