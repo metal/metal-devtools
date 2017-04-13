@@ -60,6 +60,8 @@ function cloneObj(objectToBeCloned, visited = new Set()) {
 				objectClone[key] = visited.has(prop) ? '[Circular]' : cloneObj(prop, visited);
 			}
 		}
+
+		visited.delete(objectToBeCloned);
 	}
 
 	return objectClone;

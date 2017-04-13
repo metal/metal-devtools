@@ -109,4 +109,26 @@ describe('cloneObj', () => {
 			}
 		);
 	});
+
+	test('should follow redundant-acyclic references', () => {
+		const objD = {name: 'leaf'};
+		const objB = {ref: objD}
+		const objC = {ref: objD}
+		const objA = {left: objB, right: objC}
+
+		expect(cloneObj(objA)).toMatchObject(
+			{
+				left: {
+					ref: {
+						name: 'leaf'
+					}
+				},
+				right: {
+					ref: {
+						name: 'leaf'
+					}
+				}
+			}
+		);
+	});
 });
