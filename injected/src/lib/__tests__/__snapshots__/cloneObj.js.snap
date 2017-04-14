@@ -19,3 +19,36 @@ Object {
   "value": "fooFn()",
 }
 `;
+
+exports[`cloneObj should follow redundant-acyclic references 1`] = `
+Object {
+  "left": Object {
+    "ref": Object {
+      "name": "leaf",
+    },
+  },
+  "right": Object {
+    "ref": Object {
+      "name": "leaf",
+    },
+  },
+}
+`;
+
+exports[`cloneObj should not follow circular references 1`] = `
+Object {
+  "ref": Object {
+    "ref": Object {
+      "ref": "[Circular]",
+    },
+  },
+}
+`;
+
+exports[`cloneObj should return item if not an object 1`] = `true`;
+
+exports[`cloneObj should return item if not an object 2`] = `123`;
+
+exports[`cloneObj should return item if not an object 3`] = `"foo"`;
+
+exports[`cloneObj should use constructor name 1`] = `"mockConstructor"`;

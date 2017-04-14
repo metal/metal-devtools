@@ -7,13 +7,9 @@ import cloneObj, {ITERABLE_KEY} from '../cloneObj';
 
 describe('cloneObj', () => {
 	test('should return item if not an object', () => {
-		const bool = true;
-		const num = 123;
-		const str = 'foo';
-
-		expect(cloneObj(bool)).toEqual(bool);
-		expect(cloneObj(num)).toEqual(num);
-		expect(cloneObj(str)).toEqual(str);
+		expect(cloneObj(true)).toMatchSnapshot();
+		expect(cloneObj(123)).toMatchSnapshot();
+		expect(cloneObj('foo')).toMatchSnapshot();
 	});
 
 
@@ -44,7 +40,7 @@ describe('cloneObj', () => {
 
 		date.constructor = mockConstructor;
 
-		expect(cloneObj(date)).toEqual('mockConstructor');
+		expect(cloneObj(date)).toMatchSnapshot();
 	});
 
 	test('should copy immutable type to be plain js', () => {
@@ -99,36 +95,15 @@ describe('cloneObj', () => {
 		objB.ref = objC;
 		objC.ref = objA;
 
-		expect(cloneObj(objA)).toMatchObject(
-			{
-				ref: {
-					ref: {
-						ref: '[Circular]'
-					}
-				}
-			}
-		);
+		expect(cloneObj(objA)).toMatchSnapshot();
 	});
 
 	test('should follow redundant-acyclic references', () => {
 		const objD = {name: 'leaf'};
-		const objB = {ref: objD}
-		const objC = {ref: objD}
-		const objA = {left: objB, right: objC}
+		const objB = {ref: objD};
+		const objC = {ref: objD};
+		const objA = {left: objB, right: objC};
 
-		expect(cloneObj(objA)).toMatchObject(
-			{
-				left: {
-					ref: {
-						name: 'leaf'
-					}
-				},
-				right: {
-					ref: {
-						name: 'leaf'
-					}
-				}
-			}
-		);
+		expect(cloneObj(objA)).toMatchSnapshot();
 	});
 });
