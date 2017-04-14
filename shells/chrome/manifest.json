@@ -1,6 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Metal.js Developer Tools",
+	"short_name": "Metal Devtools",
 	"version": "0.0.1",
 	"description": "Developer tool for inspecting Metal.js Components",
 	"author": "Bryce Osterhaus",
