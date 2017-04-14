@@ -17,27 +17,21 @@ class FlashStateValue extends Component {
 	}
 
 	removeFlash() {
-		setTimeout(
-			() => {
-				this.element.classList.remove('flash');
-			},
-			100
-		);
+		setTimeout(() => {
+			this.element.classList.remove('flash');
+		}, 100);
 	}
 
 	syncValue(newVal, oldVal) {
 		if (!this._firstRender && !isEqual(newVal, oldVal)) {
 			this.addFlash();
-		}
-		else {
+		} else {
 			this._firstRender = false;
 		}
 	}
 
 	render() {
-		return (
-			<span>{processStateValue(this.props.value)}</span>
-		);
+		return <span>{processStateValue(this.props.value)}</span>;
 	}
 }
 

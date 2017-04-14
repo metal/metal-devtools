@@ -1,7 +1,8 @@
 import Messenger from './Messenger';
 import processDataManagers from './processDataManagers';
 
-export const __METAL_DEV_TOOLS_COMPONENT_KEY__ = '__METAL_DEV_TOOLS_COMPONENT_KEY__';
+export const __METAL_DEV_TOOLS_COMPONENT_KEY__ =
+	'__METAL_DEV_TOOLS_COMPONENT_KEY__';
 
 const maskDimensionStyles = {
 	background: 'rgba(0, 0, 0, 0.65)',
@@ -88,18 +89,14 @@ class RootManager {
 
 			this._maskDimensions.innerHTML = `${width}px x ${height}px`;
 
-			applyStyles(
-				this._mask,
-				{
-					display: 'flex',
-					height: height ? `${height}px` : 'initial',
-					left: `${left}px`,
-					top: `${top}px`,
-					width: width ? `${width}px` : 'initial'
-				}
-			);
-		}
-		else {
+			applyStyles(this._mask, {
+				display: 'flex',
+				height: height ? `${height}px` : 'initial',
+				left: `${left}px`,
+				top: `${top}px`,
+				width: width ? `${width}px` : 'initial'
+			});
+		} else {
 			this._mask.style.display = 'none';
 		}
 	}
@@ -107,33 +104,30 @@ class RootManager {
 	addRoot(component) {
 		this._roots.push(component);
 
-		this._executeAsync(
-			() => {
-				Messenger.informNewRoot(this._traverseTree(component, component));
-			}
-		);
+		this._executeAsync(() => {
+			Messenger.informNewRoot(this._traverseTree(component, component));
+		});
 	}
 
 	processComponentObj(component) {
 		return {
-			data: component && component.__DATA_MANAGER_DATA__ ? processDataManagers(component.__DATA_MANAGER_DATA__) : null,
+			data: component && component.__DATA_MANAGER_DATA__
+				? processDataManagers(component.__DATA_MANAGER_DATA__)
+				: null,
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.constructor.name
 		};
 	}
 
 	reloadRoots(informNew) {
-		this._executeAsync(
-			() => this._roots.forEach(
-				root => {
-					if (informNew) {
-						Messenger.informNewRoot(this._traverseTree(root, root));
-					}
-					else {
-						this._handleComponentUpdated(root);
-					}
+		this._executeAsync(() =>
+			this._roots.forEach(root => {
+				if (informNew) {
+					Messenger.informNewRoot(this._traverseTree(root, root));
+				} else {
+					this._handleComponentUpdated(root);
 				}
-			)
+			})
 		);
 	}
 
@@ -143,9 +137,7 @@ class RootManager {
 		this._closestSelectedId = null;
 		this._previousSelectedId = id;
 
-		Messenger.informSelected(
-			this.processComponentObj(this._componentMap[id])
-		);
+		Messenger.informSelected(this.processComponentObj(this._componentMap[id]));
 	}
 
 	setComponentState(id, newState, dataManagerName) {
@@ -172,23 +164,16 @@ class RootManager {
 
 			this._componentMap[id] = component;
 
-			component.on(
-				'detached',
-				() => {
-					this._checkIfRootDetached(id);
+			component.on('detached', () => {
+				this._checkIfRootDetached(id);
 
-					Messenger.informDetached({id});
-				}
-			);
+				Messenger.informDetached({id});
+			});
 
-			component.on(
-				'rendered',
-				() => Messenger.informRendered(id)
-			);
+			component.on('rendered', () => Messenger.informRendered(id));
 
-			component.on(
-				'stateSynced',
-				() => this._handleComponentUpdated(rootComponent)
+			component.on('stateSynced', () =>
+				this._handleComponentUpdated(rootComponent)
 			);
 		}
 	}
@@ -203,19 +188,17 @@ class RootManager {
 		if (!updateScheduled[rootId]) {
 			updateScheduled[rootId] = true;
 
-			this._executeAsync(
-				() => {
-					Messenger.informUpdate(
-						this._traverseTree(rootComponent, rootComponent)
-					);
+			this._executeAsync(() => {
+				Messenger.informUpdate(
+					this._traverseTree(rootComponent, rootComponent)
+				);
 
-					this._updateCurrentSelected(this._closestSelectedId);
+				this._updateCurrentSelected(this._closestSelectedId);
 
-					this._closestSelectedId = null;
+				this._closestSelectedId = null;
 
-					updateScheduled[rootId] = false;
-				}
-			);
+				updateScheduled[rootId] = false;
+			});
 		}
 	}
 
@@ -242,7 +225,9 @@ class RootManager {
 
 		let containsInspected = false;
 
-		if (this._inspectedNode && component.element && component.element.contains) {
+		if (
+			this._inspectedNode && component.element && component.element.contains
+		) {
 			containsInspected = component.element.contains(this._inspectedNode);
 
 			if (containsInspected) {
@@ -254,9 +239,11 @@ class RootManager {
 			containsInspected,
 			id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
 			name: component.constructor.name,
-			childComponents: renderer && renderer.childComponents && renderer.childComponents.map(
-				childComponent => this._traverseTree(childComponent, rootComponent)
-			)
+			childComponents: renderer &&
+				renderer.childComponents &&
+				renderer.childComponents.map(childComponent =>
+					this._traverseTree(childComponent, rootComponent)
+				)
 		};
 	}
 

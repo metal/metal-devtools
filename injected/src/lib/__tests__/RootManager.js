@@ -14,7 +14,7 @@ class MyComponent extends Component {
 
 class Child extends Component {
 	render() {
-		return <div></div>;
+		return <div />;
 	}
 }
 
@@ -96,14 +96,12 @@ describe('RootManager', () => {
 		test('should call `applyStyles` for mask node', () => {
 			RootManager.getComponentNode = jest.fn(() => {
 				return {
-					getBoundingClientRect: () => (
-						{
-							height: 10,
-							left: 11,
-							top: 12,
-							width: 13
-						}
-					)
+					getBoundingClientRect: () => ({
+						height: 10,
+						left: 11,
+						top: 12,
+						width: 13
+					})
 				};
 			});
 
@@ -158,7 +156,6 @@ describe('RootManager', () => {
 		expect(RootManager._executeAsync).toHaveBeenCalled();
 		expect(Messenger.informNewRoot).toHaveBeenCalled();
 		expect(RootManager._traverseTree).toHaveBeenCalled();
-
 	});
 
 	test('should process metal component object and call `processDataManagers`', () => {
@@ -227,7 +224,6 @@ describe('RootManager', () => {
 
 		RootManager._checkIfRootDetached('bar');
 		expect(RootManager._roots).toHaveLength(1);
-
 
 		RootManager._checkIfRootDetached(id);
 		expect(RootManager._roots).toHaveLength(0);
@@ -328,15 +324,11 @@ describe('RootManager', () => {
 
 		const newState = JSON.stringify({foo: 'bar'});
 
-		RootManager.getDataManagers = jest.fn(
-			() => (
-				{
-					[`${dataManagerName}_`]: {
-						setState: spy
-					},
-				}
-			)
-		);
+		RootManager.getDataManagers = jest.fn(() => ({
+			[`${dataManagerName}_`]: {
+				setState: spy
+			}
+		}));
 
 		RootManager.setComponentState(id, newState, dataManagerName);
 

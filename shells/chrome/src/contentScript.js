@@ -1,4 +1,4 @@
-const installRootManagerHook =  require('raw-loader!../../../injected/build/installRootManagerHook');
+const installRootManagerHook = require('raw-loader!../../../injected/build/installRootManagerHook');
 
 window.addEventListener('message', function({data}) {
 	if (data.from === 'backend') {

@@ -64,8 +64,7 @@ class TreeNode extends Component {
 
 		if (value) {
 			highlightDOM(componentNode.id);
-		}
-		else {
+		} else {
 			highlightDOM(null);
 		}
 
@@ -79,13 +78,7 @@ class TreeNode extends Component {
 	// TODO: This is sketchy, but currently the best way I have found to automatically
 	// expand nodes after it is inspected in the elements pane. Should revisit.
 	rendered() {
-		const {
-			componentNode: {
-				containsInspected,
-				id
-			},
-			selectedId
-		} = this.props;
+		const {componentNode: {containsInspected, id}, selectedId} = this.props;
 
 		if (containsInspected) {
 			this.state.expanded = true;
@@ -101,21 +94,13 @@ class TreeNode extends Component {
 	render() {
 		const {
 			props: {
-				componentNode: {
-					childComponents = [],
-					id,
-					name
-				},
+				componentNode: {childComponents = [], id, name},
 				depth,
 				onInspectDOM,
 				onNodeSelect,
 				selectedId
 			},
-			state: {
-				expanded,
-				highlight,
-				showMenu
-			}
+			state: {expanded, highlight, showMenu}
 		} = this;
 
 		const hasChildren = childComponents && !!childComponents.length;
@@ -137,37 +122,42 @@ class TreeNode extends Component {
 					style={style}
 				>
 					{hasChildren &&
-						<div class={expanded ? 'arrow down' : 'arrow right'} onClick={this.toggleExpanded} />
-					}
+						<div
+							class={expanded ? 'arrow down' : 'arrow right'}
+							onClick={this.toggleExpanded}
+						/>}
 
-					<NodeName data-nodeid={id} ref="nodeName" name={name} type={hasChildren ? OPENING : SELF_CLOSING} />
+					<NodeName
+						data-nodeid={id}
+						ref="nodeName"
+						name={name}
+						type={hasChildren ? OPENING : SELF_CLOSING}
+					/>
 
 					{showMenu &&
 						<div class="overlay" onMouseLeave={this.debounceOverlay}>
 							<ul>
 								<li onClick={this.handleInspect}>{'Show in Elements Panel'}</li>
 							</ul>
-						</div>
-					}
+						</div>}
 				</div>
 
-				{hasChildren && expanded &&
-					childComponents.map(
-						(child, i) => (
-							<TreeNode
-								componentNode={child}
-								depth={this.props.depth + 1}
-								key={`${name}-${i}`}
-								highlightDOM={this.props.highlightDOM}
-								onInspectDOM={onInspectDOM}
-								onNodeSelect={onNodeSelect}
-								selectedId={selectedId}
-							/>
-						)
-					)
-				}
+				{hasChildren &&
+					expanded &&
+					childComponents.map((child, i) => (
+						<TreeNode
+							componentNode={child}
+							depth={this.props.depth + 1}
+							key={`${name}-${i}`}
+							highlightDOM={this.props.highlightDOM}
+							onInspectDOM={onInspectDOM}
+							onNodeSelect={onNodeSelect}
+							selectedId={selectedId}
+						/>
+					))}
 
-				{hasChildren && expanded &&
+				{hasChildren &&
+					expanded &&
 					<div
 						class={`node-wrapper ${highlighted}`}
 						onClick={this.focusNode}
@@ -176,8 +166,7 @@ class TreeNode extends Component {
 						style={style}
 					>
 						<NodeName name={name} type={NORMAL_CLOSING} />
-					</div>
-				}
+					</div>}
 			</div>
 		);
 	}

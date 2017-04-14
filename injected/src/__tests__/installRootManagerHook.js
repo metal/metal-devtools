@@ -7,7 +7,7 @@ describe('installRootManagerHook', () => {
 		delete window.__METAL_DEV_TOOLS_HOOK__;
 	});
 
-	test('should do nothing if __METAL_DEV_TOOLS_HOOK__ doesn\'t exist', () => {
+	test('should do nothing if __METAL_DEV_TOOLS_HOOK__ doesnt exist', () => {
 		window.__METAL_DEV_TOOLS_HOOK__ = undefined;
 
 		require('../installRootManagerHook').default();
@@ -16,7 +16,7 @@ describe('installRootManagerHook', () => {
 	});
 
 	test('should call `reloadRoots` is manager already exists', () => {
-		window.__METAL_DEV_TOOLS_HOOK__= {
+		window.__METAL_DEV_TOOLS_HOOK__ = {
 			_managerExists: true,
 			reloadRoots: jest.fn()
 		};

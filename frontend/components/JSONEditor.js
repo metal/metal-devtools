@@ -13,16 +13,14 @@ class MetalJSONEditor extends Component {
 
 		let changedData = {};
 
-		keys(value).forEach(
-			key => {
-				const keyVal = value[key];
-				const newKeyValue = newValue[key];
+		keys(value).forEach(key => {
+			const keyVal = value[key];
+			const newKeyValue = newValue[key];
 
-				if (!isEqual(keyVal, newKeyValue)) {
-					changedData[key] = newKeyValue;
-				}
+			if (!isEqual(keyVal, newKeyValue)) {
+				changedData[key] = newKeyValue;
 			}
-		);
+		});
 
 		onChange(changedData, type);
 	}

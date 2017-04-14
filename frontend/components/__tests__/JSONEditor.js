@@ -6,19 +6,15 @@ import JSONEditor from '../JSONEditor';
 
 describe('JSONEditor', () => {
 	test('should render', () => {
-		const component = new JSONEditor(
-			{
-				value: {}
-			}
-		);
+		const component = new JSONEditor({
+			value: {}
+		});
 
 		expect(component).toMatchSnapshot();
 	});
 
 	test('should return jsx element', () => {
-		const component = new JSONEditor(
-			{value: {}}
-		);
+		const component = new JSONEditor({value: {}});
 
 		const initSpyVal = IncrementalDOM;
 
@@ -35,17 +31,15 @@ describe('JSONEditor', () => {
 	test('should return changed data', () => {
 		const spy = jest.fn();
 
-		const component = new JSONEditor(
-			{
-				onChange: spy,
-				value: {
-					baz: {
-						qux: 'test'
-					},
-					foo: 'bar'
-				}
+		const component = new JSONEditor({
+			onChange: spy,
+			value: {
+				baz: {
+					qux: 'test'
+				},
+				foo: 'bar'
 			}
-		);
+		});
 
 		const newVal = {
 			baz: {

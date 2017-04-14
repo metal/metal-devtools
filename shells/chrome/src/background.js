@@ -7,14 +7,11 @@ chrome.extension.onConnect.addListener(port => {
 		}
 	});
 
-	port.onMessage.addListener(
-		({type}) => {
-			if (type === 'initialize') {
-				chrome.tabs.executeScript(
-					Number(port.name),
-					{file: './build/contentScript.js'}
-				);
-			}
+	port.onMessage.addListener(({type}) => {
+		if (type === 'initialize') {
+			chrome.tabs.executeScript(Number(port.name), {
+				file: './build/contentScript.js'
+			});
 		}
-	);
+	});
 });

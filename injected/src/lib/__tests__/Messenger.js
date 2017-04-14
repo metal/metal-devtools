@@ -54,15 +54,13 @@ describe('Messenger', () => {
 
 			Messenger.informDetached(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith(
-				{
-					message: {
-						data,
-						type: messageTypes.DETACHED
-					},
-					from: BACKEND
-				}
-			);
+			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+				message: {
+					data,
+					type: messageTypes.DETACHED
+				},
+				from: BACKEND
+			});
 		});
 
 		test('informNewRoot', () => {
@@ -70,15 +68,13 @@ describe('Messenger', () => {
 
 			Messenger.informNewRoot(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith(
-				{
-					message: {
-						data,
-						type: messageTypes.NEW_ROOT
-					},
-					from: BACKEND
-				}
-			);
+			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+				message: {
+					data,
+					type: messageTypes.NEW_ROOT
+				},
+				from: BACKEND
+			});
 		});
 
 		test('informRendered', () => {
@@ -86,15 +82,13 @@ describe('Messenger', () => {
 
 			Messenger.informRendered(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith(
-				{
-					message: {
-						data,
-						type: messageTypes.RENDERED
-					},
-					from: BACKEND
-				}
-			);
+			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+				message: {
+					data,
+					type: messageTypes.RENDERED
+				},
+				from: BACKEND
+			});
 		});
 
 		test('informSelected', () => {
@@ -102,15 +96,13 @@ describe('Messenger', () => {
 
 			Messenger.informSelected(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith(
-				{
-					message: {
-						data,
-						type: messageTypes.SELECTED
-					},
-					from: BACKEND
-				}
-			);
+			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+				message: {
+					data,
+					type: messageTypes.SELECTED
+				},
+				from: BACKEND
+			});
 		});
 
 		test('informUpdate', () => {
@@ -118,15 +110,13 @@ describe('Messenger', () => {
 
 			Messenger.informUpdate(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith(
-				{
-					message: {
-						data,
-						type: messageTypes.UPDATE
-					},
-					from: BACKEND
-				}
-			);
+			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+				message: {
+					data,
+					type: messageTypes.UPDATE
+				},
+				from: BACKEND
+			});
 		});
 	});
 });

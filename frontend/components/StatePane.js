@@ -6,11 +6,7 @@ import JSONEditor from './JSONEditor';
 
 class StatePane extends Component {
 	created() {
-		bindAll(
-			this,
-			'inspectComponent',
-			'handleStateChange'
-		);
+		bindAll(this, 'inspectComponent', 'handleStateChange');
 	}
 
 	handleStateChange(data, type) {
@@ -39,32 +35,37 @@ class StatePane extends Component {
 						<span>
 							<NodeName name={name} />
 
-							<a class="see-in-dom" href="javascript:;" onClick={this.inspectComponent}>{'(Click to See Element)'}</a>
-						</span>
-					}
+							<a
+								class="see-in-dom"
+								href="javascript:;"
+								onClick={this.inspectComponent}
+							>
+								{'(Click to See Element)'}
+							</a>
+						</span>}
 				</div>
 
 				{dataExists &&
-					keys(data).map(
-						dataKey => {
-							const stateObj = data[dataKey];
+					keys(data).map(dataKey => {
+						const stateObj = data[dataKey];
 
-							return (
-								<div class="category" key={`${name}-${dataKey}`}>
-									<div class="name">{`${dataKey}:`}</div>
+						return (
+							<div class="category" key={`${name}-${dataKey}`}>
+								<div class="name">{`${dataKey}:`}</div>
 
-									<JSONEditor onChange={this.handleStateChange} type={dataKey} value={stateObj}/>
-								</div>
-							);
-						}
-					)
-				}
+								<JSONEditor
+									onChange={this.handleStateChange}
+									type={dataKey}
+									value={stateObj}
+								/>
+							</div>
+						);
+					})}
 
 				{!dataExists &&
 					<div>
 						<i>{'No Component Data'}</i>
-					</div>
-				}
+					</div>}
 			</div>
 		);
 	}

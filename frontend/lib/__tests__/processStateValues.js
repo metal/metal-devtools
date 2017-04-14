@@ -35,10 +35,10 @@ describe('processStateValues', () => {
 	});
 
 	test('should return empty quotes if value is empty string', () => {
-		expect(processStateValues(EMPTY_STRING)).toBe('\"\"');
+		expect(processStateValues(EMPTY_STRING)).toBe('""');
 	});
 
-	test('should return \'null\' if null type', () => {
+	test('should return "null" if null type', () => {
 		expect(processStateValues(NULL)).toBe('null');
 	});
 });

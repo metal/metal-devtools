@@ -18,11 +18,9 @@ describe('preprocessMetalState', () => {
 	test('should ignore all keys from blacklist', () => {
 		const data = {};
 
-		KEYS_BLACKLIST.forEach(
-			key => {
-				data[key] = {value: true};
-			}
-		);
+		KEYS_BLACKLIST.forEach(key => {
+			data[key] = {value: true};
+		});
 
 		const newData = preprocessMetalState(data);
 

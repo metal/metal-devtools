@@ -10,25 +10,21 @@ const eventObj = {
 
 describe('TreeNode', () => {
 	test('should render', () => {
-		const component = new TreeNode(
-			{
-				componentNode: {
-					childComponents: [{}]
-				}
+		const component = new TreeNode({
+			componentNode: {
+				childComponents: [{}]
 			}
-		);
+		});
 
 		expect(component).toMatchSnapshot();
 	});
 
 	test('should show when expanded', () => {
-		const component = new TreeNode(
-			{
-				componentNode: {
-					childComponents: [{}]
-				}
+		const component = new TreeNode({
+			componentNode: {
+				childComponents: [{}]
 			}
-		);
+		});
 
 		component.state.expanded = true;
 
@@ -36,13 +32,11 @@ describe('TreeNode', () => {
 	});
 
 	test('should show when highlighted', () => {
-		const component = new TreeNode(
-			{
-				componentNode: {
-					childComponents: [{}]
-				}
+		const component = new TreeNode({
+			componentNode: {
+				childComponents: [{}]
 			}
-		);
+		});
 
 		component.state.highlight = true;
 

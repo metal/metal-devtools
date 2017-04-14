@@ -9,7 +9,7 @@ function createPanelIfMetalLoaded() {
 
 	chrome.devtools.inspectedWindow.eval(
 		`window.__METAL_DEV_TOOLS_HOOK__ && window.__METAL_DEV_TOOLS_HOOK__.hasRoots()`,
-		(pageHasMetal) => {
+		pageHasMetal => {
 			if (!pageHasMetal || panelCreated) {
 				return;
 			}
@@ -22,12 +22,14 @@ function createPanelIfMetalLoaded() {
 				'Metal.js',
 				'',
 				'build/panel.html',
-				(panel) => {
-					chrome.devtools.panels.elements.onSelectionChanged.addListener(function() {
-						chrome.devtools.inspectedWindow.eval(
-							'window.__METAL_DEV_TOOLS_HOOK__.setInspected($0);'
-						);
-					});
+				panel => {
+					chrome.devtools.panels.elements.onSelectionChanged.addListener(
+						function() {
+							chrome.devtools.inspectedWindow.eval(
+								'window.__METAL_DEV_TOOLS_HOOK__.setInspected($0);'
+							);
+						}
+					);
 
 					panel.onShown.addListener(function() {
 						chrome.devtools.inspectedWindow.eval(
@@ -44,11 +46,8 @@ chrome.devtools.network.onNavigated.addListener(function() {
 	createPanelIfMetalLoaded();
 });
 
-const loadCheckInterval = setInterval(
-	function() {
-		createPanelIfMetalLoaded();
-	},
-	1000
-);
+const loadCheckInterval = setInterval(function() {
+	createPanelIfMetalLoaded();
+}, 1000);
 
 createPanelIfMetalLoaded();

@@ -3,12 +3,7 @@ import {bindAll} from 'lodash';
 
 class ResizeDivider extends Component {
 	created() {
-		bindAll(
-			this,
-			'doDrag',
-			'initDrag',
-			'stopDrag'
-		);
+		bindAll(this, 'doDrag', 'initDrag', 'stopDrag');
 	}
 
 	attached() {
@@ -30,9 +25,7 @@ class ResizeDivider extends Component {
 	}
 
 	render() {
-		return (
-			<div class="resize-container" />
-		);
+		return <div class="resize-container" />;
 	}
 }
 

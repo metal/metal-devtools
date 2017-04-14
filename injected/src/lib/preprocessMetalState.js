@@ -1,6 +1,6 @@
 export const KEYS_BLACKLIST = ['children'];
 
-export default (object) => {
+export default object => {
 	const newObj = {};
 
 	for (let stateKey in object) {

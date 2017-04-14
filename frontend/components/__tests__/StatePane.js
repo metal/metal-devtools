@@ -9,18 +9,16 @@ import StatePane from '../StatePane';
 
 describe('StatePane', () => {
 	test('should render', () => {
-		const component = new StatePane(
-			{
-				component: {
-					data: {
-						one: {foo: 'bar'},
-						two: {}
-					},
-					id: 'foo',
-					name: 'fooComponent'
-				}
+		const component = new StatePane({
+			component: {
+				data: {
+					one: {foo: 'bar'},
+					two: {}
+				},
+				id: 'foo',
+				name: 'fooComponent'
 			}
-		);
+		});
 
 		expect(component).toMatchSnapshot();
 	});
@@ -60,6 +58,6 @@ describe('StatePane', () => {
 
 		component.handleStateChange(data, 'state');
 
-		expect(spy).toHaveBeenCalledWith('foo', data,'state');
+		expect(spy).toHaveBeenCalledWith('foo', data, 'state');
 	});
 });

@@ -29,25 +29,30 @@ function cloneObj(objectToBeCloned, visited = new Set()) {
 
 				if (objectToBeCloned.name) {
 					objectClone.value = `${objectToBeCloned.name}()`;
-				}
-				else if (objectToBeCloned.__jsxDOMWrapper) {
+				} else if (objectToBeCloned.__jsxDOMWrapper) {
 					objectClone.value = '<JSXElement />';
-				}
-				else {
+				} else {
 					objectClone.value = 'function()';
 				}
 				break;
 			default:
 				try {
 					objectClone = new Constructor();
-				}
-				catch (err) {
+				} catch (err) {
 					objectClone = Constructor.name;
 				}
 		}
 	} catch (err) {
-		console.log('%c metal-devtools extension: (`clone`)\n', 'background: rgb(136, 18, 128); color: #DDD', err);
-		console.log('%c Args:', 'background: rgb(136, 18, 128); color: #DDD', objectToBeCloned);
+		console.log(
+			'%c metal-devtools extension: (`clone`)\n',
+			'background: rgb(136, 18, 128); color: #DDD',
+			err
+		);
+		console.log(
+			'%c Args:',
+			'background: rgb(136, 18, 128); color: #DDD',
+			objectToBeCloned
+		);
 	}
 
 	if (objectClone instanceof Object) {
@@ -57,7 +62,9 @@ function cloneObj(objectToBeCloned, visited = new Set()) {
 			const prop = objectToBeCloned[key];
 
 			if (typeof prop !== undefined) {
-				objectClone[key] = visited.has(prop) ? '[Circular]' : cloneObj(prop, visited);
+				objectClone[key] = visited.has(prop)
+					? '[Circular]'
+					: cloneObj(prop, visited);
 			}
 		}
 

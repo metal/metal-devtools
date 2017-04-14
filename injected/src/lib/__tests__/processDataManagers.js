@@ -5,10 +5,10 @@ import processDataManagers from '../processDataManagers';
 
 const DATA_MANAGER = {
 	props: {
-		stateInfo_:{}
+		stateInfo_: {}
 	},
 	state: {
-		stateInfo_:{}
+		stateInfo_: {}
 	}
 };
 
@@ -23,12 +23,10 @@ describe('processDataManagers', () => {
 	test('should return parsed data object', () => {
 		cloneObj.mockReturnValue({});
 
-		expect(processDataManagers(DATA_MANAGER)).toMatchObject(
-			{
-				props: {},
-				state: {}
-			}
-		);
+		expect(processDataManagers(DATA_MANAGER)).toMatchObject({
+			props: {},
+			state: {}
+		});
 	});
 
 	test('should call `cloneObj` for each data manager', () => {

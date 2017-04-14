@@ -11,14 +11,11 @@ export default function(value) {
 		}
 
 		retVal = [<pre>{JSON.stringify(value, null, 2)}</pre>];
-	}
-	else if (isBoolean(value)) {
+	} else if (isBoolean(value)) {
 		retVal = value.toString();
-	}
-	else if (value === '') {
-		retVal = '\"\"';
-	}
-	else if (isNull(value)) {
+	} else if (value === '') {
+		retVal = '""';
+	} else if (isNull(value)) {
 		retVal = 'null';
 	}
 

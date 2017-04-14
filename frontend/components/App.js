@@ -9,12 +9,7 @@ import TreeNode from './TreeNode';
 
 class App extends Component {
 	created() {
-		bindAll(
-			this,
-			'handleFreezeToggle',
-			'handleResize',
-			'processMessage'
-		);
+		bindAll(this, 'handleFreezeToggle', 'handleResize', 'processMessage');
 
 		this.props.port.onMessage.addListener(this.processMessage);
 
@@ -52,8 +47,7 @@ class App extends Component {
 
 			if (!this.state.freezeUpdates) {
 				setTimeout(() => this.removeFlash(node), 100);
-			}
-			else {
+			} else {
 				this._pendingFlashRemovals.push(node);
 			}
 		}
@@ -65,9 +59,7 @@ class App extends Component {
 		this.state.freezeUpdates = checked;
 
 		if (!checked) {
-			this._pendingFlashRemovals.forEach(
-				node => this.removeFlash(node)
-			);
+			this._pendingFlashRemovals.forEach(node => this.removeFlash(node));
 
 			this._pendingFlashRemovals = [];
 		}
@@ -78,7 +70,7 @@ class App extends Component {
 	}
 
 	processMessage({data, type}) {
-		switch(type) {
+		switch (type) {
 			case messageTypes.DETACHED:
 				this.checkIfRootDetached(data.id);
 				break;
@@ -121,12 +113,7 @@ class App extends Component {
 
 	render() {
 		const {
-			props: {
-				highlightDOM,
-				inspectDOM,
-				onSelectedChange,
-				setStateFn
-			},
+			props: {highlightDOM, inspectDOM, onSelectedChange, setStateFn},
 			state: {
 				firstColumnWidth,
 				freezeUpdates,
@@ -139,13 +126,22 @@ class App extends Component {
 
 		return (
 			<div class="app-container">
-				{!rootComponentKeys || (rootComponentKeys && !rootComponentKeys.length) &&
-					<InitialWarning />
-				}
+				{!rootComponentKeys ||
+					(rootComponentKeys &&
+						!rootComponentKeys.length &&
+						<InitialWarning />)}
 
-				{rootComponentKeys && !!rootComponentKeys.length &&
-					<div class="roots-wrapper" style={firstColumnWidth && `flex-basis:${firstColumnWidth}px;`}>
-						<div class="options" title="Freezes highlights by expanded components" style={`width: ${firstColumnWidth + 1}px;`}>
+				{rootComponentKeys &&
+					!!rootComponentKeys.length &&
+					<div
+						class="roots-wrapper"
+						style={firstColumnWidth && `flex-basis:${firstColumnWidth}px;`}
+					>
+						<div
+							class="options"
+							title="Freezes highlights by expanded components"
+							style={`width: ${firstColumnWidth + 1}px;`}
+						>
 							<label for="freezeUpdates">{'Freeze Updates'}</label>
 
 							<input
@@ -156,27 +152,26 @@ class App extends Component {
 							/>
 						</div>
 
-						{
-							rootComponentKeys.map(
-								(key, i) => (
-									<TreeNode
-										componentNode={rootComponents[key]}
-										depth={0}
-										key={i}
-										highlightDOM={highlightDOM}
-										onInspectDOM={inspectDOM}
-										onNodeSelect={onSelectedChange}
-										selectedId={selectedComponent.id}
-									/>
-								)
-							)
-						}
-					</div>
-				}
+						{rootComponentKeys.map((key, i) => (
+							<TreeNode
+								componentNode={rootComponents[key]}
+								depth={0}
+								key={i}
+								highlightDOM={highlightDOM}
+								onInspectDOM={inspectDOM}
+								onNodeSelect={onSelectedChange}
+								selectedId={selectedComponent.id}
+							/>
+						))}
+					</div>}
 
-				<ResizeDivider onResize={this.handleResize}/>
+				<ResizeDivider onResize={this.handleResize} />
 
-				<StatePane component={selectedComponent} onInspectDOM={inspectDOM} setStateFn={setStateFn} />
+				<StatePane
+					component={selectedComponent}
+					onInspectDOM={inspectDOM}
+					setStateFn={setStateFn}
+				/>
 			</div>
 		);
 	}

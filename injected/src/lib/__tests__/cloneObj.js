@@ -12,13 +12,12 @@ describe('cloneObj', () => {
 		expect(cloneObj('foo')).toMatchSnapshot();
 	});
 
-
 	test('should copy anonymous function', () => {
 		expect(cloneObj(() => {})).toMatchSnapshot();
 	});
 
 	test('should copy named function', () => {
-		function fooFn() {};
+		function fooFn() {}
 
 		expect(cloneObj(fooFn)).toMatchSnapshot();
 	});
@@ -49,7 +48,7 @@ describe('cloneObj', () => {
 	});
 
 	test('should copy jsx type to be function string', () => {
-		expect(cloneObj(<div></div>)).toMatchSnapshot();
+		expect(cloneObj(<div />)).toMatchSnapshot();
 	});
 
 	test('should copy object', () => {
