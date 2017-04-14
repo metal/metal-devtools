@@ -8,6 +8,8 @@
     "build:injected": "webpack --config injected/webpack.config.js",
     "format": "eslint . --ignore-pattern node_modules --ignore-pattern build --ignore-pattern coverage --fix",
     "lint": "eslint . --ignore-pattern node_modules --ignore-pattern build --ignore-pattern coverage",
+    "precommit": "npm run format",
+    "prepush": "npm test",
     "test": "jest"
   },
   "author": "Bryce Osterhaus <bryceosterhaus@gmail.com>",
@@ -67,6 +69,7 @@
     "eslint-plugin-prettier": "^2.0.1",
     "eslint-plugin-react": "^6.8.0",
     "file-loader": "^0.9.0",
+    "husky": "^0.13.3",
     "jest": "^18.1.0",
     "js-beautify": "^1.6.8",
     "metal-jest-serializer": "^1.0.0",
