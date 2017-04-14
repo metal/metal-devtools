@@ -16,8 +16,17 @@
 			"experimentalObjectRestSpread": true
 		}
 	},
-	"plugins": ["react"],
+	"plugins": ["prettier", "react"],
 	"rules": {
+		"prettier/prettier": [
+			"error",
+			{
+				"bracketSpacing": false,
+				"singleQuote": true,
+				"trailingComma": "none",
+				"useTabs": true
+			}
+		],
 		"semi": 1,
 		"no-bitwise": 0,
 		"curly": 2,
@@ -31,7 +40,7 @@
 		"quotes": [
 			1,
 			"single",
-			{ "allowTemplateLiterals": true }
+			{"allowTemplateLiterals": true}
 		],
 		"no-undef": 2,
 		"no-unused-vars": 2,
