@@ -1,6 +1,6 @@
 jest.disableAutomock();
 
-import * as messageTypes from '../../../shared/messageTypes';
+import * as constants from '../../../shared/constants';
 import App from '../App';
 
 const fooRoot = {
@@ -82,7 +82,7 @@ describe('App', () => {
 
 			component.checkIfRootDetached = spy;
 
-			component.processMessage({data: {}, type: messageTypes.DETACHED});
+			component.processMessage({data: {}, type: constants.DETACHED});
 
 			expect(spy).toBeCalled();
 		});
@@ -100,7 +100,7 @@ describe('App', () => {
 
 			component.updateRootComponent = spy;
 
-			component.processMessage({data: {}, type: messageTypes.UPDATE});
+			component.processMessage({data: {}, type: constants.UPDATE});
 
 			expect(spy).toBeCalled();
 		});
@@ -114,7 +114,7 @@ describe('App', () => {
 				}
 			});
 
-			component.processMessage({data: fooRoot, type: messageTypes.SELECTED});
+			component.processMessage({data: fooRoot, type: constants.SELECTED});
 
 			expect(component.state.selectedComponent).toBe(fooRoot);
 		});
@@ -132,7 +132,7 @@ describe('App', () => {
 
 			component.addRootComponent = spy;
 
-			component.processMessage({data: {}, type: messageTypes.NEW_ROOT});
+			component.processMessage({data: {}, type: constants.NEW_ROOT});
 
 			expect(spy).toBeCalled();
 		});
@@ -171,7 +171,7 @@ describe('App', () => {
 
 		component.flashNode = spy;
 
-		component.processMessage({data: {}, type: messageTypes.RENDERED});
+		component.processMessage({data: {}, type: constants.RENDERED});
 
 		expect(spy).toBeCalled();
 	});

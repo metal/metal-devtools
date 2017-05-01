@@ -22,7 +22,7 @@ let componentId = 0;
 let updateScheduled = {};
 
 function applyStyles(element, styles) {
-	Object.keys(styles).forEach(name => element.style[name] = styles[name]);
+	Object.keys(styles).forEach(name => (element.style[name] = styles[name]));
 }
 
 class RootManager {
@@ -226,7 +226,9 @@ class RootManager {
 		let containsInspected = false;
 
 		if (
-			this._inspectedNode && component.element && component.element.contains
+			this._inspectedNode &&
+			component.element &&
+			component.element.contains
 		) {
 			containsInspected = component.element.contains(this._inspectedNode);
 

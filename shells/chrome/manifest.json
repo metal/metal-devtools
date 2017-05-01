@@ -8,7 +8,7 @@
 	"homepage_url": "https://github.com/metal/metal-devtools",
 
 	"icons": {
-		"48": "build/metal_128.png",
+		"48": "build/metal_48.png",
 		"128": "build/metal_128.png"
 	},
 	"background": {
@@ -16,7 +16,7 @@
 		"persistent": false
 	},
 	"browser_action": {
-		"default_icon": "build/metal_128.png",
+		"default_icon": "build/metal_48_gray.png",
 		"default_popup": "build/popup.html",
 		"default_title": "Metal.js Devtools"
 	},

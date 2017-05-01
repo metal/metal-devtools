@@ -1,8 +1,8 @@
 jest.unmock('../Messenger');
-jest.unmock('../../../../shared/messageTypes');
+jest.unmock('../../../../shared/constants');
 
-import Messenger, {BACKEND} from '../Messenger';
-import * as messageTypes from '../../../../shared/messageTypes';
+import Messenger from '../Messenger';
+import * as constants from '../../../../shared/constants';
 
 describe('Messenger', () => {
 	window.postMessage = jest.fn();
@@ -57,9 +57,9 @@ describe('Messenger', () => {
 			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
 				message: {
 					data,
-					type: messageTypes.DETACHED
+					type: constants.DETACHED
 				},
-				from: BACKEND
+				from: constants.METAL_DEVTOOLS_BACKEND
 			});
 		});
 
@@ -71,9 +71,9 @@ describe('Messenger', () => {
 			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
 				message: {
 					data,
-					type: messageTypes.NEW_ROOT
+					type: constants.NEW_ROOT
 				},
-				from: BACKEND
+				from: constants.METAL_DEVTOOLS_BACKEND
 			});
 		});
 
@@ -85,9 +85,9 @@ describe('Messenger', () => {
 			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
 				message: {
 					data,
-					type: messageTypes.RENDERED
+					type: constants.RENDERED
 				},
-				from: BACKEND
+				from: constants.METAL_DEVTOOLS_BACKEND
 			});
 		});
 
@@ -99,9 +99,9 @@ describe('Messenger', () => {
 			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
 				message: {
 					data,
-					type: messageTypes.SELECTED
+					type: constants.SELECTED
 				},
-				from: BACKEND
+				from: constants.METAL_DEVTOOLS_BACKEND
 			});
 		});
 
@@ -113,9 +113,9 @@ describe('Messenger', () => {
 			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
 				message: {
 					data,
-					type: messageTypes.UPDATE
+					type: constants.UPDATE
 				},
-				from: BACKEND
+				from: constants.METAL_DEVTOOLS_BACKEND
 			});
 		});
 	});

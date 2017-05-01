@@ -1,6 +1,4 @@
-import * as messageTypes from '../../../shared/messageTypes';
-
-export const BACKEND = 'backend';
+import * as constants from '../../../shared/constants';
 
 class Messenger {
 	static postWindowMessage(data) {
@@ -20,9 +18,18 @@ class Messenger {
 		this.postWindowMessage({
 			message: {
 				data,
-				type: messageTypes.DETACHED
+				type: constants.DETACHED
 			},
-			from: BACKEND
+			from: constants.METAL_DEVTOOLS_BACKEND
+		});
+	}
+
+	static informMetalDetected() {
+		this.postWindowMessage({
+			message: {
+				type: constants.METAL_DETECTED
+			},
+			from: constants.METAL_DEVTOOLS_BACKEND
 		});
 	}
 
@@ -30,9 +37,9 @@ class Messenger {
 		this.postWindowMessage({
 			message: {
 				data,
-				type: messageTypes.NEW_ROOT
+				type: constants.NEW_ROOT
 			},
-			from: BACKEND
+			from: constants.METAL_DEVTOOLS_BACKEND
 		});
 	}
 
@@ -40,9 +47,9 @@ class Messenger {
 		this.postWindowMessage({
 			message: {
 				data,
-				type: messageTypes.RENDERED
+				type: constants.RENDERED
 			},
-			from: BACKEND
+			from: constants.METAL_DEVTOOLS_BACKEND
 		});
 	}
 
@@ -50,9 +57,9 @@ class Messenger {
 		this.postWindowMessage({
 			message: {
 				data,
-				type: messageTypes.SELECTED
+				type: constants.SELECTED
 			},
-			from: BACKEND
+			from: constants.METAL_DEVTOOLS_BACKEND
 		});
 	}
 
@@ -60,9 +67,9 @@ class Messenger {
 		this.postWindowMessage({
 			message: {
 				data,
-				type: messageTypes.UPDATE
+				type: constants.UPDATE
 			},
-			from: BACKEND
+			from: constants.METAL_DEVTOOLS_BACKEND
 		});
 	}
 }

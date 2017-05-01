@@ -1,4 +1,17 @@
+import * as constants from '../../../shared/constants';
+
 import './popup.html';
+
+chrome.runtime.onMessage.addListener((message, sender) => {
+	if (message.type === constants.METAL_DETECTED && sender.tab) {
+		chrome.browserAction.setIcon({
+			tabId: sender.tab.id,
+			path: {
+				48: 'build/metal_48.png'
+			}
+		});
+	}
+});
 
 chrome.extension.onConnect.addListener(port => {
 	chrome.extension.onMessage.addListener((message, sender) => {
