@@ -63,6 +63,17 @@ describe('Messenger', () => {
       });
     });
 
+    test('informMetalDetected', () => {
+      Messenger.informMetalDetected();
+
+      expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+        from: constants.METAL_DEVTOOLS_BACKEND,
+        message: {
+          type: constants.METAL_DETECTED
+        }
+      });
+    });
+
     test('informNewRoot', () => {
       const data = {foo: 'bar'};
 
