@@ -9,11 +9,25 @@ import TreeNode from './TreeNode';
 
 class App extends Component {
   created() {
-    bindAll(this, 'handleFreezeToggle', 'handleResize', 'processMessage');
+    bindAll(
+      this,
+      'handleKeys',
+      'handleFreezeToggle',
+      'handleResize',
+      'processMessage'
+    );
 
     this.props.port.onMessage.addListener(this.processMessage);
 
     this._pendingFlashRemovals = [];
+  }
+
+  attached() {
+    document.addEventListener('keydown', this.handleKeys);
+  }
+
+  detached() {
+    document.addEventListener('keydown', this.handleKeys);
   }
 
   addFlash(node) {
@@ -65,6 +79,31 @@ class App extends Component {
     }
   }
 
+  handleKeys({key}) {
+    const {
+      props: {onComponentExpand, onSelectedChange},
+      state: {rootComponents, selectedComponent}
+    } = this;
+
+    const ids = this.flattenIds(rootComponents);
+
+    const selectedIndex = ids.indexOf(selectedComponent.id);
+
+    if (key.match('Arrow')) {
+      event.preventDefault();
+
+      if (key === 'ArrowDown') {
+        onSelectedChange(ids[selectedIndex + 1]);
+      } else if (key === 'ArrowUp') {
+        onSelectedChange(ids[selectedIndex - 1]);
+      } else if (key === 'ArrowRight') {
+        onComponentExpand(ids[selectedIndex], true);
+      } else if (key === 'ArrowLeft') {
+        onComponentExpand(ids[selectedIndex], false);
+      }
+    }
+  }
+
   handleResize({clientX}) {
     this.state.firstColumnWidth = clientX;
   }
@@ -111,9 +150,31 @@ class App extends Component {
     this.state.rootComponents = roots;
   }
 
+  flattenIds(obj, retVal = []) {
+    const objKeys = Object.keys(obj);
+
+    for (let i = 0; i < objKeys.length; i++) {
+      const keyVal = obj[objKeys[i]];
+
+      retVal.push(keyVal.id);
+
+      if (keyVal.childComponents && keyVal.expanded) {
+        retVal.concat(this.flattenIds(keyVal.childComponents, retVal));
+      }
+    }
+
+    return retVal;
+  }
+
   render() {
     const {
-      props: {highlightDOM, inspectDOM, onSelectedChange, setStateFn},
+      props: {
+        highlightDOM,
+        inspectDOM,
+        onComponentExpand,
+        onSelectedChange,
+        setStateFn
+      },
       state: {
         firstColumnWidth,
         freezeUpdates,
@@ -159,6 +220,7 @@ class App extends Component {
                 key={i}
                 highlightDOM={highlightDOM}
                 onInspectDOM={inspectDOM}
+                onNodeExpand={onComponentExpand}
                 onNodeSelect={onSelectedChange}
                 selectedId={selectedComponent.id}
               />
@@ -180,6 +242,7 @@ class App extends Component {
 App.PROPS = {
   highlightDOM: Config.func(),
   inspectDOM: Config.func(),
+  onComponentExpand: Config.func(),
   onSelectedChange: Config.func(),
   port: Config.any(),
   setStateFn: Config.func()

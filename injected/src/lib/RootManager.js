@@ -53,6 +53,12 @@ class RootManager {
     document.body.appendChild(this._mask);
   }
 
+  expandComponent(id, value) {
+    this._componentMap[id].expanded = value;
+
+    this.reloadRoots();
+  }
+
   getComponentNode(id) {
     if (this._componentMap[id] && this._componentMap[id].element) {
       return this._componentMap[id].element;
@@ -223,17 +229,21 @@ class RootManager {
 
     const renderer = component.__METAL_IC_RENDERER_DATA__;
 
-    let containsInspected = false;
+    const id = component[__METAL_DEV_TOOLS_COMPONENT_KEY__];
+
+    let expanded = this._componentMap[id]
+      ? this._componentMap[id].expanded
+      : false;
 
     if (
       this._inspectedNode &&
       component.element &&
       component.element.contains
     ) {
-      containsInspected = component.element.contains(this._inspectedNode);
+      expanded = component.element.contains(this._inspectedNode);
 
-      if (containsInspected) {
-        this._closestSelectedId = component[__METAL_DEV_TOOLS_COMPONENT_KEY__];
+      if (expanded) {
+        this._closestSelectedId = id;
       }
     }
 
@@ -243,8 +253,8 @@ class RootManager {
         renderer.childComponents.map(childComponent =>
           this._traverseTree(childComponent, rootComponent)
         ),
-      containsInspected,
-      id: component[__METAL_DEV_TOOLS_COMPONENT_KEY__],
+      expanded,
+      id,
       name: component.constructor.name
     };
   }

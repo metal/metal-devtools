@@ -18,6 +18,9 @@ const hook = () => {
 
       window.__METAL_DEV_TOOLS_HOOK__._managerExists = true;
       /* eslint-disable max-len*/
+      window.__METAL_DEV_TOOLS_HOOK__.expandComponent = RootManager.expandComponent.bind(
+        RootManager
+      );
       window.__METAL_DEV_TOOLS_HOOK__.getComponentNode = RootManager.getComponentNode.bind(
         RootManager
       );

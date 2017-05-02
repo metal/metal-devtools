@@ -152,7 +152,7 @@ describe('TreeNode', () => {
 
     const component = new TreeNode({
       componentNode: {
-        containsInspected: true,
+        expanded: true,
         id
       },
       element: div,
@@ -162,6 +162,6 @@ describe('TreeNode', () => {
     component.rendered();
 
     expect(component.element.scrollIntoView).toBeCalled();
-    expect(component.props.componentNode.containsInspected).toBeUndefined();
+    expect(component.props.componentNode.expanded).toBeUndefined();
   });
 });

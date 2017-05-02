@@ -37,6 +37,20 @@ const app = new App({
       }
     );
   },
+  onComponentExpand: (id, val) => {
+    chrome.devtools.inspectedWindow.eval(
+      `window.__METAL_DEV_TOOLS_HOOK__.expandComponent('${id}', ${val});`,
+      (res, err) => {
+        if (err) {
+          console.log(
+            '%c metal-devtools extension: (`expandComponent`)\n',
+            'background: rgb(136, 18, 128); color: #DDD',
+            err
+          );
+        }
+      }
+    );
+  },
   onSelectedChange: id => {
     chrome.devtools.inspectedWindow.eval(
       `window.__METAL_DEV_TOOLS_HOOK__.selectComponent('${id}');`,

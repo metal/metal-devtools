@@ -50,13 +50,9 @@ class TreeNode extends Component {
   toggleExpanded(event) {
     event.stopPropagation();
 
-    const {componentNode, onNodeSelect} = this.props;
+    const {componentNode, onNodeExpand} = this.props;
 
-    const newVal = !this.state.expanded;
-
-    this.state.expanded = newVal;
-
-    onNodeSelect(componentNode.id);
+    onNodeExpand(componentNode.id, !componentNode.expanded);
   }
 
   toggleHighlight(value) {
@@ -75,32 +71,17 @@ class TreeNode extends Component {
     this.toggleHighlight(false);
   }
 
-  // TODO: This is sketchy, but currently the best way I have found to
-  // automatically expand nodes after it is inspected in the elements pane.
-  rendered() {
-    const {componentNode: {containsInspected, id}, selectedId} = this.props;
-
-    if (containsInspected) {
-      this.state.expanded = true;
-
-      delete this.props.componentNode.containsInspected;
-
-      if (id === selectedId) {
-        this.element.scrollIntoView();
-      }
-    }
-  }
-
   render() {
     const {
       props: {
-        componentNode: {childComponents = [], id, name},
+        componentNode: {childComponents = [], expanded, id, name},
         depth,
         onInspectDOM,
+        onNodeExpand,
         onNodeSelect,
         selectedId
       },
-      state: {expanded, highlight, showMenu}
+      state: {highlight, showMenu}
     } = this;
 
     const hasChildren = childComponents && !!childComponents.length;
@@ -151,6 +132,7 @@ class TreeNode extends Component {
               key={`${name}-${i}`}
               highlightDOM={this.props.highlightDOM}
               onInspectDOM={onInspectDOM}
+              onNodeExpand={onNodeExpand}
               onNodeSelect={onNodeSelect}
               selectedId={selectedId}
             />
@@ -177,12 +159,12 @@ TreeNode.PROPS = {
   depth: Config.number().value(0),
   highlightDOM: Config.func(),
   onInspectDOM: Config.func(),
+  onNodeExpand: Config.func(),
   onNodeSelect: Config.func(),
   selectedId: Config.string()
 };
 
 TreeNode.STATE = {
-  expanded: Config.value(false),
   highlight: Config.value(false),
   showMenu: Config.value(false)
 };

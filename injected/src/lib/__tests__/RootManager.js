@@ -275,12 +275,12 @@ describe('RootManager', () => {
       childComponents: [
         {
           childComponents: undefined,
-          containsInspected: false,
+          expanded: false,
           id: undefined,
           name: 'Child'
         }
       ],
-      containsInspected: true,
+      expanded: true,
       id,
       name: 'MyComponent'
     });
