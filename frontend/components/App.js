@@ -103,21 +103,23 @@ class App extends Component {
       state: {rootComponents, selectedComponent}
     } = this;
 
-    const ids = flattenIds(rootComponents);
+    if (selectedComponent && selectedComponent.id) {
+      const ids = flattenIds(rootComponents);
 
-    const selectedIndex = ids.indexOf(selectedComponent.id);
+      const selectedIndex = ids.indexOf(selectedComponent.id);
 
-    if (key.match('Arrow')) {
-      event.preventDefault();
+      if (key.match('Arrow')) {
+        event.preventDefault();
 
-      if (key === 'ArrowDown') {
-        onSelectedChange(ids[selectedIndex + 1]);
-      } else if (key === 'ArrowUp') {
-        onSelectedChange(ids[selectedIndex - 1]);
-      } else if (key === 'ArrowRight') {
-        onComponentExpand(ids[selectedIndex], true);
-      } else if (key === 'ArrowLeft') {
-        onComponentExpand(ids[selectedIndex], false);
+        if (key === 'ArrowDown' && selectedIndex !== ids.length - 1) {
+          onSelectedChange(ids[selectedIndex + 1]);
+        } else if (key === 'ArrowUp' && selectedIndex !== 0) {
+          onSelectedChange(ids[selectedIndex - 1]);
+        } else if (key === 'ArrowRight') {
+          onComponentExpand(ids[selectedIndex], true);
+        } else if (key === 'ArrowLeft') {
+          onComponentExpand(ids[selectedIndex], false);
+        }
       }
     }
   }

@@ -116,6 +116,23 @@ describe('App', () => {
       }
     });
 
+    component.setState({
+      rootComponents: {
+        0: {
+          id: 'bar'
+        },
+        1: {
+          id: 'test'
+        },
+        2: {
+          id: 'foo'
+        }
+      },
+      selectedComponent: {id: 'test'}
+    });
+
+    jest.runAllTimers();
+
     component.handleKeys({key: 'ArrowDown', preventDefault: jest.fn()});
     expect(component.props.onSelectedChange).toHaveBeenCalled();
 
