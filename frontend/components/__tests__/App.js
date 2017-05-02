@@ -1,11 +1,46 @@
 jest.disableAutomock();
 
 import * as constants from '../../../shared/constants';
-import App from '../App';
+import App, {flattenIds} from '../App';
 
 const fooRoot = {
   id: 'foo'
 };
+
+describe('flattenIds', () => {
+  test('should flatten object into an array', () => {
+    expect(
+      flattenIds({
+        one: {
+          childComponents: [
+            {
+              childComponents: [
+                {
+                  expanded: false,
+                  id: 5
+                }
+              ],
+              expanded: true,
+              id: 2
+            }
+          ],
+          expanded: true,
+          id: 1
+        },
+        two: {
+          childComponents: [
+            {
+              expanded: false,
+              id: 3
+            }
+          ],
+          expanded: false,
+          id: 4
+        }
+      })
+    ).toMatchSnapshot();
+  });
+});
 
 describe('App', () => {
   test('should render', () => {
@@ -18,6 +53,22 @@ describe('App', () => {
     });
 
     component.state.rootComponents = {foo: fooRoot};
+
+    jest.runAllTimers();
+
+    expect(component).toMatchSnapshot();
+  });
+
+  test('should detach', () => {
+    const component = new App({
+      port: {
+        onMessage: {
+          addListener: jest.fn()
+        }
+      }
+    });
+
+    component.detach();
 
     jest.runAllTimers();
 
@@ -52,6 +103,30 @@ describe('App', () => {
 
     component.checkIfRootDetached('foo');
     expect(component.state.rootComponents).toEqual({});
+  });
+
+  test('should call appropriate method for each arrow key', () => {
+    const component = new App({
+      onComponentExpand: jest.fn(),
+      onSelectedChange: jest.fn(),
+      port: {
+        onMessage: {
+          addListener: jest.fn()
+        }
+      }
+    });
+
+    component.handleKeys({key: 'ArrowDown', preventDefault: jest.fn()});
+    expect(component.props.onSelectedChange).toHaveBeenCalled();
+
+    component.handleKeys({key: 'ArrowUp', preventDefault: jest.fn()});
+    expect(component.props.onSelectedChange).toHaveBeenCalled();
+
+    component.handleKeys({key: 'ArrowLeft', preventDefault: jest.fn()});
+    expect(component.props.onSelectedChange).toHaveBeenCalled();
+
+    component.handleKeys({key: 'ArrowRight', preventDefault: jest.fn()});
+    expect(component.props.onSelectedChange).toHaveBeenCalled();
   });
 
   test('should set column width', () => {

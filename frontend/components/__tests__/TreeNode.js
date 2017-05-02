@@ -22,11 +22,10 @@ describe('TreeNode', () => {
   test('should show when expanded', () => {
     const component = new TreeNode({
       componentNode: {
-        childComponents: [{}]
+        childComponents: [{}],
+        expanded: true
       }
     });
-
-    component.state.expanded = true;
 
     expect(component).toMatchSnapshot();
   });
@@ -91,20 +90,15 @@ describe('TreeNode', () => {
     expect(spy).toBeCalled();
   });
 
-  test('should toggle expanded and call onNodeSelect prop', () => {
+  test('should toggle expanded and call onNodeExpand prop', () => {
     const spy = jest.fn();
 
     const component = new TreeNode({
-      onNodeSelect: spy
+      onNodeExpand: spy
     });
 
     component.toggleExpanded(eventObj);
-    expect(component.state.expanded).toBe(true);
     expect(spy).toHaveBeenCalledTimes(1);
-
-    component.toggleExpanded(eventObj);
-    expect(component.state.expanded).toBe(false);
-    expect(spy).toHaveBeenCalledTimes(2);
   });
 
   test('should call highlightDOM prop and set highlight value', () => {
@@ -141,27 +135,5 @@ describe('TreeNode', () => {
     component.removeHighlight();
 
     expect(component.toggleHighlight).toBeCalledWith(false);
-  });
-
-  test('should call highlightDOM prop and set highlight value', () => {
-    const id = 'foo';
-
-    const div = document.createElement('div');
-
-    div.scrollIntoView = jest.fn();
-
-    const component = new TreeNode({
-      componentNode: {
-        expanded: true,
-        id
-      },
-      element: div,
-      selectedId: id
-    });
-
-    component.rendered();
-
-    expect(component.element.scrollIntoView).toBeCalled();
-    expect(component.props.componentNode.expanded).toBeUndefined();
   });
 });

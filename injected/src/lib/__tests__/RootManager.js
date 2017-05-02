@@ -44,6 +44,21 @@ describe('RootManager', () => {
     document.body.innerHTML = '';
   });
 
+  test('should set expanded to true and call reloadRoots', () => {
+    const id = 'foobar';
+
+    RootManager.reloadRoots = jest.fn();
+
+    RootManager._componentMap[id] = {
+      expanded: false
+    };
+
+    RootManager.expandComponent(id, true);
+
+    expect(RootManager._componentMap[id].expanded).toBe(true);
+    expect(RootManager.reloadRoots).toHaveBeenCalled();
+  });
+
   test('should get component node if it exists', () => {
     const id = 123;
 

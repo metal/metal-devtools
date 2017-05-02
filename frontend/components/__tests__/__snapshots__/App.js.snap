@@ -1,3 +1,23 @@
+exports[`App should detach 1`] = `
+<div class="app-container">
+  <div class="initial-warning-container" key="_metal_jsx_1">
+    <div key="_metal_jsx_1">If you do not see your components here, try refreshing the page while keeping this panel open.
+      <br key="_metal_jsx_1">
+      <i key="_metal_jsx_2">Or there may be no Metal.js components on the page. metal@^2.6.2 required.
+        <a href="https://github.com/bryceosterhaus/metal-devtools" target="blank_" key="_metal_jsx_1">Repo</a>
+      </i>
+    </div>
+  </div>
+  <div class="resize-container" key="_metal_jsx_3"></div>
+  <div class="state-pane-container" key="_metal_jsx_4">
+    <div class="header" key="_metal_jsx_1">Component: </div>
+    <div key="_metal_jsx_3">
+      <i key="_metal_jsx_1">No Component Data</i>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`App should render 1`] = `
 <div class="app-container">
   <div class="roots-wrapper" key="_metal_jsx_2">
@@ -20,4 +40,13 @@ exports[`App should render 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`flattenIds should flatten object into an array 1`] = `
+Array [
+  1,
+  2,
+  5,
+  4,
+]
 `;

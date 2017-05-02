@@ -7,6 +7,22 @@ import ResizeDivider from './ResizeDivider';
 import StatePane from './StatePane';
 import TreeNode from './TreeNode';
 
+export function flattenIds(obj, retVal = []) {
+  const objKeys = keys(obj);
+
+  for (let i = 0; i < objKeys.length; i++) {
+    const keyVal = obj[objKeys[i]];
+
+    retVal.push(keyVal.id);
+
+    if (keyVal.childComponents && keyVal.expanded) {
+      retVal.concat(flattenIds(keyVal.childComponents, retVal));
+    }
+  }
+
+  return retVal;
+}
+
 class App extends Component {
   created() {
     bindAll(
@@ -79,13 +95,15 @@ class App extends Component {
     }
   }
 
-  handleKeys({key}) {
+  handleKeys(event) {
+    const {key} = event;
+
     const {
       props: {onComponentExpand, onSelectedChange},
       state: {rootComponents, selectedComponent}
     } = this;
 
-    const ids = this.flattenIds(rootComponents);
+    const ids = flattenIds(rootComponents);
 
     const selectedIndex = ids.indexOf(selectedComponent.id);
 
@@ -148,22 +166,6 @@ class App extends Component {
     }
 
     this.state.rootComponents = roots;
-  }
-
-  flattenIds(obj, retVal = []) {
-    const objKeys = Object.keys(obj);
-
-    for (let i = 0; i < objKeys.length; i++) {
-      const keyVal = obj[objKeys[i]];
-
-      retVal.push(keyVal.id);
-
-      if (keyVal.childComponents && keyVal.expanded) {
-        retVal.concat(this.flattenIds(keyVal.childComponents, retVal));
-      }
-    }
-
-    return retVal;
   }
 
   render() {
