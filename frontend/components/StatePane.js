@@ -5,76 +5,76 @@ import NodeName from './NodeName';
 import JSONEditor from './JSONEditor';
 
 class StatePane extends Component {
-	created() {
-		bindAll(this, 'inspectComponent', 'handleStateChange');
-	}
+  created() {
+    bindAll(this, 'inspectComponent', 'handleStateChange');
+  }
 
-	handleStateChange(data, type) {
-		const {component, setStateFn} = this.props;
+  handleStateChange(data, type) {
+    const {component, setStateFn} = this.props;
 
-		setStateFn(component.id, data, type);
-	}
+    setStateFn(component.id, data, type);
+  }
 
-	inspectComponent() {
-		const {component, onInspectDOM} = this.props;
+  inspectComponent() {
+    const {component, onInspectDOM} = this.props;
 
-		onInspectDOM(component.id);
-	}
+    onInspectDOM(component.id);
+  }
 
-	render() {
-		const {data = null, name} = this.props.component;
+  render() {
+    const {data = null, name} = this.props.component;
 
-		const dataExists = isPlainObject(data);
+    const dataExists = isPlainObject(data);
 
-		return (
-			<div class="state-pane-container">
-				<div class="header">
-					{'Component: '}
+    return (
+      <div class="state-pane-container">
+        <div class="header">
+          {'Component: '}
 
-					{name &&
-						<span>
-							<NodeName name={name} />
+          {name &&
+            <span>
+              <NodeName name={name} />
 
-							<a
-								class="see-in-dom"
-								href="javascript:;"
-								onClick={this.inspectComponent}
-							>
-								{'(Click to See Element)'}
-							</a>
-						</span>}
-				</div>
+              <a
+                class="see-in-dom"
+                href="javascript:;"
+                onClick={this.inspectComponent}
+              >
+                {'(Click to See Element)'}
+              </a>
+            </span>}
+        </div>
 
-				{dataExists &&
-					keys(data).map(dataKey => {
-						const stateObj = data[dataKey];
+        {dataExists &&
+          keys(data).map(dataKey => {
+            const stateObj = data[dataKey];
 
-						return (
-							<div class="category" key={`${name}-${dataKey}`}>
-								<div class="name">{`${dataKey}:`}</div>
+            return (
+              <div class="category" key={`${name}-${dataKey}`}>
+                <div class="name">{`${dataKey}:`}</div>
 
-								<JSONEditor
-									onChange={this.handleStateChange}
-									type={dataKey}
-									value={stateObj}
-								/>
-							</div>
-						);
-					})}
+                <JSONEditor
+                  onChange={this.handleStateChange}
+                  type={dataKey}
+                  value={stateObj}
+                />
+              </div>
+            );
+          })}
 
-				{!dataExists &&
-					<div>
-						<i>{'No Component Data'}</i>
-					</div>}
-			</div>
-		);
-	}
+        {!dataExists &&
+          <div>
+            <i>{'No Component Data'}</i>
+          </div>}
+      </div>
+    );
+  }
 }
 
 StatePane.PROPS = {
-	component: Config.any(),
-	onInspectDOM: Config.func(),
-	setStateFn: Config.func()
+  component: Config.any(),
+  onInspectDOM: Config.func(),
+  setStateFn: Config.func()
 };
 
 export default StatePane;

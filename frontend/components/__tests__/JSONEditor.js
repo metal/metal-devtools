@@ -1,54 +1,55 @@
 /* global IncrementalDOM */
+/* eslint-disable no-global-assign*/
 
 jest.unmock('../JSONEditor');
 
 import JSONEditor from '../JSONEditor';
 
 describe('JSONEditor', () => {
-	test('should render', () => {
-		const component = new JSONEditor({
-			value: {}
-		});
+  test('should render', () => {
+    const component = new JSONEditor({
+      value: {}
+    });
 
-		expect(component).toMatchSnapshot();
-	});
+    expect(component).toMatchSnapshot();
+  });
 
-	test('should return jsx element', () => {
-		const component = new JSONEditor({value: {}});
+  test('should return jsx element', () => {
+    const component = new JSONEditor({value: {}});
 
-		const initSpyVal = IncrementalDOM;
+    const initSpyVal = IncrementalDOM;
 
-		IncrementalDOM = {
-			elementVoid: jest.fn()
-		};
+    IncrementalDOM = {
+      elementVoid: jest.fn()
+    };
 
-		expect(component.arrowRenderer(true)).toMatchSnapshot();
-		expect(component.arrowRenderer(false)).toMatchSnapshot();
+    expect(component.arrowRenderer(true)).toMatchSnapshot();
+    expect(component.arrowRenderer(false)).toMatchSnapshot();
 
-		IncrementalDOM = initSpyVal;
-	});
+    IncrementalDOM = initSpyVal;
+  });
 
-	test('should return changed data', () => {
-		const spy = jest.fn();
+  test('should return changed data', () => {
+    const spy = jest.fn();
 
-		const component = new JSONEditor({
-			onChange: spy,
-			value: {
-				baz: {
-					qux: 'test'
-				},
-				foo: 'bar'
-			}
-		});
+    const component = new JSONEditor({
+      onChange: spy,
+      value: {
+        baz: {
+          qux: 'test'
+        },
+        foo: 'bar'
+      }
+    });
 
-		const newVal = {
-			baz: {
-				qux: 'bar'
-			},
-			foo: 'bar'
-		};
+    const newVal = {
+      baz: {
+        qux: 'bar'
+      },
+      foo: 'bar'
+    };
 
-		expect(component.handleOnChange(newVal)).toMatchSnapshot();
-		expect(spy).toHaveBeenCalled();
-	});
+    expect(component.handleOnChange(newVal)).toMatchSnapshot();
+    expect(spy).toHaveBeenCalled();
+  });
 });

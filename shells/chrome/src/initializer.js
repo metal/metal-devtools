@@ -1,11 +1,11 @@
 import * as constants from '../../../shared/constants';
 
-const installInitialHook = require('raw-loader!../../../injected/build/installInitialHook');
+const installInitialHook = require('raw-loader!../../../injected/build/installInitialHook'); // eslint-disable-line
 
 window.addEventListener('message', function({data}) {
-	if (data.from === constants.METAL_DEVTOOLS_BACKEND) {
-		chrome.extension.sendMessage(data.message);
-	}
+  if (data.from === constants.METAL_DEVTOOLS_BACKEND) {
+    chrome.extension.sendMessage(data.message);
+  }
 });
 
 const script = document.createElement('script');

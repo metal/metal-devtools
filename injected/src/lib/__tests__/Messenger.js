@@ -5,118 +5,118 @@ import Messenger from '../Messenger';
 import * as constants from '../../../../shared/constants';
 
 describe('Messenger', () => {
-	window.postMessage = jest.fn();
+  window.postMessage = jest.fn();
 
-	afterEach(() => {
-		if (jest.isMockFunction(window.postMessage)) {
-			window.postMessage.mockReset();
-		}
-	});
+  afterEach(() => {
+    if (jest.isMockFunction(window.postMessage)) {
+      window.postMessage.mockReset();
+    }
+  });
 
-	test('postWindowMessage', () => {
-		const data = {foo: 'bar'};
+  test('postWindowMessage', () => {
+    const data = {foo: 'bar'};
 
-		Messenger.postWindowMessage(data);
+    Messenger.postWindowMessage(data);
 
-		expect(window.postMessage).toHaveBeenCalledWith(data, '*');
-	});
+    expect(window.postMessage).toHaveBeenCalledWith(data, '*');
+  });
 
-	test('postWindowMessage error', () => {
-		window.postMessage = () => {
-			throw Error();
-		};
+  test('postWindowMessage error', () => {
+    window.postMessage = () => {
+      throw Error();
+    };
 
-		const initialLog = console.log;
+    const initialLog = console.log;
 
-		console.log = jest.fn();
+    console.log = jest.fn();
 
-		Messenger.postWindowMessage();
+    Messenger.postWindowMessage();
 
-		expect(console.log).toHaveBeenCalledTimes(2);
+    expect(console.log).toHaveBeenCalledTimes(2);
 
-		window.postMessage = jest.fn();
-		console.log = initialLog;
-	});
+    window.postMessage = jest.fn();
+    console.log = initialLog;
+  });
 
-	describe('inform methods', () => {
-		beforeAll(() => {
-			Messenger.postWindowMessage = jest.fn();
-		});
+  describe('inform methods', () => {
+    beforeAll(() => {
+      Messenger.postWindowMessage = jest.fn();
+    });
 
-		afterEach(() => {
-			if (jest.isMockFunction(Messenger.postWindowMessage)) {
-				Messenger.postWindowMessage.mockReset();
-			}
-		});
+    afterEach(() => {
+      if (jest.isMockFunction(Messenger.postWindowMessage)) {
+        Messenger.postWindowMessage.mockReset();
+      }
+    });
 
-		test('informDetached', () => {
-			const data = {foo: 'bar'};
+    test('informDetached', () => {
+      const data = {foo: 'bar'};
 
-			Messenger.informDetached(data);
+      Messenger.informDetached(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
-				message: {
-					data,
-					type: constants.DETACHED
-				},
-				from: constants.METAL_DEVTOOLS_BACKEND
-			});
-		});
+      expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+        from: constants.METAL_DEVTOOLS_BACKEND,
+        message: {
+          data,
+          type: constants.DETACHED
+        }
+      });
+    });
 
-		test('informNewRoot', () => {
-			const data = {foo: 'bar'};
+    test('informNewRoot', () => {
+      const data = {foo: 'bar'};
 
-			Messenger.informNewRoot(data);
+      Messenger.informNewRoot(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
-				message: {
-					data,
-					type: constants.NEW_ROOT
-				},
-				from: constants.METAL_DEVTOOLS_BACKEND
-			});
-		});
+      expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+        from: constants.METAL_DEVTOOLS_BACKEND,
+        message: {
+          data,
+          type: constants.NEW_ROOT
+        }
+      });
+    });
 
-		test('informRendered', () => {
-			const data = {foo: 'bar'};
+    test('informRendered', () => {
+      const data = {foo: 'bar'};
 
-			Messenger.informRendered(data);
+      Messenger.informRendered(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
-				message: {
-					data,
-					type: constants.RENDERED
-				},
-				from: constants.METAL_DEVTOOLS_BACKEND
-			});
-		});
+      expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+        from: constants.METAL_DEVTOOLS_BACKEND,
+        message: {
+          data,
+          type: constants.RENDERED
+        }
+      });
+    });
 
-		test('informSelected', () => {
-			const data = {foo: 'bar'};
+    test('informSelected', () => {
+      const data = {foo: 'bar'};
 
-			Messenger.informSelected(data);
+      Messenger.informSelected(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
-				message: {
-					data,
-					type: constants.SELECTED
-				},
-				from: constants.METAL_DEVTOOLS_BACKEND
-			});
-		});
+      expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+        from: constants.METAL_DEVTOOLS_BACKEND,
+        message: {
+          data,
+          type: constants.SELECTED
+        }
+      });
+    });
 
-		test('informUpdate', () => {
-			const data = {foo: 'bar'};
+    test('informUpdate', () => {
+      const data = {foo: 'bar'};
 
-			Messenger.informUpdate(data);
+      Messenger.informUpdate(data);
 
-			expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
-				message: {
-					data,
-					type: constants.UPDATE
-				},
-				from: constants.METAL_DEVTOOLS_BACKEND
-			});
-		});
-	});
+      expect(Messenger.postWindowMessage).toHaveBeenCalledWith({
+        from: constants.METAL_DEVTOOLS_BACKEND,
+        message: {
+          data,
+          type: constants.UPDATE
+        }
+      });
+    });
+  });
 });

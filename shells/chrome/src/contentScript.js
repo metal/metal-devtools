@@ -1,4 +1,4 @@
-const installRootManagerHook = require('raw-loader!../../../injected/build/installRootManagerHook');
+const installRootManagerHook = require('raw-loader!../../../injected/build/installRootManagerHook'); // eslint-disable-line
 
 const script = document.createElement('script');
 
