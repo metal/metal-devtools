@@ -1,234 +1,275 @@
-$hoverState: rgba(#9552EF, 0.1);
-$purple: rgb(136, 18, 128);
-$sand: #C50000;
-$selectedState: rgba(#9552EF, 0.2);
-$slate: rgba(35, 50, 64, 0.8);
-$white: #FFFFFF;
-$paneBorder: 1px solid #CCC;
+/* ---- Base Variables ---- */
+$borderColor: #CCC;
+$brackets: #BDC6CF;
+$componentName: #881280;
+$hoverBackgroundColor: rgba(#9552EF, 0.1);
+$selectedBackgroundColor: rgba(#9552EF, 0.2);
+$stateName: #C50000;
+
+/* ---- Dark Theme Variables ---- */
+$darkBackground: #2A2A2A;
+$darkBorderColor: #3D3D3D;
+$darkBrackets: #BDC6CF;
+$darkComponentName: #5DB0D7;
+$darkHoverBackgroundColor: rgba(#C78626, 0.4);
+$darkSelectedBackgroundColor: rgba(#C78626, 0.8);
+$darkLinkColor: #C78626;
+
+/* ---- Base ---- */
+
+html {
+  height: 100%;
+}
 
 body {
-	background: $white;
-	font-family: Menlo, monospace;
-	height: 100%;
-	margin: 0;
-	overflow: hidden;
-	color: rgba(35, 50, 64, 0.8);
-}
-
-html, .app-container {
-	height: 100%;
-}
-
-.roots-wrapper, .state-pane-container {
-		overflow: auto;
+  font-family: Menlo, monospace;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
 }
 
 .app-container {
-	display: flex
+  display: flex;
+  background: #FFF;
+  border-color: $borderColor;
+  color: rgba(#233240, 0.8);
+  height: 100%;
+
+  .roots-wrapper, .state-pane-container {
+    overflow: auto;
+  }
+
+  &.dark-theme {
+    background-color: $darkBackground;
+    border-color: $darkBorderColor;
+    color: #BDC6CF;
+
+    a {
+      color: $darkLinkColor;
+    }
+
+    .node-name-container .name {
+      color: $darkComponentName;
+    }
+
+    .node-wrapper {
+      &.highlight {
+        background: $darkHoverBackgroundColor;
+      }
+
+      &.selected {
+        background: $darkSelectedBackgroundColor;
+      }
+    }
+
+    .overlay {
+      background-color: $darkBackground;
+    }
+  }
 }
 
 .resize-container {
-	border-right: $paneBorder;
-	cursor: col-resize;
-	flex: 0 0 0;
-	height: 100%;
-	padding-left: 1px;
+  border-right: 1px solid;
+  cursor: col-resize;
+  flex: 0 0 0;
+  height: 100%;
+  padding-left: 1px;
 }
 
 /* ---- Initial Warning Component ---- */
 
 .initial-warning-container {
-	align-items: center;
-	display: flex;
-	flex: 0 0 70%;
-	font-size: 16px;
-	justify-content: center;
+  align-items: center;
+  display: flex;
+  flex: 0 0 70%;
+  font-size: 16px;
+  justify-content: center;
 
-	> div {
-		text-align: center;
-	}
+  > div {
+    text-align: center;
+  }
 
-	i {
-		opacity: 0.5;
-	}
+  i {
+    opacity: 0.5;
+  }
 }
 
 /* ---- Node Name Component ---- */
 
 .node-name-container {
-	color: #A894A6;
-	display: inline-block;
-	font-size: 14px;
-	transition: background 200ms;
+  color: $brackets;
+  display: inline-block;
+  font-size: 14px;
+  transition: background 200ms;
 
-	&.flash {
-		background: rgba($purple, 0.5);
-	}
+  &.flash {
+    background: rgba($componentName, 0.5);
+  }
 
-	.name {
-		color: $purple;
-	}
+  .name {
+    color: $componentName;
+  }
 }
 
 /* ---- Node Wrapper ---- */
 
 .node-wrapper {
-	padding-bottom: 4px;
-	position: relative;
+  padding-bottom: 4px;
+  position: relative;
 
-	&.highlight {
-		background: $hoverState;
-	}
+  &.highlight {
+    background: $hoverBackgroundColor;
+  }
 
-	&.selected {
-		background: $selectedState;
-	}
+  &.selected {
+    background: $selectedBackgroundColor;
+  }
 
-	.node-name-container {
-		cursor: default;
-	}
+  .node-name-container {
+    cursor: default;
+  }
 
-	.overlay {
-		background: $white;
-		border-radius: 4px;
-		box-shadow: 0 0 1px 1px $slate;
-		position: absolute;
-		top: -4px;
-		z-index: 1;
+  .overlay {
+    background: #FFF;
+    border-radius: 4px;
+    box-shadow: 0 0 1px 1px rgba(black, 0.1);
+    position: absolute;
+    top: -4px;
+    z-index: 1;
 
-		ul {
-			list-style: none;
-			margin: 0;
-			padding: 0;
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
 
-			li {
-				cursor: pointer;
-				padding: 12px;
-				text-align: center;
+      li {
+        cursor: pointer;
+        padding: 12px;
+        text-align: center;
 
-				&:hover {
-					background: rgba(0, 0, 0, 0.1);
-				}
-			}
-		}
-	}
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
 }
 
 /* ---- Roots Wrapper ---- */
 
 .roots-wrapper {
-	flex: 0 0 70%;
-	margin-top: 40px;
+  flex: 0 0 70%;
+  margin-top: 40px;
 
-	.options {
-		border-bottom: $paneBorder;
-		box-sizing: border-box;
-		font-size: 14px;
-		left: 0;
-		margin-bottom: 12px;
-		padding: 8px 0 8px 12px;
-		position: fixed;
-		top: 0;
-		width: calc(70% + 1px);
+  .options {
+    border-bottom: 1px solid;
+    box-sizing: border-box;
+    font-size: 14px;
+    left: 0;
+    margin-bottom: 12px;
+    padding: 8px 0 8px 12px;
+    position: fixed;
+    top: 0;
+    width: calc(70% + 1px);
 
-		input {
-			margin: 0 4px;
-		}
-	}
+    input {
+      margin: 0 4px;
+    }
+  }
 }
 
 /* ---- State Pane Component ---- */
 
 .state-pane-container {
-	flex: 1 0 30%;
-	font-size: 14px;
+  flex: 1 0 30%;
+  font-size: 14px;
 
-	> div {
-		padding-left: 12px;
-	}
+  > div {
+    padding-left: 12px;
+  }
 
-	.header {
-		border-bottom: $paneBorder;
-		font-weight: bold;
-		padding: 8px 0 8px 12px;
+  .header {
+    border-bottom: 1px solid;
+    font-weight: bold;
+    padding: 8px 0 8px 12px;
 
-		.node-name-container {
-			font-weight: normal;
-		}
+    .node-name-container {
+      font-weight: normal;
+    }
 
-		.see-in-dom {
-			font-size: 11px;
-			font-style: italic;
-			font-weight: 400;
-			margin-left: 12px;
-			text-decoration: none;
+    .see-in-dom {
+      font-size: 11px;
+      font-style: italic;
+      font-weight: 400;
+      margin-left: 12px;
+      text-decoration: none;
 
-			&:hover {
-				opacity: 0.8;
-			}
-		}
-	}
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 
-	.category {
-		.data {
-			list-style: none;
-			margin: 0;
-			padding-left: 12px;
+  .category {
+    .data {
+      list-style: none;
+      margin: 0;
+      padding-left: 12px;
 
-			.key {
-				color: $sand;
-			}
+      .key {
+        color: $stateName;
+      }
 
-			.value {
-				transition: background 200ms;
+      .value {
+        transition: background 200ms;
 
-				&.flash {
-					background: rgba($purple, 0.5);
-				}
+        &.flash {
+          background: rgba($componentName, 0.5);
+        }
 
-				pre {
-					background: inherit;
-					margin: 0;
-				}
-			}
-		}
+        pre {
+          background: inherit;
+          margin: 0;
+        }
+      }
+    }
 
-		.name {
-			font-size: 16px;
-			font-weight: bold;
-		}
-	}
+    .name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
 }
 
 /* ---- Arrow Styles ---- */
 
 .arrow {
-	display: inline-block;
-	height: 8px;
-	width: 8px;
-	padding-right: 4px;
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  padding-right: 4px;
 
-	&:before {
-		border-color: black;
-		content: '';
-		cursor: pointer;
-		display: inline-block;
-		height: 0;
-		margin-right: -8px;
-		width: 0;
-	}
+  &:before {
+    border-color: black;
+    content: '';
+    cursor: pointer;
+    display: inline-block;
+    height: 0;
+    margin-right: -8px;
+    width: 0;
+  }
 
-	&.down:before {
-		width: 0;
-		height: 0;
-		border-left: 4px solid transparent;
-		border-right: 4px solid transparent;
-		border-top: 8px solid;
-	}
+  &.down:before {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 8px solid;
+  }
 
-	&.right:before {
-		border-bottom: 4px solid transparent;
-		border-left: 8px solid;
-		border-top: 4px solid transparent;
-	}
+  &.right:before {
+    border-bottom: 4px solid transparent;
+    border-left: 8px solid;
+    border-top: 4px solid transparent;
+  }
 }

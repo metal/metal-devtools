@@ -7,6 +7,10 @@ import ResizeDivider from './ResizeDivider';
 import StatePane from './StatePane';
 import TreeNode from './TreeNode';
 
+const DARK_TYPE_COLORS = {
+  number: '#A1F7B5'
+};
+
 export function flattenIds(obj, retVal = []) {
   const objKeys = keys(obj);
 
@@ -177,7 +181,8 @@ class App extends Component {
         inspectDOM,
         onComponentExpand,
         onSelectedChange,
-        setStateFn
+        setStateFn,
+        theme
       },
       state: {
         firstColumnWidth,
@@ -190,7 +195,7 @@ class App extends Component {
     const rootComponentKeys = keys(rootComponents);
 
     return (
-      <div class="app-container">
+      <div class={`app-container ${theme}-theme`}>
         {!rootComponentKeys ||
           (rootComponentKeys &&
             !rootComponentKeys.length &&
@@ -237,6 +242,7 @@ class App extends Component {
           component={selectedComponent}
           onInspectDOM={inspectDOM}
           setStateFn={setStateFn}
+          typeColors={theme === 'dark' ? DARK_TYPE_COLORS : undefined}
         />
       </div>
     );
@@ -249,7 +255,8 @@ App.PROPS = {
   onComponentExpand: Config.func(),
   onSelectedChange: Config.func(),
   port: Config.any(),
-  setStateFn: Config.func()
+  setStateFn: Config.func(),
+  theme: Config.oneOf(['dark', 'light']).value('light')
 };
 
 App.STATE = {

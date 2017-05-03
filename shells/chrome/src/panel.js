@@ -80,7 +80,8 @@ const app = new App({
         }
       }
     );
-  }
+  },
+  theme: chrome.devtools.panels.themeName
 });
 
 chrome.devtools.network.onNavigated.addListener(() => {

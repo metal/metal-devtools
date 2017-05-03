@@ -26,11 +26,14 @@ class MetalJSONEditor extends Component {
   }
 
   render() {
+    const {typeColors, value} = this.props;
+
     return (
       <JSONEditor
         arrowRenderer={this.arrowRenderer.bind(this)}
-        data={this.props.value}
+        data={value}
         onChange={this.handleOnChange.bind(this)}
+        typeColors={typeColors}
       />
     );
   }
@@ -40,6 +43,7 @@ MetalJSONEditor.PROPS = {
   config: Config.object(),
   onChange: Config.func(),
   type: Config.string(),
+  typeColors: Config.object(),
   value: Config.object()
 };
 

@@ -22,7 +22,7 @@ class StatePane extends Component {
   }
 
   render() {
-    const {data = null, name} = this.props.component;
+    const {component: {data = null, name}, typeColors} = this.props;
 
     const dataExists = isPlainObject(data);
 
@@ -56,6 +56,7 @@ class StatePane extends Component {
                 <JSONEditor
                   onChange={this.handleStateChange}
                   type={dataKey}
+                  typeColors={typeColors}
                   value={stateObj}
                 />
               </div>
@@ -74,7 +75,8 @@ class StatePane extends Component {
 StatePane.PROPS = {
   component: Config.any(),
   onInspectDOM: Config.func(),
-  setStateFn: Config.func()
+  setStateFn: Config.func(),
+  typeColors: Config.object()
 };
 
 export default StatePane;
