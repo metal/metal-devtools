@@ -1,5 +1,5 @@
 exports[`App should detach 1`] = `
-<div class="app-container">
+<div class="app-container light-theme">
   <div class="initial-warning-container" key="_metal_jsx_1">
     <div key="_metal_jsx_1">If you do not see your components here, try refreshing the page while keeping this panel open.
       <br key="_metal_jsx_1">
@@ -19,7 +19,7 @@ exports[`App should detach 1`] = `
 `;
 
 exports[`App should render 1`] = `
-<div class="app-container">
+<div class="app-container light-theme">
   <div class="roots-wrapper" key="_metal_jsx_2">
     <div style="" class="options" title="Freezes highlights by expanded components" key="_metal_jsx_1">
       <label for="freezeUpdates" key="_metal_jsx_1">Freeze Updates</label>

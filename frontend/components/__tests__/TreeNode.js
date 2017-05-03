@@ -91,14 +91,14 @@ describe('TreeNode', () => {
   });
 
   test('should toggle expanded and call onNodeExpand prop', () => {
-    const spy = jest.fn();
-
     const component = new TreeNode({
-      onNodeExpand: spy
+      onNodeExpand: jest.fn(),
+      onNodeSelect: jest.fn()
     });
 
     component.toggleExpanded(eventObj);
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(component.props.onNodeExpand).toHaveBeenCalledTimes(1);
+    expect(component.props.onNodeSelect).toHaveBeenCalledTimes(1);
   });
 
   test('should call highlightDOM prop and set highlight value', () => {
