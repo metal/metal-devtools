@@ -52,6 +52,8 @@ class TreeNode extends Component {
 
     const {componentNode, onNodeExpand} = this.props;
 
+    this.focusNode();
+
     onNodeExpand(componentNode.id, !componentNode.expanded);
   }
 
@@ -96,7 +98,7 @@ class TreeNode extends Component {
       <div class="tree-container">
         <div
           class={`node-wrapper ${selected} ${highlighted} ${hasChildren ? 'expandable' : ''}`} // eslint-disable-line
-          onClick={expanded ? this.focusNode : this.toggleExpanded}
+          onClick={selected && !expanded ? this.toggleExpanded : this.focusNode}
           onContextMenu={this.handleContextMenu}
           onMouseEnter={this.addHighlight}
           onMouseLeave={this.removeHighlight}
