@@ -1,14 +1,14 @@
 exports[`NodeName should render with NORMAL_CLOSING 1`] = `
 <span class="node-name-container">&lt;/
-  <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  <span class="name"></span>&gt;</span>
 `;
 
 exports[`NodeName should render with OPENING 1`] = `
 <span class="node-name-container">&lt;
-  <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  <span class="name"></span>&gt;</span>
 `;
 
 exports[`NodeName should render with SELF_CLOSING 1`] = `
 <span class="node-name-container">&lt;
-  <span class="name" key="_metal_jsx_1"></span> /&gt;</span>
+  <span class="name"></span> /&gt;</span>
 `;

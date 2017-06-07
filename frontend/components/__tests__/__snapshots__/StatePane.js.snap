@@ -1,28 +1,28 @@
 exports[`StatePane should render 1`] = `
 <div class="state-pane-container">
-  <div class="header" key="_metal_jsx_1">Component:
-    <span key="_metal_jsx_1">
-      <span class="node-name-container" key="_metal_jsx_1">&lt;
-        <span class="name" key="_metal_jsx_1">fooComponent</span>&gt;</span>
-      <a class="see-in-dom" href="javascript:;" key="_metal_jsx_2">(Click to See Element)</a>
+  <div class="header">Component:
+    <span>
+      <span class="node-name-container">&lt;
+        <span class="name">fooComponent</span>&gt;</span>
+      <a class="see-in-dom" href="javascript:;">(Click to See Element)</a>
     </span>
   </div>
-  <div key="fooComponent-one" class="category">
-    <div class="name" key="_metal_jsx_1">one:</div>
-    <ul class="tree-container" style="list-style: none; margin: 0px;" key="_metal_jsx_2">
-      <li key="_metal_jsx_1">
-        <div key="_metal_jsx_1">
-          <span style="" key="_metal_jsx_1">foo: </span>
-          <span style="color: rgb(196, 26, 22);" title="Click to Edit" key="_metal_jsx_2">
-            <span style="white-space: pre;" key="_metal_jsx_1">bar</span>
+  <div class="category">
+    <div class="name">one:</div>
+    <ul class="tree-container" style="list-style: none; margin: 0px;">
+      <li>
+        <div>
+          <span style="">foo: </span>
+          <span style="color: rgb(196, 26, 22);" title="Click to Edit">
+            <span style="white-space: pre;">bar</span>
           </span>
         </div>
       </li>
     </ul>
   </div>
-  <div key="fooComponent-two" class="category">
-    <div class="name" key="_metal_jsx_1">two:</div>
-    <ul class="tree-container" style="list-style: none; margin: 0px;" key="_metal_jsx_2"></ul>
+  <div class="category">
+    <div class="name">two:</div>
+    <ul class="tree-container" style="list-style: none; margin: 0px;"></ul>
   </div>
 </div>
 `;

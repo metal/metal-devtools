@@ -1,39 +1,39 @@
 exports[`TreeNode should render 1`] = `
 <div class="tree-container">
-  <div class="node-wrapper selected  expandable" style="padding-left: 12px;" key="_metal_jsx_1">
-    <div class="arrow right" key="_metal_jsx_1"></div>
-    <span class="node-name-container" key="_metal_jsx_2">&lt;
-      <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  <div class="node-wrapper selected  expandable" style="padding-left: 12px;">
+    <div class="arrow right"></div>
+    <span class="node-name-container">&lt;
+      <span class="name"></span>&gt;</span>
   </div>
 </div>
 `;
 
 exports[`TreeNode should show when expanded 1`] = `
 <div class="tree-container">
-  <div class="node-wrapper selected  expandable" style="padding-left: 12px;" key="_metal_jsx_1">
-    <div class="arrow down" key="_metal_jsx_1"></div>
-    <span class="node-name-container" key="_metal_jsx_2">&lt;
-      <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  <div class="node-wrapper selected  expandable" style="padding-left: 12px;">
+    <div class="arrow down"></div>
+    <span class="node-name-container">&lt;
+      <span class="name"></span>&gt;</span>
   </div>
-  <div class="tree-container" key="undefined-0">
-    <div class="node-wrapper selected  " style="padding-left: 36px;" key="_metal_jsx_1">
-      <span class="node-name-container" key="_metal_jsx_2">&lt;
-        <span class="name" key="_metal_jsx_1"></span> /&gt;</span>
+  <div class="tree-container">
+    <div class="node-wrapper selected  " style="padding-left: 36px;">
+      <span class="node-name-container">&lt;
+        <span class="name"></span> /&gt;</span>
     </div>
   </div>
-  <div class="node-wrapper " style="padding-left: 12px;" key="_metal_jsx_2">
-    <span class="node-name-container" key="_metal_jsx_1">&lt;/
-      <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  <div class="node-wrapper " style="padding-left: 12px;">
+    <span class="node-name-container">&lt;/
+      <span class="name"></span>&gt;</span>
   </div>
 </div>
 `;
 
 exports[`TreeNode should show when highlighted 1`] = `
 <div class="tree-container">
-  <div class="node-wrapper selected  expandable" style="padding-left: 12px;" key="_metal_jsx_1">
-    <div class="arrow right" key="_metal_jsx_1"></div>
-    <span class="node-name-container" key="_metal_jsx_2">&lt;
-      <span class="name" key="_metal_jsx_1"></span>&gt;</span>
+  <div class="node-wrapper selected  expandable" style="padding-left: 12px;">
+    <div class="arrow right"></div>
+    <span class="node-name-container">&lt;
+      <span class="name"></span>&gt;</span>
   </div>
 </div>
 `;
