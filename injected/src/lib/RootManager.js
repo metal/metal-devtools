@@ -45,6 +45,9 @@ class RootManager {
     this._roots = [];
   }
 
+  /**
+   * Creates a mask on the page and highlights certain areas of the page.
+   */
   createOverlayMask() {
     this._mask = document.createElement('div');
     this._maskDimensions = document.createElement('span');
@@ -58,18 +61,27 @@ class RootManager {
     document.body.appendChild(this._mask);
   }
 
+  /**
+   * Sets the components expanded value and reloads the root components.
+   */
   expandComponent(id, value) {
     this._componentMap[id].expanded = value;
 
     this.reloadRoots();
   }
 
+  /**
+   * Returns component from internal map based on ID given.
+   */
   getComponentNode(id) {
     if (this._componentMap[id] && this._componentMap[id].element) {
       return this._componentMap[id].element;
     }
   }
 
+  /**
+   * Returns data managers for a certain component.
+   */
   getDataManagers(id) {
     let retVal = null;
 
@@ -80,14 +92,24 @@ class RootManager {
     return retVal;
   }
 
+  /**
+   * Returns whether a component exists in the internal map or not.
+   */
   hasComponent(id) {
     return !!this._componentMap[id];
   }
 
+  /**
+   * Returns whether there are any root components or not.
+   */
   hasRoots() {
     return this._roots && !!this._roots.length;
   }
 
+  /**
+   * Shows the overlay mask and positions it to highlight a specific node.
+   * The purpose is to mimic inspecting dom elements.
+   */
   highlightNode(id) {
     if (!this._mask) {
       this.createOverlayMask();
@@ -112,6 +134,10 @@ class RootManager {
     }
   }
 
+  /**
+   * Adds a root component to `this._roots` and informs that there is a new
+   * root.
+   */
   addRoot(component) {
     this._roots.push(component);
 
@@ -120,6 +146,9 @@ class RootManager {
     });
   }
 
+  /**
+   * Returns an object with data about a given component.
+   */
   processComponentObj(component) {
     return {
       data: component && component.__DATA_MANAGER_DATA__
@@ -130,6 +159,10 @@ class RootManager {
     };
   }
 
+  /**
+   * Reloads all the root components and tells the messenger to treat them as
+   * new.
+   */
   reloadRoots(informNew) {
     this._executeAsync(() =>
       this._roots.forEach(root => {
@@ -142,6 +175,10 @@ class RootManager {
     );
   }
 
+  /**
+   * Informs that a certain component has been selected and stores the ID of
+   * that component for future reference.
+   */
   selectComponent(id) {
     this.setInspected(null);
 
@@ -151,6 +188,9 @@ class RootManager {
     Messenger.informSelected(this.processComponentObj(this._componentMap[id]));
   }
 
+  /**
+   * Sets a new state in the data manager
+   */
   setComponentState(id, newState, dataManagerName) {
     const dataManagers = this.getDataManagers(id);
 
@@ -163,10 +203,17 @@ class RootManager {
     }
   }
 
+  /**
+   * Sets the `_inspectedNode` value to a given node.
+   */
   setInspected(node) {
     this._inspectedNode = node;
   }
 
+  /**
+   * Attaches listeners on each component. These are the events that drive the
+   * data flow from metal.js to the devtools.
+   */
   _attachComponentListeners(component, rootComponent) {
     if (!component[__METAL_DEV_TOOLS_COMPONENT_KEY__]) {
       const id = `${__METAL_DEV_TOOLS_COMPONENT_KEY__}${componentId++}`;
@@ -189,10 +236,17 @@ class RootManager {
     }
   }
 
+  /**
+   * Runs functions in a `setTimeout` so that they wil be asynchronous and not
+   * hold up the entire applciation, such as traversing a tree of components.
+   */
   _executeAsync(fn) {
     setTimeout(fn, 0);
   }
 
+  /**
+   * Informs an update and traverses the root component that the update occured.
+   */
   _handleComponentUpdated(rootComponent) {
     const rootId = rootComponent[__METAL_DEV_TOOLS_COMPONENT_KEY__];
 
@@ -213,6 +267,10 @@ class RootManager {
     }
   }
 
+  /**
+   * Checks if the component being detached is a root component. If it is, it
+   * removes the root component from `_roots`
+   */
   _checkIfRootDetached(id) {
     for (let i = 0; i < this._roots.length; i++) {
       const root = this._roots[i];
@@ -225,6 +283,9 @@ class RootManager {
     }
   }
 
+  /**
+   * Traverses all components in a root node and returns the new data object.
+   */
   _traverseTree(component, rootComponent) {
     if (!component) {
       return {};
@@ -265,6 +326,9 @@ class RootManager {
     };
   }
 
+  /**
+   * Updates the currently selected component and informs that it is selected.
+   */
   _updateCurrentSelected(id = this._previousSelectedId) {
     if (id) {
       Messenger.informSelected(

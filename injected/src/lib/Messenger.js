@@ -7,6 +7,9 @@ import * as constants from '../../../shared/constants';
  * a common place for errors to occur.
  */
 class Messenger {
+  /**
+   * Sends message to window and logs an error if one occurs.
+   */
   static postWindowMessage(data) {
     try {
       window.postMessage(data, '*');
@@ -20,6 +23,9 @@ class Messenger {
     }
   }
 
+  /**
+   * Sends message if component has been detached.
+   */
   static informDetached(data) {
     this.postWindowMessage({
       from: constants.METAL_DEVTOOLS_BACKEND,
@@ -30,6 +36,9 @@ class Messenger {
     });
   }
 
+  /**
+   * Sends message if metal has been detected.
+   */
   static informMetalDetected() {
     this.postWindowMessage({
       from: constants.METAL_DEVTOOLS_BACKEND,
@@ -39,6 +48,9 @@ class Messenger {
     });
   }
 
+  /**
+   * Sends message if component has been added.
+   */
   static informNewRoot(data) {
     this.postWindowMessage({
       from: constants.METAL_DEVTOOLS_BACKEND,
@@ -49,6 +61,9 @@ class Messenger {
     });
   }
 
+  /**
+   * Sends message if component has been rendered.
+   */
   static informRendered(data) {
     this.postWindowMessage({
       from: constants.METAL_DEVTOOLS_BACKEND,
@@ -59,6 +74,9 @@ class Messenger {
     });
   }
 
+  /**
+   * Sends message if component has been selected.
+   */
   static informSelected(data) {
     this.postWindowMessage({
       from: constants.METAL_DEVTOOLS_BACKEND,
@@ -69,6 +87,9 @@ class Messenger {
     });
   }
 
+  /**
+   * Sends message if component has been updated.
+   */
   static informUpdate(data) {
     this.postWindowMessage({
       from: constants.METAL_DEVTOOLS_BACKEND,

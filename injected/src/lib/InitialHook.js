@@ -12,6 +12,9 @@ class Hook {
     this._firstAdd = false;
   }
 
+  /**
+   * Adds component to `_roots` and also informs if it is the first added.
+   */
   add(component) {
     if (!this._firstAdd) {
       Messenger.informMetalDetected();
@@ -22,10 +25,16 @@ class Hook {
     this._roots.push(component);
   }
 
+  /**
+   * Returns all components in `this._roots`
+   */
   getAll() {
     return this._roots;
   }
 
+  /**
+   * Returns whether or not any components have been added.
+   */
   hasRoots() {
     return this._roots && !!this._roots.length;
   }
