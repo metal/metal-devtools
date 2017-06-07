@@ -1,5 +1,10 @@
 import Messenger from './Messenger';
 
+/**
+ * `Hook` is the initial class added to the page before any of the sites JS is
+ * loaded. This is the minimal ammount of code we want to inject and its purpose
+ * is that it would gather any root components that are attached to the page.
+ */
 class Hook {
   constructor() {
     this._roots = [];

@@ -1,5 +1,10 @@
 import RootManagerClass from './lib/RootManager';
 
+/**
+ * Checks for `__METAL_DEV_TOOLS_HOOK__` hook on window object. It initializes
+ * the `RootManagerClass` and links the methods from that class to the hook
+ * object. Also moves all components on the initial hook to this manager.
+ */
 const hook = () => {
   const {__METAL_DEV_TOOLS_HOOK__} = window;
 

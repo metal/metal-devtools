@@ -1,3 +1,7 @@
+/**
+ * Installs the devtools panel if metal hook and metal components exist.
+ */
+
 import './devtools.html';
 
 let panelCreated = false;

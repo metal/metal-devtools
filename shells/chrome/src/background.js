@@ -1,3 +1,7 @@
+/**
+ * Handles message passing between devtools and the injected scripts.
+ */
+
 import * as constants from '../../../shared/constants';
 
 import './popup.html';

@@ -1,6 +1,9 @@
 import Component, {Config} from 'metal-jsx';
 import {bindAll} from 'lodash';
 
+/**
+ * Component used emit an event when dragged horizontally
+ */
 class ResizeDivider extends Component {
   created() {
     bindAll(this, 'doDrag', 'initDrag', 'stopDrag');

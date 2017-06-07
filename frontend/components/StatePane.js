@@ -4,6 +4,9 @@ import {bindAll, isPlainObject, keys} from 'lodash';
 import NodeName from './NodeName';
 import JSONEditor from './JSONEditor';
 
+/**
+ * Component used to display the state
+ */
 class StatePane extends Component {
   created() {
     bindAll(this, 'inspectComponent', 'handleStateChange');

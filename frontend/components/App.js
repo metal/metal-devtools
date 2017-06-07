@@ -27,6 +27,9 @@ export function flattenIds(obj, retVal = []) {
   return retVal;
 }
 
+/**
+ * Root component that renders everything in the developer tools
+ */
 class App extends Component {
   created() {
     bindAll(
@@ -222,7 +225,7 @@ class App extends Component {
               />
             </div>
 
-            {rootComponentKeys.map((key, i) => (
+            {rootComponentKeys.map((key, i) =>
               <TreeNode
                 componentNode={rootComponents[key]}
                 depth={0}
@@ -233,7 +236,7 @@ class App extends Component {
                 onNodeSelect={onSelectedChange}
                 selectedId={selectedComponent.id}
               />
-            ))}
+            )}
           </div>}
 
         <ResizeDivider onResize={this.handleResize} />

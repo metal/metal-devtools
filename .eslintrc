@@ -25,6 +25,7 @@
     "prefer-const": 2,
     "react/jsx-uses-vars": [2],
     "require-jsdoc": 0,
+    "valid-jsdoc": 0,
     "sort-keys": 2
   }
 }

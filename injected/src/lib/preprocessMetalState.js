@@ -1,5 +1,9 @@
 export const KEYS_BLACKLIST = ['children'];
 
+/**
+ * This function filters the state object and removes and state key that is
+ * blacklisted.
+ */
 export default object => {
   const newObj = {};
 

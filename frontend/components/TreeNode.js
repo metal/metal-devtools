@@ -3,6 +3,9 @@ import {bindAll, debounce} from 'lodash';
 
 import NodeName, {OPENING, NORMAL_CLOSING, SELF_CLOSING} from './NodeName';
 
+/**
+ * Component used to recursively render a tree of components
+ */
 class TreeNode extends Component {
   created() {
     bindAll(
@@ -97,7 +100,9 @@ class TreeNode extends Component {
     return (
       <div class="tree-container">
         <div
-          class={`node-wrapper ${selected} ${highlighted} ${hasChildren ? 'expandable' : ''}`} // eslint-disable-line
+          class={`node-wrapper ${selected} ${highlighted} ${hasChildren
+            ? 'expandable'
+            : ''}`} // eslint-disable-line
           onClick={selected && !expanded ? this.toggleExpanded : this.focusNode}
           onContextMenu={this.handleContextMenu}
           onMouseEnter={this.addHighlight}
@@ -127,7 +132,7 @@ class TreeNode extends Component {
 
         {hasChildren &&
           expanded &&
-          childComponents.map((child, i) => (
+          childComponents.map((child, i) =>
             <TreeNode
               componentNode={child}
               depth={this.props.depth + 1}
@@ -138,7 +143,7 @@ class TreeNode extends Component {
               onNodeSelect={onNodeSelect}
               selectedId={selectedId}
             />
-          ))}
+          )}
 
         {hasChildren &&
           expanded &&

@@ -1,6 +1,11 @@
 export const ITERABLE_KEY = '@@__IMMUTABLE_ITERABLE__@@';
 
-// Copied pattern from MDN, https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
+/**
+ * Copied pattern from MDN, https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
+ *
+ * This function sanatizes and clones the state object that comes from the metal
+ * component. Sanitization is necessary before we can do message passing.
+ */
 function cloneObj(objectToBeCloned, visited = new Set()) {
   if (!(objectToBeCloned instanceof Object)) {
     return objectToBeCloned;

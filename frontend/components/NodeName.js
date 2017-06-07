@@ -6,6 +6,9 @@ export const OPENING = 0;
 export const NORMAL_CLOSING = 1;
 export const SELF_CLOSING = 2;
 
+/**
+ * Component used to display a component node
+ */
 class NodeName extends Component {
   render() {
     const {name, type} = this.props;

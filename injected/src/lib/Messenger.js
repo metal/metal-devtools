@@ -1,5 +1,11 @@
 import * as constants from '../../../shared/constants';
 
+/**
+ * `Messenger` handles all message passing with `window.postMessage`. The goal
+ * of this class is to isolate all message passing and keep it in one place.
+ * This allows us to emit any errors that occur while message passing. This is
+ * a common place for errors to occur.
+ */
 class Messenger {
   static postWindowMessage(data) {
     try {

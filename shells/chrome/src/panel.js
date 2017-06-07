@@ -1,3 +1,7 @@
+/**
+ * Attaches frontend application to the panel.html
+ */
+
 import './panel.html';
 import '../../../frontend/static';
 

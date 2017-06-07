@@ -3,6 +3,9 @@ import JSONEditor from 'metal-json-editor';
 
 import {keys, isEqual} from 'lodash';
 
+/**
+ * Component used to handle editing state properties
+ */
 class MetalJSONEditor extends Component {
   arrowRenderer(expanded) {
     return <span class={expanded ? 'arrow down' : 'arrow right'} />;

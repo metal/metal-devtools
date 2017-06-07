@@ -25,6 +25,11 @@ function applyStyles(element, styles) {
   Object.keys(styles).forEach(name => (element.style[name] = styles[name]));
 }
 
+/**
+ * `RootManager` is the main driving backend that interacts with Metal.js. This
+ * class manages metal components, binds listeners, highlights the DOM, and
+ * passes all necessary information to the devtools panel.
+ */
 class RootManager {
   constructor() {
     this.setInspected = this.setInspected.bind(this);
@@ -248,11 +253,12 @@ class RootManager {
     }
 
     return {
-      childComponents: renderer &&
-        renderer.childComponents &&
-        renderer.childComponents.map(childComponent =>
-          this._traverseTree(childComponent, rootComponent)
-        ),
+      childComponents:
+        renderer &&
+          renderer.childComponents &&
+          renderer.childComponents.map(childComponent =>
+            this._traverseTree(childComponent, rootComponent)
+          ),
       expanded,
       id,
       name: component.constructor.name

@@ -1,5 +1,8 @@
 import Component from 'metal-jsx';
 
+/**
+ * Warning to display when devtools are not detecting metal components
+ */
 class InitialWarning extends Component {
   render() {
     return (

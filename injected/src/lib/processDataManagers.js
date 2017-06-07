@@ -1,6 +1,10 @@
 import preprocessMetalState from './preprocessMetalState';
 import cloneObj from './cloneObj';
 
+/**
+ * This function processes the data managers from a metal component and emits
+ * an error if the data manager fails to process.
+ */
 export default (dataManagerData = {}) => {
   const retVal = {};
 
