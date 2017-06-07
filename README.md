@@ -1,7 +1,7 @@
 # metal-devtools
 [![Build Status](https://travis-ci.org/metal/metal-devtools.svg?branch=master)](https://travis-ci.org/metal/metal-devtools)
 
-![Screenshot](images/screenshot1280x800.png)
+![Screenshot](images/screenshot.gif)
 
 ### Installation
 * Download from [chrome store](https://chrome.google.com/webstore/detail/metaljs-developer-tools/fagnjmppkokolnbloalifcmcooldhiik)
