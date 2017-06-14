@@ -35,14 +35,14 @@ class RootManager {
     this.setInspected = this.setInspected.bind(this);
     this._traverseTree = this._traverseTree.bind(this);
 
-    this._closestSelectedId = null;
     this._componentMap = {};
     this._listeners = {};
-    this._inspectedNode = null;
     this._mask = null;
     this._maskDimensions = null;
     this._previousSelectedId = '';
     this._roots = [];
+
+    this._elementMap = new WeakMap();
   }
 
   /**
@@ -65,7 +65,7 @@ class RootManager {
    * Sets the components expanded value and reloads the root components.
    */
   expandComponent(id, value) {
-    this._componentMap[id].expanded = value;
+    this._componentMap[id].__METAL_DEV_TOOLS_EXPANDED__ = value;
 
     this.reloadRoots();
   }
@@ -180,12 +180,7 @@ class RootManager {
    * that component for future reference.
    */
   selectComponent(id) {
-    this.setInspected(null);
-
-    this._closestSelectedId = null;
-    this._previousSelectedId = id;
-
-    Messenger.informSelected(this.processComponentObj(this._componentMap[id]));
+    this._updateCurrentSelected(id);
   }
 
   /**
@@ -207,7 +202,33 @@ class RootManager {
    * Sets the `_inspectedNode` value to a given node.
    */
   setInspected(node) {
-    this._inspectedNode = node;
+    let firstComponent = true;
+
+    let component;
+
+    while (node) {
+      if (!this._elementMap.has(node)) {
+        node = node.parentNode;
+      } else {
+        component = this._componentMap[this._elementMap.get(node)];
+
+        node = null;
+      }
+    }
+
+    while (component) {
+      const id = component.__METAL_DEV_TOOLS_COMPONENT_KEY__;
+
+      this.expandComponent(id, true);
+
+      if (firstComponent) {
+        this._updateCurrentSelected(id);
+
+        firstComponent = false;
+      }
+
+      component = component.__METAL_IC_RENDERER_DATA__.parent;
+    }
   }
 
   /**
@@ -258,9 +279,7 @@ class RootManager {
           this._traverseTree(rootComponent, rootComponent)
         );
 
-        this._updateCurrentSelected(this._closestSelectedId);
-
-        this._closestSelectedId = null;
+        this._updateCurrentSelected(this._previousSelectedId);
 
         updateScheduled[rootId] = false;
       });
@@ -286,7 +305,7 @@ class RootManager {
   /**
    * Traverses all components in a root node and returns the new data object.
    */
-  _traverseTree(component, rootComponent) {
+  _traverseTree(component, rootComponent, parentId) {
     if (!component) {
       return {};
     }
@@ -297,20 +316,8 @@ class RootManager {
 
     const id = component[__METAL_DEV_TOOLS_COMPONENT_KEY__];
 
-    let expanded = this._componentMap[id]
-      ? this._componentMap[id].expanded
-      : false;
-
-    if (
-      this._inspectedNode &&
-      component.element &&
-      component.element.contains
-    ) {
-      expanded = component.element.contains(this._inspectedNode);
-
-      if (expanded) {
-        this._closestSelectedId = id;
-      }
+    if (component.element && !this._elementMap.has(component.element)) {
+      this._elementMap.set(component.element, id);
     }
 
     return {
@@ -318,9 +325,11 @@ class RootManager {
         renderer &&
           renderer.childComponents &&
           renderer.childComponents.map(childComponent =>
-            this._traverseTree(childComponent, rootComponent)
+            this._traverseTree(childComponent, rootComponent, id)
           ),
-      expanded,
+      expanded: this._componentMap[id]
+        ? this._componentMap[id].__METAL_DEV_TOOLS_EXPANDED__
+        : false,
       id,
       name: component.constructor.name
     };
@@ -331,6 +340,8 @@ class RootManager {
    */
   _updateCurrentSelected(id = this._previousSelectedId) {
     if (id) {
+      this._previousSelectedId = id;
+
       Messenger.informSelected(
         this.processComponentObj(this._componentMap[id])
       );
