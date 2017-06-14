@@ -210,6 +210,14 @@ body {
     }
   }
 
+  .json-editor-container .json-editor-value {
+    transition: background 200ms;
+
+    &.flash {
+      background: rgba($componentName, 0.5);
+    }
+  }
+
   .category {
     .data {
       list-style: none;
