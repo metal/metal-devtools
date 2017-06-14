@@ -50,12 +50,14 @@ describe('RootManager', () => {
     RootManager.reloadRoots = jest.fn();
 
     RootManager._componentMap[id] = {
-      expanded: false
+      __METAL_DEV_TOOLS_EXPANDED__: false
     };
 
     RootManager.expandComponent(id, true);
 
-    expect(RootManager._componentMap[id].expanded).toBe(true);
+    expect(RootManager._componentMap[id].__METAL_DEV_TOOLS_EXPANDED__).toBe(
+      true
+    );
     expect(RootManager.reloadRoots).toHaveBeenCalled();
   });
 
@@ -280,12 +282,10 @@ describe('RootManager', () => {
     const id = 'foo';
 
     component['__METAL_DEV_TOOLS_COMPONENT_KEY__'] = id;
-    RootManager._inspectedNode = component.element;
 
     const retVal = RootManager._traverseTree(component, component);
 
     expect(RootManager._attachComponentListeners).toHaveBeenCalled();
-    expect(RootManager._closestSelectedId).toBeTruthy();
     expect(retVal).toEqual({
       childComponents: [
         {
@@ -295,7 +295,7 @@ describe('RootManager', () => {
           name: 'Child'
         }
       ],
-      expanded: true,
+      expanded: false,
       id,
       name: 'MyComponent'
     });
@@ -372,5 +372,49 @@ describe('RootManager', () => {
       id: 'foo2',
       name: 'Foo2'
     });
+  });
+
+  test('should call `getClosestParentComponent` and `expandParentComponents`', () => {
+    RootManager.getClosestParentComponent = jest.fn(() => 1);
+    RootManager.expandParentComponents = jest.fn();
+
+    RootManager.setInspected();
+
+    expect(RootManager.getClosestParentComponent).toHaveBeenCalled();
+    expect(RootManager.expandParentComponents).toHaveBeenCalledWith(1);
+  });
+
+  test('should call `expandComponent` and `_updateCurrentSelected`', () => {
+    RootManager.expandComponent = jest.fn();
+    RootManager._updateCurrentSelected = jest.fn();
+
+    RootManager.expandParentComponents({
+      __METAL_DEV_TOOLS_COMPONENT_KEY__: 1,
+      __METAL_IC_RENDERER_DATA__: {
+        parent: {
+          __METAL_DEV_TOOLS_COMPONENT_KEY__: 2
+        }
+      }
+    });
+
+    expect(RootManager._updateCurrentSelected).toHaveBeenCalledTimes(1);
+    expect(RootManager.expandComponent).toHaveBeenCalledTimes(2);
+  });
+
+  test('should return component mapped to parent node', () => {
+    const id = 'foo';
+    const value = 'bar';
+    const parent = document.createElement('div');
+    const child = document.createElement('div');
+
+    parent.appendChild(child);
+
+    RootManager._componentMap = {
+      [id]: value
+    };
+
+    RootManager._elementMap = new WeakMap().set(parent, id);
+
+    expect(RootManager.getClosestParentComponent(child)).toBe(value);
   });
 });

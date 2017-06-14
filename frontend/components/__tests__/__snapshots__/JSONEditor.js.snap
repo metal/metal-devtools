@@ -1,4 +1,4 @@
-exports[`JSONEditor should render 1`] = `<ul class="tree-container" style="list-style: none; margin: 0px;"></ul>`;
+exports[`JSONEditor should render 1`] = `<ul class="tree-container json-editor-container" style="list-style: none; margin: 0px;"></ul>`;
 
 exports[`JSONEditor should return changed data 1`] = `undefined`;
 

@@ -1,6 +1,6 @@
 jest.unmock('../preprocessMetalState');
 
-import preprocessMetalState, {KEYS_BLACKLIST} from '../preprocessMetalState';
+import preprocessMetalState from '../preprocessMetalState';
 
 describe('preprocessMetalState', () => {
   test('should set value to the `value` key on the obj', () => {
@@ -15,15 +15,19 @@ describe('preprocessMetalState', () => {
     expect(newData).toEqual({foo: 'bar'});
   });
 
-  test('should ignore all keys from blacklist', () => {
-    const data = {};
-
-    KEYS_BLACKLIST.forEach(key => {
-      data[key] = {value: true};
-    });
+  test('should handle special case for children', () => {
+    const data = {
+      children: {
+        value: [
+          {
+            tag: 'div'
+          }
+        ]
+      }
+    };
 
     const newData = preprocessMetalState(data);
 
-    expect(newData).toEqual({});
+    expect(newData).toEqual({children: ['div']});
   });
 });

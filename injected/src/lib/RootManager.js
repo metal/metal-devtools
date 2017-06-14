@@ -202,19 +202,16 @@ class RootManager {
    * Sets the `_inspectedNode` value to a given node.
    */
   setInspected(node) {
+    const component = this.getClosestParentComponent(node);
+
+    this.expandParentComponents(component);
+  }
+
+  /**
+   * Traverses up component tree calling `expandComponent` on each one.
+   */
+  expandParentComponents(component) {
     let firstComponent = true;
-
-    let component;
-
-    while (node) {
-      if (!this._elementMap.has(node)) {
-        node = node.parentNode;
-      } else {
-        component = this._componentMap[this._elementMap.get(node)];
-
-        node = null;
-      }
-    }
 
     while (component) {
       const id = component.__METAL_DEV_TOOLS_COMPONENT_KEY__;
@@ -227,7 +224,22 @@ class RootManager {
         firstComponent = false;
       }
 
-      component = component.__METAL_IC_RENDERER_DATA__.parent;
+      component = component.__METAL_IC_RENDERER_DATA__
+        ? component.__METAL_IC_RENDERER_DATA__.parent
+        : false;
+    }
+  }
+
+  /**
+   * Traverses up node tree until it finds a metal component.
+   */
+  getClosestParentComponent(node) {
+    while (node) {
+      if (!this._elementMap.has(node)) {
+        node = node.parentNode;
+      } else {
+        return this._componentMap[this._elementMap.get(node)];
+      }
     }
   }
 
