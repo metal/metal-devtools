@@ -338,15 +338,19 @@ class RootManager {
   /**
    * Updates the currently selected component and informs that it is selected.
    */
-  _updateCurrentSelected(id = this._previousSelectedId) {
-    if (id) {
-      this._previousSelectedId = id;
+   _updateCurrentSelected(id = this._previousSelectedId) {
+     if (id) {
+       this._previousSelectedId = id;
 
-      Messenger.informSelected(
-        this.processComponentObj(this._componentMap[id])
-      );
-    }
-  }
+       const component = this._componentMap[id];
+
+       Messenger.informSelected(
+         this.processComponentObj(component)
+       );
+
+       window.$m = component;
+     }
+   }
 }
 
 export default RootManager;
