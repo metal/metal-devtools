@@ -11,7 +11,9 @@ export default object => {
     if (Object.prototype.hasOwnProperty.call(object, stateKey)) {
       const {value} = object[stateKey];
 
-      if (KEYS_BLACKLIST.indexOf(stateKey) === -1) {
+      if (stateKey === 'children') {
+        newObj[stateKey] = value.map(({tag}) => tag);
+      } else {
         newObj[stateKey] = value;
       }
     }
