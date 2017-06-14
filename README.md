@@ -1,5 +1,7 @@
 # metal-devtools
 [![Build Status](https://travis-ci.org/metal/metal-devtools.svg?branch=master)](https://travis-ci.org/metal/metal-devtools)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/fagnjmppkokolnbloalifcmcooldhiik.svg)](https://chrome.google.com/webstore/detail/metaljs-developer-tools/fagnjmppkokolnbloalifcmcooldhiik)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/d/fagnjmppkokolnbloalifcmcooldhiik.svg)](https://chrome.google.com/webstore/detail/metaljs-developer-tools/fagnjmppkokolnbloalifcmcooldhiik)
 
 ![Screenshot](images/screenshot.gif)
 
