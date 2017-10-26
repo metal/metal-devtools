@@ -1,6 +1,6 @@
 {
   "name": "metal-devtools",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Metal Developer Tools",
   "scripts": {
     "build": "npm run build:injected && npm run build:chrome",
