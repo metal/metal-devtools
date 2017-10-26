@@ -208,7 +208,7 @@ class App extends Component {
           !!rootComponentKeys.length &&
           <div
             class="roots-wrapper"
-            style={firstColumnWidth && `flex-basis:${firstColumnWidth}px;`}
+            style={firstColumnWidth && `width:${firstColumnWidth}px;`}
           >
             <div
               class="options"
